@@ -254,3 +254,4 @@ STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
 
 }
 
+
