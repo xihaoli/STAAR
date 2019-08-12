@@ -4,22 +4,27 @@
 \alias{STAAR}
 \title{STAAR procedure using omnibus test}
 \usage{
-STAAR(genotype, obj_nullmodel, annotation_phred = NULL,
-  rare_maf_cutoff = 0.01, rv_num_cutoff = 2)
+STAAR(
+  genotype,
+  obj_nullmodel,
+  annotation_phred = NULL,
+  rare_maf_cutoff = 0.01,
+  rv_num_cutoff = 2
+)
 }
 \arguments{
 \item{genotype}{an n*p genotype matrix (dosage matrix) of the target sequence,
-where n is the sample size and p is the number of variants.}
+where n is the sample size and p is the number of genetic variants.}
 
 \item{obj_nullmodel}{an object from fitting the null model, which is the
 output from either \code{\link{fit_null_glm}} function for unrelated samples or
 \code{\link{fit_null_glmmkin}} function for related samples. Note that \code{\link{fit_null_glmmkin}}
-is a wrapper of \code{\link{glmmkin}} function from the \code{\link{GMMAT}} package.}
+is a wrapper of the \code{\link{glmmkin}} function from the \code{\link{GMMAT}} package.}
 
 \item{annotation_phred}{a data frame or matrix of functional annotation data
-of dimension n*q (or a vector of a single annotation score with length n).
-Continuous scores should be given in phred score scale, where the phred score
-of j-th variant is defined to be -10*log10(-rank_j) across the genome. (Binary)
+of dimension p*q (or a vector of a single annotation score with length p).
+Continuous scores should be given in PHRED score scale, where the PHRED score
+of j-th variant is defined to be -10*log10(rank(-score_j)/total) across the genome. (Binary)
 categorical scores should be taking values 0 or 1, where 1 is functional and 0 is
 non-functional. If not provided, STAAR will perform the
 SKAT(1,25), SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25), ACAT-V(1,1)
@@ -34,11 +39,11 @@ a given variant-set. (Default is 2).}
 \value{
 a list with the following members:
 
-\code{num_SNV}: the number of SNVs with minor allele frequency > 0 and less than
+\code{num_variant}: the number of variants with minor allele frequency > 0 and less than
 \code{rare_maf_cutoff} in the given variant-set that are used for performing the
 variant-set using STAAR.
 
-\code{RV_label}: the boolean vector indicating whether each SNV in the given
+\code{RV_label}: the boolean vector indicating whether each variant in the given
 variant-set has minor allele frequency > 0 and less than \code{rare_maf_cutoff}.
 
 \code{results_STAAR_O}: the STAAR-O p-value that aggregated SKAT(1,25),
@@ -80,7 +85,7 @@ p-value by aggregating these p-values using Cauchy method.
 }
 \description{
 The \code{STAAR} function takes in genotype, the object from fitting the null
-model, and functional annotation data, and analyzes the association between a
+model, and functional annotation data to analyze the association between a
 quantitative/dichotomous phenotype and a variant-set by using STAAR procedure.
 For each variant-set, the STAAR-O p-value is a p-value from an omnibus test
 that aggregated SKAT(1,25), SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25),
@@ -88,7 +93,12 @@ and ACAT-V(1,1) together with p-values of each test weighted by each annotation
 using Cauchy method.
 }
 \references{
-Liu, Y. et al. (2019). ACAT: A Fast and Powerful P-value Combination Method
-for Rare-variant Analysis in Sequencing Studies. \emph{American Journal of Humann Genetics 104(3), 410-421}.
+Li, X., Li, Z. et al. (2019+). Dynamic incorporation of multiple
+in-silico functional annotations empowers rare variant association analysis of
+large whole genome sequencing studies at scale. \emph{Submitted}.
+
+Liu, Y., et al. (2019). Acat: A fast and powerful p value combination
+method for rare-variant analysis in sequencing studies.
+\emph{American Journal of Humann Genetics 104}(3), 410-421.
 (\href{https://www.sciencedirect.com/science/article/pii/S0002929719300023}{pub})
 }

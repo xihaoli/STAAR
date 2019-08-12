@@ -1,11 +1,10 @@
 #' Fitting generalized linear mixed model with known relationship matrices
-#'  under the null hypothesis for related samples.
+#' under the null hypothesis for related samples.
 #'
 #' The \code{fit_null_glmmkin} function is a wrapper of the \code{\link{glmmkin}} function from
 #' the \code{\link{GMMAT}} package that fits a regression model under the null hypothesis
 #' for related samples, which provides the preliminary step for subsequent
-#' variant-set tests in whole genome sequencing data analysis. More details
-#' see \code{\link{glmmkin}}.
+#' variant-set tests in whole genome sequencing data analysis. See \code{\link{glmmkin}} for more details.
 #' @param fixed an object of class \code{\link{formula}} (or one that can be coerced to that class):
 #' a symbolic description of the fixed effects model to be fitted.
 #' @param data a data frame or list (or object coercible by \code{\link{as.data.frame}} to a data frame)
@@ -17,7 +16,7 @@
 #' of the data frame \code{data}.
 #' @param use_sparse a logical switch of whether the provided dense \code{kins} matrix should be
 #' transformed to a sparse matrix (default = NULL).
-#' @param kins_cutoff the cutoff of setting all entries with smaller values to 0 in \code{kins} matrix
+#' @param kins_cutoff the cutoff value for clustering samples to make the output matrix sparse block-diagonal
 #' (default = 0.022).
 #' @param id a column in the data frame \code{data}, indicating the id of samples.
 #' When there are duplicates in \code{id}, the data is assumed to be longitudinal with repeated measures.
@@ -50,14 +49,14 @@
 #' @return The function returns an object of the model fit from \code{\link{glmmkin}} (\code{obj_nullmodel}),
 #' with additional elements indicating the samples are related (\code{obj_nullmodel$relatedness = TRUE}),
 #' and whether the \code{kins} matrix is sparse when fitting the null model. See \code{\link{glmmkin}} for more details.
-#' @references Chen, H. et al. (2016). Control for population structure and relatedness for binary traits
-#' in genetic association studies via logistic mixed models. \emph{American Journal of Humann Genetics 98(4), 653-666}.
+#' @references Chen, H., et al. (2016). Control for population structure and relatedness for binary traits
+#' in genetic association studies via logistic mixed models. \emph{American Journal of Humann Genetics 98}(4), 653-666.
 #' (\href{https://www.sciencedirect.com/science/article/pii/S000292971600063X}{pub})
-#' @references Chen, H. et al. (2019). Efficient variant set mixed model association tests for continuous and
-#' binary traits in large-scale whole genome sequencing studies. \emph{American Journal of Humann Genetics 104(2), 260-274}.
+#' @references Chen, H., et al. (2019). Efficient variant set mixed model association tests for continuous and
+#' binary traits in large-scale whole-genome sequencing studies. \emph{American Journal of Humann Genetics 104}(2), 260-274.
 #' (\href{https://www.sciencedirect.com/science/article/pii/S0002929718304658}{pub})
-#' @references Chen, H. & Conomos, M.P. (2019). GMMAT-package: Generalized Linear Mixed Model Association Tests.
-#' (\href{https://rdrr.io/github/hanchenphd/GMMAT/man/GMMAT-package.html}{web})
+#' @references Chen, H. (2019). GMMAT: Generalized Linear Mixed Model Association Tests.
+#' (\href{https://github.com/hanchenphd/GMMAT/blob/master/inst/doc/GMMAT.pdf}{web})
 #' @export
 
 fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NULL,
@@ -80,8 +79,12 @@ fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NU
     obj_nullmodel$sparse_kins <- TRUE
   }else if(!is.null(use_sparse) && use_sparse){
     print(paste0("kins is a dense matrix, transforming it into a sparse matrix using cutoff ", kins_cutoff,"."))
-    kins <- replace(kins, kins <= kins_cutoff, 0)
-    kins_sp <- Matrix(kins, sparse = TRUE)
+    #kins <- replace(kins, kins <= kins_cutoff, 0)
+    #kins_sp <- Matrix(kins, sparse = TRUE)
+    kins_sp <- makeSparseMatrix(kins, thresh = kins_cutoff)
+    if(class(kins_sp) == "dsyMatrix" || kins_cutoff <= min(kins)){
+      stop(paste0("kins is still a dense matrix using cutoff ", kins_cutoff,". Please try a larger kins_cutoff or use_sparse = FALSE"))
+    }
     rm(kins)
     obj_nullmodel <- glmmkin(fixed = fixed, data = data, kins = kins_sp, id = id,
                              random.slope = random.slope, groups = groups,

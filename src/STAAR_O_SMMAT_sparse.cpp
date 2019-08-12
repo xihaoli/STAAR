@@ -70,7 +70,7 @@ arma::vec STAAR_O_SMMAT_sparse(arma::sp_mat G, arma::sp_mat Sigma_i, arma::mat S
 	int ii;
 
 	tSigma_iX_G = trans(Sigma_iX)*G;
-	Cov = trans(trans(Sigma_i*G)*G) - trans(tSigma_iX_G)*cov*tSigma_iX_G;
+	Cov = trans(Sigma_i*G)*G - trans(tSigma_iX_G)*cov*tSigma_iX_G;
 	// Cov = trans(G)*Sigma_i*G - trans(tSigma_iX_G)*cov*tSigma_iX_G;
 
 

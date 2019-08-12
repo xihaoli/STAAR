@@ -3,13 +3,28 @@
 \name{fit_null_glmmkin}
 \alias{fit_null_glmmkin}
 \title{Fitting generalized linear mixed model with known relationship matrices
- under the null hypothesis for related samples.}
+under the null hypothesis for related samples.}
 \usage{
-fit_null_glmmkin(fixed, data = parent.frame(), kins, use_sparse = NULL,
-  kins_cutoff = 0.022, id, random.slope = NULL, groups = NULL,
-  family = binomial(link = "logit"), method = "REML",
-  method.optim = "AI", maxiter = 500, tol = 1e-05, taumin = 1e-05,
-  taumax = 1e+05, tauregion = 10, verbose = FALSE, ...)
+fit_null_glmmkin(
+  fixed,
+  data = parent.frame(),
+  kins,
+  use_sparse = NULL,
+  kins_cutoff = 0.022,
+  id,
+  random.slope = NULL,
+  groups = NULL,
+  family = binomial(link = "logit"),
+  method = "REML",
+  method.optim = "AI",
+  maxiter = 500,
+  tol = 1e-05,
+  taumin = 1e-05,
+  taumax = 1e+05,
+  tauregion = 10,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{fixed}{an object of class \code{\link{formula}} (or one that can be coerced to that class):
@@ -27,7 +42,7 @@ of the data frame \code{data}.}
 \item{use_sparse}{a logical switch of whether the provided dense \code{kins} matrix should be
 transformed to a sparse matrix (default = NULL).}
 
-\item{kins_cutoff}{the cutoff of setting all entries with smaller values to 0 in \code{kins} matrix
+\item{kins_cutoff}{the cutoff value for clustering samples to make the output matrix sparse block-diagonal
 (default = 0.022).}
 
 \item{id}{a column in the data frame \code{data}, indicating the id of samples.
@@ -80,18 +95,17 @@ and whether the \code{kins} matrix is sparse when fitting the null model. See \c
 The \code{fit_null_glmmkin} function is a wrapper of the \code{\link{glmmkin}} function from
 the \code{\link{GMMAT}} package that fits a regression model under the null hypothesis
 for related samples, which provides the preliminary step for subsequent
-variant-set tests in whole genome sequencing data analysis. More details
-see \code{\link{glmmkin}}.
+variant-set tests in whole genome sequencing data analysis. See \code{\link{glmmkin}} for more details.
 }
 \references{
-Chen, H. et al. (2016). Control for population structure and relatedness for binary traits
-in genetic association studies via logistic mixed models. \emph{American Journal of Humann Genetics 98(4), 653-666}.
+Chen, H., et al. (2016). Control for population structure and relatedness for binary traits
+in genetic association studies via logistic mixed models. \emph{American Journal of Humann Genetics 98}(4), 653-666.
 (\href{https://www.sciencedirect.com/science/article/pii/S000292971600063X}{pub})
 
-Chen, H. et al. (2019). Efficient variant set mixed model association tests for continuous and
-binary traits in large-scale whole genome sequencing studies. \emph{American Journal of Humann Genetics 104(2), 260-274}.
+Chen, H., et al. (2019). Efficient variant set mixed model association tests for continuous and
+binary traits in large-scale whole-genome sequencing studies. \emph{American Journal of Humann Genetics 104}(2), 260-274.
 (\href{https://www.sciencedirect.com/science/article/pii/S0002929718304658}{pub})
 
-Chen, H. & Conomos, M.P. (2019). GMMAT-package: Generalized Linear Mixed Model Association Tests.
-(\href{https://rdrr.io/github/hanchenphd/GMMAT/man/GMMAT-package.html}{web})
+Chen, H. (2019). GMMAT: Generalized Linear Mixed Model Association Tests.
+(\href{https://github.com/hanchenphd/GMMAT/blob/master/inst/doc/GMMAT.pdf}{web})
 }

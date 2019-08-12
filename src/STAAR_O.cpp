@@ -75,7 +75,7 @@ arma::vec STAAR_O(arma::sp_mat G, arma::mat X, arma::vec working, double sigma, 
 	}else
 	{
 		tX_G = trans(X)*(arma::diagmat(working))*G;
-		Cov = trans(G)*arma::diagmat(working)*G - trans(tX_G)*inv(trans(X)*arma::diagmat(working)*X)*tX_G;
+		Cov = trans(arma::diagmat(working)*G)*G - trans(tX_G)*inv(trans(X)*arma::diagmat(working)*X)*tX_G;
 	}
 	
 	//ACAT

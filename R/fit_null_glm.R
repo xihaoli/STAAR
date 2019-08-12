@@ -3,8 +3,7 @@
 #' The \code{fit_null_glm} function is a wrapper of the \code{\link{glm}} function from the
 #' \code{\link{stats}} package that fits a regression model under the null hypothesis for
 #' unrelated samples, which provides the preliminary step for subsequent
-#' variant-set tests in whole
-#' genome sequencing data analysis.
+#' variant-set tests in whole genome sequencing data analysis. See \code{\link{glm}} for more details.
 #' @param fixed an object of class \code{\link{formula}} (or one that can be coerced to that class):
 #' a symbolic description of the fixed effects model to be fitted.
 #' @param data a data frame or list (or object coercible by \code{\link{as.data.frame}} to a data frame)

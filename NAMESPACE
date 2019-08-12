@@ -2,12 +2,9 @@ exportPattern("^[[:alpha:]]+")
 import(Rcpp, GMMAT, Matrix, methods)
 importFrom("stats", "binomial", "dbeta", "glm", "model.matrix",
                "pcauchy")
-importFrom("Rcpp", "evalCpp")
-importFrom("GMMAT", "glmmkin")
-importFrom("Matrix", "Matrix", "colMeans")
-importFrom("methods", "as")
+importFrom("GENESIS", "makeSparseMatrix")
 
 useDynLib(STAAR, .registration = TRUE)
 
 # functions
-export(CCT.pval, fit_null_glm, fit_null_glmmkin, STAAR)
+export(CCT, fit_null_glm, fit_null_glmmkin, STAAR, Indiv_Score_Test_Region)

@@ -6,14 +6,29 @@
 
 using namespace Rcpp;
 
-// matsp
-List matsp(arma::mat G);
-RcppExport SEXP _STAAR_matsp(SEXP GSEXP) {
+// Bisection
+double Bisection(arma::vec egvalues, double q, double xmin, double xmax);
+RcppExport SEXP _STAAR_Bisection(SEXP egvaluesSEXP, SEXP qSEXP, SEXP xminSEXP, SEXP xmaxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type G(GSEXP);
-    rcpp_result_gen = Rcpp::wrap(matsp(G));
+    Rcpp::traits::input_parameter< arma::vec >::type egvalues(egvaluesSEXP);
+    Rcpp::traits::input_parameter< double >::type q(qSEXP);
+    Rcpp::traits::input_parameter< double >::type xmin(xminSEXP);
+    Rcpp::traits::input_parameter< double >::type xmax(xmaxSEXP);
+    rcpp_result_gen = Rcpp::wrap(Bisection(egvalues, q, xmin, xmax));
+    return rcpp_result_gen;
+END_RCPP
+}
+// CCT_pval
+double CCT_pval(arma::vec x, arma::vec weights);
+RcppExport SEXP _STAAR_CCT_pval(SEXP xSEXP, SEXP weightsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type weights(weightsSEXP);
+    rcpp_result_gen = Rcpp::wrap(CCT_pval(x, weights));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -25,6 +40,87 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type G(GSEXP);
     rcpp_result_gen = Rcpp::wrap(matrix_flip(G));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Indiv_Score_Test
+List Indiv_Score_Test(arma::sp_mat G, arma::mat X, arma::vec working, double sigma, int fam, arma::vec residuals);
+RcppExport SEXP _STAAR_Indiv_Score_Test(SEXP GSEXP, SEXP XSEXP, SEXP workingSEXP, SEXP sigmaSEXP, SEXP famSEXP, SEXP residualsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat >::type G(GSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type working(workingSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< int >::type fam(famSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type residuals(residualsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Indiv_Score_Test(G, X, working, sigma, fam, residuals));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Indiv_Score_Test_SMMAT
+List Indiv_Score_Test_SMMAT(arma::sp_mat G, arma::mat P, arma::vec residuals);
+RcppExport SEXP _STAAR_Indiv_Score_Test_SMMAT(SEXP GSEXP, SEXP PSEXP, SEXP residualsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat >::type G(GSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type P(PSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type residuals(residualsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Indiv_Score_Test_SMMAT(G, P, residuals));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Indiv_Score_Test_SMMAT_sparse
+List Indiv_Score_Test_SMMAT_sparse(arma::sp_mat G, arma::sp_mat Sigma_i, arma::mat Sigma_iX, arma::mat cov, arma::vec residuals);
+RcppExport SEXP _STAAR_Indiv_Score_Test_SMMAT_sparse(SEXP GSEXP, SEXP Sigma_iSEXP, SEXP Sigma_iXSEXP, SEXP covSEXP, SEXP residualsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat >::type G(GSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type Sigma_i(Sigma_iSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Sigma_iX(Sigma_iXSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type cov(covSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type residuals(residualsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Indiv_Score_Test_SMMAT_sparse(G, Sigma_i, Sigma_iX, cov, residuals));
+    return rcpp_result_gen;
+END_RCPP
+}
+// K
+double K(double x, arma::vec egvalues);
+RcppExport SEXP _STAAR_K(SEXP xSEXP, SEXP egvaluesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type egvalues(egvaluesSEXP);
+    rcpp_result_gen = Rcpp::wrap(K(x, egvalues));
+    return rcpp_result_gen;
+END_RCPP
+}
+// K1
+double K1(double x, arma::vec egvalues, double q);
+RcppExport SEXP _STAAR_K1(SEXP xSEXP, SEXP egvaluesSEXP, SEXP qSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type egvalues(egvaluesSEXP);
+    Rcpp::traits::input_parameter< double >::type q(qSEXP);
+    rcpp_result_gen = Rcpp::wrap(K1(x, egvalues, q));
+    return rcpp_result_gen;
+END_RCPP
+}
+// K2
+double K2(double x, arma::vec egvalues);
+RcppExport SEXP _STAAR_K2(SEXP xSEXP, SEXP egvaluesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type egvalues(egvaluesSEXP);
+    rcpp_result_gen = Rcpp::wrap(K2(x, egvalues));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -87,13 +183,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Saddle
+double Saddle(double q, arma::vec egvalues);
+RcppExport SEXP _STAAR_Saddle(SEXP qSEXP, SEXP egvaluesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type q(qSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type egvalues(egvaluesSEXP);
+    rcpp_result_gen = Rcpp::wrap(Saddle(q, egvalues));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_STAAR_matsp", (DL_FUNC) &_STAAR_matsp, 1},
+    {"_STAAR_Bisection", (DL_FUNC) &_STAAR_Bisection, 4},
+    {"_STAAR_CCT_pval", (DL_FUNC) &_STAAR_CCT_pval, 2},
     {"_STAAR_matrix_flip", (DL_FUNC) &_STAAR_matrix_flip, 1},
+    {"_STAAR_Indiv_Score_Test", (DL_FUNC) &_STAAR_Indiv_Score_Test, 6},
+    {"_STAAR_Indiv_Score_Test_SMMAT", (DL_FUNC) &_STAAR_Indiv_Score_Test_SMMAT, 3},
+    {"_STAAR_Indiv_Score_Test_SMMAT_sparse", (DL_FUNC) &_STAAR_Indiv_Score_Test_SMMAT_sparse, 5},
+    {"_STAAR_K", (DL_FUNC) &_STAAR_K, 2},
+    {"_STAAR_K1", (DL_FUNC) &_STAAR_K1, 3},
+    {"_STAAR_K2", (DL_FUNC) &_STAAR_K2, 2},
     {"_STAAR_STAAR_O", (DL_FUNC) &_STAAR_STAAR_O, 11},
     {"_STAAR_STAAR_O_SMMAT", (DL_FUNC) &_STAAR_STAAR_O_SMMAT, 8},
     {"_STAAR_STAAR_O_SMMAT_sparse", (DL_FUNC) &_STAAR_STAAR_O_SMMAT_sparse, 10},
+    {"_STAAR_Saddle", (DL_FUNC) &_STAAR_Saddle, 2},
     {NULL, NULL, 0}
 };
 
