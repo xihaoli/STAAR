@@ -9,10 +9,6 @@ CCT_pval <- function(x, weights) {
     .Call(`_STAAR_CCT_pval`, x, weights)
 }
 
-matrix_flip <- function(G) {
-    .Call(`_STAAR_matrix_flip`, G)
-}
-
 Indiv_Score_Test <- function(G, X, working, sigma, fam, residuals) {
     .Call(`_STAAR_Indiv_Score_Test`, G, X, working, sigma, fam, residuals)
 }
@@ -23,6 +19,10 @@ Indiv_Score_Test_SMMAT <- function(G, P, residuals) {
 
 Indiv_Score_Test_SMMAT_sparse <- function(G, Sigma_i, Sigma_iX, cov, residuals) {
     .Call(`_STAAR_Indiv_Score_Test_SMMAT_sparse`, G, Sigma_i, Sigma_iX, cov, residuals)
+}
+
+Indiv_Score_Test_SMMAT_sparse_cond <- function(G, Sigma_i, Sigma_iX, cov, X_adj, residuals) {
+    .Call(`_STAAR_Indiv_Score_Test_SMMAT_sparse_cond`, G, Sigma_i, Sigma_iX, cov, X_adj, residuals)
 }
 
 K <- function(x, egvalues) {
@@ -49,7 +49,15 @@ STAAR_O_SMMAT_sparse <- function(G, Sigma_i, Sigma_iX, cov, residuals, weights_B
     .Call(`_STAAR_STAAR_O_SMMAT_sparse`, G, Sigma_i, Sigma_iX, cov, residuals, weights_B, weights_S, weights_A, mac, mac_thres)
 }
 
+STAAR_O_SMMAT_sparse_cond <- function(G, Sigma_i, Sigma_iX, cov, X_adj, residuals, weights_B, weights_S, weights_A, mac, mac_thres = 10L) {
+    .Call(`_STAAR_STAAR_O_SMMAT_sparse_cond`, G, Sigma_i, Sigma_iX, cov, X_adj, residuals, weights_B, weights_S, weights_A, mac, mac_thres)
+}
+
 Saddle <- function(q, egvalues) {
     .Call(`_STAAR_Saddle`, q, egvalues)
+}
+
+matrix_flip <- function(G) {
+    .Call(`_STAAR_matrix_flip`, G)
 }
 

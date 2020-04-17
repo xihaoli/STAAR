@@ -24,4 +24,3 @@ fit_null_glm <- function(fixed, data, family = binomial(link = "logit"), ...){
   return(obj_nullmodel)
 }
 
-

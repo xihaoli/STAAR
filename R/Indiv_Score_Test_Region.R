@@ -80,6 +80,7 @@ Indiv_Score_Test_Region <- function(genotype,obj_nullmodel,
       }else if(obj_nullmodel$family[1] == "gaussian"){
         fam <- 0
       }
+
       residuals.phenotype <- obj_nullmodel$y - obj_nullmodel$fitted.values
       results[RV_label,] <- do.call(cbind,Indiv_Score_Test(G,X,working,sigma,fam,residuals.phenotype))
     }
@@ -90,5 +91,4 @@ Indiv_Score_Test_Region <- function(genotype,obj_nullmodel,
   }
 
 }
-
 

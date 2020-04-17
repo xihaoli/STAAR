@@ -107,4 +107,3 @@ fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NU
   return(obj_nullmodel)
 }
 
-

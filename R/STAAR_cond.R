@@ -1,14 +1,20 @@
-#' STAAR procedure using omnibus test
+#' STAAR procedure for conditional analysis using omnibus test
 #'
-#' The \code{STAAR} function takes in genotype, the object from fitting the null
-#' model, and functional annotation data to analyze the association between a
-#' quantitative/dichotomous phenotype and a variant-set by using STAAR procedure.
-#' For each variant-set, the STAAR-O p-value is a p-value from an omnibus test
-#' that aggregated SKAT(1,25), SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25),
-#' and ACAT-V(1,1) together with p-values of each test weighted by each annotation
+#' The \code{STAAR_cond} function takes in genotype, the genotype of variant(s) to be
+#' adjusted for in conditional analysis, the object from fitting the null
+#' model, and functional annotation data to analyze the conditional association between a
+#' quantitative/dichotomous phenotype and a variant-set by using STAAR procedure,
+#' adjusting for a given list of variants. For each variant-set, the conditional
+#' STAAR-O p-value is a p-value from an omnibus test that aggregated conditional
+#' SKAT(1,25), SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25), and ACAT-V(1,1)
+#' together with conditional p-values of each test weighted by each annotation
 #' using Cauchy method.
 #' @param genotype an n*p genotype matrix (dosage matrix) of the target sequence,
 #' where n is the sample size and p is the number of genetic variants.
+#' @param genotype_adj an n*p_adj genotype matrix (dosage matrix) of the target
+#' sequence, where n is the sample size and p_adj is the number of genetic variants
+#' adjusted for conditional analysis (or a vector of a single variant with length n
+#' if p_adj is 1).
 #' @param obj_nullmodel an object from fitting the null model, which is the
 #' output from either \code{\link{fit_null_glm}} function for unrelated samples or
 #' \code{\link{fit_null_glmmkin}} function for related samples. Note that \code{\link{fit_null_glmmkin}}
@@ -31,34 +37,34 @@
 #' variant-set using STAAR.
 #' @return \code{RV_label}: the boolean vector indicating whether each variant in the given
 #' variant-set has minor allele frequency > 0 and less than \code{rare_maf_cutoff}.
-#' @return \code{results_STAAR_O}: the STAAR-O p-value that aggregated SKAT(1,25),
-#' SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25), and ACAT-V(1,1) together
-#' with p-values of each test weighted by each annotation using Cauchy method.
-#' @return \code{results_ACAT_O}: the ACAT-O p-value that aggregated SKAT(1,25),
-#' SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25), and ACAT-V(1,1) using Cauchy method.
-#' @return \code{results_STAAR_S_1_25}: a vector of STAAR-S(1,25) p-values,
-#' including SKAT(1,25) p-value weighted by MAF, the SKAT(1,25)
-#' p-values weighted by each annotation, and a STAAR-S(1,25)
+#' @return \code{results_STAAR_O_cond}: the conditional STAAR-O p-value that aggregated conditional
+#' SKAT(1,25), SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25), and ACAT-V(1,1) together
+#' with conditional p-values of each test weighted by each annotation using Cauchy method.
+#' @return \code{results_ACAT_O_cond}: the conditional ACAT-O p-value that aggregated conditional
+#' SKAT(1,25), SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25), and ACAT-V(1,1) using Cauchy method.
+#' @return \code{results_STAAR_S_1_25_cond}: a vector of conditional STAAR-S(1,25) p-values,
+#' including conditional SKAT(1,25) p-value weighted by MAF, the conditional SKAT(1,25)
+#' p-values weighted by each annotation, and a conditional STAAR-S(1,25)
 #' p-value by aggregating these p-values using Cauchy method.
-#' @return \code{results_STAAR_S_1_1}: a vector of STAAR-S(1,1) p-values,
-#' including SKAT(1,1) p-value weighted by MAF, the SKAT(1,1)
-#' p-values weighted by each annotation, and a STAAR-S(1,1)
+#' @return \code{results_STAAR_S_1_1_cond}: a vector of conditional STAAR-S(1,1) p-values,
+#' including conditional SKAT(1,1) p-value weighted by MAF, the conditional SKAT(1,1)
+#' p-values weighted by each annotation, and a conditional STAAR-S(1,1)
 #' p-value by aggregating these p-values using Cauchy method.
-#' @return \code{results_STAAR_B_1_25}: a vector of STAAR-B(1,25) p-values,
-#' including Burden(1,25) p-value weighted by MAF, the Burden(1,25)
-#' p-values weighted by each annotation, and a STAAR-B(1,25)
+#' @return \code{results_STAAR_B_1_25_cond}: a vector of conditional STAAR-B(1,25) p-values,
+#' including conditional Burden(1,25) p-value weighted by MAF, the conditional Burden(1,25)
+#' p-values weighted by each annotation, and a conditional STAAR-B(1,25)
 #' p-value by aggregating these p-values using Cauchy method.
-#' @return \code{results_STAAR_B_1_1}: a vector of STAAR-B(1,1) p-values,
-#' including Burden(1,1) p-value weighted by MAF, the Burden(1,1)
-#' p-values weighted by each annotation, and a STAAR-B(1,1)
+#' @return \code{results_STAAR_B_1_1_cond}: a vector of conditional STAAR-B(1,1) p-values,
+#' including conditional Burden(1,1) p-value weighted by MAF, the conditional Burden(1,1)
+#' p-values weighted by each annotation, and a conditional STAAR-B(1,1)
 #' p-value by aggregating these p-values using Cauchy method.
-#' @return \code{results_STAAR_A_1_25}: a vector of STAAR-A(1,25) p-values,
-#' including ACAT-V(1,25) p-value weighted by MAF, the ACAT-V(1,25)
-#' p-values weighted by each annotation, and a STAAR-A(1,25)
+#' @return \code{results_STAAR_A_1_25_cond}: a vector of conditional STAAR-A(1,25) p-values,
+#' including conditional ACAT-V(1,25) p-value weighted by MAF, the conditional ACAT-V(1,25)
+#' p-values weighted by each annotation, and a conditional STAAR-A(1,25)
 #' p-value by aggregating these p-values using Cauchy method.
-#' @return \code{results_STAAR_A_1_1}: a vector of STAAR-A(1,1) p-values,
-#' including ACAT-V(1,1) p-value weighted by MAF, the ACAT-V(1,1)
-#' p-values weighted by each annotation, and a STAAR-A(1,1)
+#' @return \code{results_STAAR_A_1_1_cond}: a vector of conditional STAAR-A(1,1) p-values,
+#' including conditional ACAT-V(1,1) p-value weighted by MAF, the conditional ACAT-V(1,1)
+#' p-values weighted by each annotation, and a conditional STAAR-A(1,1)
 #' p-value by aggregating these p-values using Cauchy method.
 #' @references Li, X., Li, Z. et al. (2019+). Dynamic incorporation of multiple
 #' in-silico functional annotations empowers rare variant association analysis of
@@ -69,8 +75,8 @@
 #' (\href{https://www.sciencedirect.com/science/article/pii/S0002929719300023}{pub})
 #' @export
 
-STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
-                  rare_maf_cutoff=0.01,rv_num_cutoff=2){
+STAAR_cond <- function(genotype,genotype_adj,obj_nullmodel,annotation_phred=NULL,
+                       rare_maf_cutoff=0.01,rv_num_cutoff=2){
 
   if(class(genotype) != "matrix" && !(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix")){
     stop("genotype is not a matrix!")
@@ -87,6 +93,14 @@ STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
 
   if(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix"){
     genotype <- as.matrix(genotype)
+  }
+
+  if(class(genotype_adj) == "numeric"){
+    genotype_adj <- matrix(genotype_adj, ncol=1)
+  }
+
+  if(dim(genotype)[1] != dim(genotype_adj)[1]){
+    stop(paste0("Dimensions don't match for genotype and genotype_adj!"))
   }
   genotype <- matrix_flip(genotype)
   MAF <- genotype$MAF
@@ -147,8 +161,16 @@ STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
 
         residuals.phenotype <- obj_nullmodel$scaled.residuals
         residuals.phenotype <- residuals.phenotype*sqrt(P_scalar)
+        residuals.phenotype <- lm(residuals.phenotype~genotype_adj)$residuals
+        X_adj <- cbind(rep(1,length(residuals.phenotype)),genotype_adj)
+        PX_adj <- P%*%X_adj
+        P_cond <- P - X_adj%*%solve(t(X_adj)%*%X_adj)%*%t(PX_adj) -
+          PX_adj%*%solve(t(X_adj)%*%X_adj)%*%t(X_adj) +
+          X_adj%*%solve(t(X_adj)%*%X_adj)%*%t(PX_adj)%*%X_adj%*%solve(t(X_adj)%*%X_adj)%*%t(X_adj)
+        rm(P)
+        gc()
 
-        pvalues <- STAAR_O_SMMAT(G,P,residuals.phenotype,
+        pvalues <- STAAR_O_SMMAT(G,P_cond,residuals.phenotype,
                                  weights_B=w_B,weights_S=w_S,weights_A=w_A,
                                  mac=as.integer(round(MAF*2*dim(G)[1])))
       }else{
@@ -157,26 +179,36 @@ STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
         cov <- obj_nullmodel$cov
 
         residuals.phenotype <- obj_nullmodel$scaled.residuals
+        residuals.phenotype <- lm(residuals.phenotype~genotype_adj)$residuals
+        X_adj <- cbind(rep(1,length(residuals.phenotype)),genotype_adj)
 
-        pvalues <- STAAR_O_SMMAT_sparse(G,Sigma_i,Sigma_iX,cov,residuals.phenotype,
-                                        weights_B=w_B,weights_S=w_S,weights_A=w_A,
-                                        mac=as.integer(round(MAF*2*dim(G)[1])))
+        pvalues <- STAAR_O_SMMAT_sparse_cond(G,Sigma_i,Sigma_iX,cov,X_adj,residuals.phenotype,
+                                             weights_B=w_B,weights_S=w_S,weights_A=w_A,
+                                             mac=as.integer(round(MAF*2*dim(G)[1])))
       }
     }else{
       X <- model.matrix(obj_nullmodel)
       working <- obj_nullmodel$weights
       sigma <- sqrt(summary(obj_nullmodel)$dispersion)
       if(obj_nullmodel$family[1] == "binomial"){
-        fam <- 1
+        P <- diag(working) - X%*%solve(t(X)%*%diag(working)%*%X)%*%t(X)
       }else if(obj_nullmodel$family[1] == "gaussian"){
-        fam <- 0
+        P <- diag(length(working)) - X%*%solve(t(X)%*%X)%*%t(X)
       }
 
       residuals.phenotype <- obj_nullmodel$y - obj_nullmodel$fitted.values
+      residuals.phenotype <- lm(residuals.phenotype~genotype_adj)$residuals
+      X_adj <- cbind(rep(1,length(residuals.phenotype)),genotype_adj)
+      PX_adj <- P%*%X_adj
+      P_cond <- P - X_adj%*%solve(t(X_adj)%*%X_adj)%*%t(PX_adj) -
+        PX_adj%*%solve(t(X_adj)%*%X_adj)%*%t(X_adj) +
+        X_adj%*%solve(t(X_adj)%*%X_adj)%*%t(PX_adj)%*%X_adj%*%solve(t(X_adj)%*%X_adj)%*%t(X_adj)
+      rm(P)
+      gc()
 
-      pvalues <- STAAR_O(G,X,working,sigma,fam,residuals.phenotype,
-                         weights_B=w_B,weights_S=w_S,weights_A=w_A,
-                         mac=as.integer(round(MAF*2*dim(G)[1])))
+      pvalues <- STAAR_O_SMMAT(G,P_cond,residuals.phenotype,
+                               weights_B=w_B,weights_S=w_S,weights_A=w_A,
+                               mac=as.integer(round(MAF*2*dim(G)[1])))
     }
 
     num_variant <- sum(RV_label) #dim(G)[2]
@@ -238,14 +270,14 @@ STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
 
     return(list(num_variant = num_variant,
                 RV_label = RV_label,
-                results_STAAR_O = results_STAAR_O,
-                results_ACAT_O = results_ACAT_O,
-                results_STAAR_S_1_25 = results_STAAR_S_1_25,
-                results_STAAR_S_1_1 = results_STAAR_S_1_1,
-                results_STAAR_B_1_25 = results_STAAR_B_1_25,
-                results_STAAR_B_1_1 = results_STAAR_B_1_1,
-                results_STAAR_A_1_25 = results_STAAR_A_1_25,
-                results_STAAR_A_1_1 = results_STAAR_A_1_1))
+                results_STAAR_O_cond = results_STAAR_O,
+                results_ACAT_O_cond = results_ACAT_O,
+                results_STAAR_S_1_25_cond = results_STAAR_S_1_25,
+                results_STAAR_S_1_1_cond = results_STAAR_S_1_1,
+                results_STAAR_B_1_25_cond = results_STAAR_B_1_25,
+                results_STAAR_B_1_1_cond = results_STAAR_B_1_1,
+                results_STAAR_A_1_25_cond = results_STAAR_A_1_25,
+                results_STAAR_A_1_1_cond = results_STAAR_A_1_1))
   }else{
     stop(paste0("Number of rare variant in the set is less than ",rv_num_cutoff,"!"))
   }
