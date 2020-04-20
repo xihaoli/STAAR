@@ -1,8 +1,8 @@
-#' Conditional Score test for individual variants in a given variant-set
+#' Conditional score test for individual variants in a given variant-set
 #'
 #' The \code{Indiv_Score_Test_Region_cond} function takes in genotype,
 #' the genotype of variant(s) to be adjusted for in conditional analysis,
-#' the object from fitting the null model to analyze the association between
+#' the object from fitting the null model to analyze the conditional association between
 #' a quantitative/dichotomous phenotype and all individual variants in
 #' a given variant-set by using score test.
 #' @param genotype an n*p genotype matrix (dosage matrix) of the target sequence,

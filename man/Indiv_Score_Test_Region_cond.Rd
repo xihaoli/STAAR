@@ -2,7 +2,7 @@
 % Please edit documentation in R/Indiv_Score_Test_Region_cond.R
 \name{Indiv_Score_Test_Region_cond}
 \alias{Indiv_Score_Test_Region_cond}
-\title{Conditional Score test for individual variants in a given variant-set}
+\title{Conditional score test for individual variants in a given variant-set}
 \usage{
 Indiv_Score_Test_Region_cond(
   genotype,
@@ -44,7 +44,7 @@ the given variant-set has standard error equal to 0, the p-value will be set as 
 \description{
 The \code{Indiv_Score_Test_Region_cond} function takes in genotype,
 the genotype of variant(s) to be adjusted for in conditional analysis,
-the object from fitting the null model to analyze the association between
+the object from fitting the null model to analyze the conditional association between
 a quantitative/dichotomous phenotype and all individual variants in
 a given variant-set by using score test.
 }
