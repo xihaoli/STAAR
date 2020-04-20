@@ -1,4 +1,5 @@
 // [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::interfaces(r, cpp)]]
 
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
@@ -10,10 +11,10 @@ double CCT_pval(arma::vec x, arma::vec weights)
 {
 	double cct_stat = 0.0;
 	double pval = 0.0;
-	
+
 	bool lower = false;
 	bool logp = false;
-	
+
 	weights = weights/sum(weights);
 
 	int n = x.size();
@@ -30,7 +31,7 @@ double CCT_pval(arma::vec x, arma::vec weights)
 			cct_stat = cct_stat + weights(k)*tan((0.5-x(k))*PI);
 		}
 	}
-		
+
 	if (cct_stat > 1e+15)
 	{
         pval = (1/cct_stat)/PI;
@@ -38,8 +39,8 @@ double CCT_pval(arma::vec x, arma::vec weights)
 	{
 		pval = R::pcauchy(cct_stat,0.0,1.0,lower,logp);
     }
-	
+
 	return pval;
-		
+
 }
 
