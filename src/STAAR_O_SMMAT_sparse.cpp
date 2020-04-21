@@ -207,9 +207,3 @@ arma::vec STAAR_O_SMMAT_sparse(arma::sp_mat G, arma::sp_mat Sigma_i, arma::mat S
 	return res;
 }
 
-
-
-
-
-
-

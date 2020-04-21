@@ -33,7 +33,7 @@ defining rare variants. (Default is 0.01).}
 a given variant-set. (Default is 2).}
 }
 \value{
-a data frame with p rows corresponding the p genetic variants in the given variant-set
+a data frame with p rows corresponding to the p genetic variants in the given variant-set
 and three columns: \code{Score_cond} (the conditional score test statistic adjusting for variants
 in \code{genotype_adj}), \code{SE_cond} (the standard error associated with the
 conditional score test statistic), and \code{pvalue_cond} (the conditional score test p-value).

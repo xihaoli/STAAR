@@ -19,7 +19,7 @@
 #' defining rare variants. (Default is 0.01).
 #' @param rv_num_cutoff the cutoff of minimum number of variants of analyzing
 #' a given variant-set. (Default is 2).
-#' @return a data frame with p rows corresponding the p genetic variants in the given variant-set
+#' @return a data frame with p rows corresponding to the p genetic variants in the given variant-set
 #' and three columns: \code{Score_cond} (the conditional score test statistic adjusting for variants
 #' in \code{genotype_adj}), \code{SE_cond} (the standard error associated with the
 #' conditional score test statistic), and \code{pvalue_cond} (the conditional score test p-value).
