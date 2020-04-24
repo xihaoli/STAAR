@@ -8,6 +8,7 @@ jobs:
     container:
       image: bioconductor/bioconductor_full:devel
       steps:
+      - name: Checkout Repository
       - uses: actions/checkout@master
       - name: Install dependencies
         run: |
