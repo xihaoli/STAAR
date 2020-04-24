@@ -10,7 +10,7 @@ jobs:
       - uses: r-lib/actions/setup-r@master
       - name: Install BiocManager
         run: |
-          remotes::install_cran("BiocManager")
+          if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
         shell: Rscript {0}
       - name: Install dependencies
         run: |
