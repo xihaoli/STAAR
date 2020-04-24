@@ -7,10 +7,10 @@ jobs:
     runs-on: macOS-latest
     container:
       image: bioconductor/bioconductor_full:devel
-      steps:
+    steps:
       - name: Checkout Repository
       - uses: actions/checkout@master
-      - name: Install dependencies
+      - name: Install Package Dependencies
         run: |
           BiocManager::install(c('remotes', 'rcmdcheck'))
           remotes::install_deps(dependencies = TRUE)
