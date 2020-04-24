@@ -5,14 +5,16 @@ name: R-CMD-check
 jobs:
   R-CMD-check:
     runs-on: macOS-latest
-    container:
-      image: bioconductor/bioconductor_full:devel
     steps:
-      - name: Checkout Repository
-      - uses: actions/checkout@master
-      - name: Install Package Dependencies
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@master
+      - name: Install BiocManager
         run: |
-          BiocManager::install(c('remotes', 'rcmdcheck'))
+          remotes::install_cran("BiocManager")
+        shell: Rscript {0}
+      - name: Install dependencies
+        run: |
+          install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
       - name: Check
