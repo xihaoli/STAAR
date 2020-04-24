@@ -74,7 +74,7 @@ arma::vec STAAR_O_SMMAT_sparse_cond(arma::sp_mat G, arma::sp_mat Sigma_i, arma::
 	arma::mat PX_adj;
 	PX_adj.zeros(PX_adj_row,PX_adj_col);
 	PX_adj = Sigma_i*X_adj - Sigma_iX*cov*(trans(Sigma_iX)*X_adj);
-	Cov = trans(Sigma_i*G)*G - trans(trans(X_adj)*G)*inv(trans(X_adj)*X_adj)*(trans(PX_adj)*G) - trans(trans(PX_adj)*G)*inv(trans(X_adj)*X_adj)*(trans(X_adj)*G) + trans(trans(X_adj)*G)*inv(trans(X_adj)*X_adj)*trans(PX_adj)*X_adj*inv(trans(X_adj)*X_adj)*(trans(X_adj)*G);
+	Cov = trans(Sigma_i*G)*G - trans(trans(Sigma_iX)*G)*cov*trans(Sigma_iX)*G - trans(trans(X_adj)*G)*inv(trans(X_adj)*X_adj)*(trans(PX_adj)*G) - trans(trans(PX_adj)*G)*inv(trans(X_adj)*X_adj)*(trans(X_adj)*G) + trans(trans(X_adj)*G)*inv(trans(X_adj)*X_adj)*trans(PX_adj)*X_adj*inv(trans(X_adj)*X_adj)*(trans(X_adj)*G);
 
 
 	//ACAT
