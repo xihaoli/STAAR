@@ -5,14 +5,12 @@ name: R-CMD-check
 jobs:
   R-CMD-check:
     runs-on: macOS-latest
-    env:
-      BIOC_USE_DEVEL: FALSE
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@master
       - name: Install dependencies
         run: |
-          install.packages(c("remotes", "rcmdcheck"))
+          BiocManager::install(c('remotes', 'rcmdcheck'))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
       - name: Check
