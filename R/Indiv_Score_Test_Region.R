@@ -16,8 +16,8 @@
 #' @return a data frame with p rows corresponding to the p genetic variants in the given variant-set
 #' and three columns: \code{Score} (the score test statistic), \code{SE} (the standard error associated
 #' with the score test statistic), and \code{pvalue} (the score test p-value).
-#' If a variant in the given variant-set has minor allele frequency > 0 and
-#' less than \code{rare_maf_cutoff}, the corresponding row will be \code{NA}. If a variant in
+#' If a variant in the given variant-set has minor allele frequency = 0 or
+#' greater than \code{rare_maf_cutoff}, the corresponding row will be \code{NA}. If a variant in
 #' the given variant-set has standard error equal to 0, the p-value will be set as 1.
 #' @export
 
