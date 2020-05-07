@@ -1,7 +1,7 @@
 #' Score test for individual variants in a given variant-set
 #'
-#' The \code{Indiv_Score_Test_Region} function takes in genotype, the object from fitting the null
-#' model to analyze the association between a quantitative/dichotomous phenotype and
+#' The \code{Indiv_Score_Test_Region} function takes in genotype and the object from fitting the null
+#' model to analyze the associations between a quantitative/dichotomous phenotype and
 #' all individual variants in a given variant-set by using score test.
 #' @param genotype an n*p genotype matrix (dosage matrix) of the target sequence,
 #' where n is the sample size and p is the number of genetic variants.

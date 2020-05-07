@@ -35,7 +35,7 @@ greater than \code{rare_maf_cutoff}, the corresponding row will be \code{NA}. If
 the given variant-set has standard error equal to 0, the p-value will be set as 1.
 }
 \description{
-The \code{Indiv_Score_Test_Region} function takes in genotype, the object from fitting the null
-model to analyze the association between a quantitative/dichotomous phenotype and
+The \code{Indiv_Score_Test_Region} function takes in genotype and the object from fitting the null
+model to analyze the associations between a quantitative/dichotomous phenotype and
 all individual variants in a given variant-set by using score test.
 }

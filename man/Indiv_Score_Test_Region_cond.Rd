@@ -17,8 +17,8 @@ Indiv_Score_Test_Region_cond(
 where n is the sample size and p is the number of genetic variants.}
 
 \item{genotype_adj}{an n*p_adj genotype matrix (dosage matrix) of the target
-sequence, where n is the sample size and p_adj is the number of genetic variants
-adjusted for conditional analysis (or a vector of a single variant with length n
+sequence, where n is the sample size and p_adj is the number of genetic variants to be
+adjusted for in conditional analysis (or a vector of a single variant with length n
 if p_adj is 1).}
 
 \item{obj_nullmodel}{an object from fitting the null model, which is the
@@ -43,8 +43,8 @@ the given variant-set has standard error equal to 0, the p-value will be set as 
 }
 \description{
 The \code{Indiv_Score_Test_Region_cond} function takes in genotype,
-the genotype of variant(s) to be adjusted for in conditional analysis,
-the object from fitting the null model to analyze the conditional association between
+the genotype of variants to be adjusted for in conditional analysis, and
+the object from fitting the null model to analyze the conditional associations between
 a quantitative/dichotomous phenotype and all individual variants in
-a given variant-set by using score test.
+a given variant-set by using score test, adjusting for a given list of variants.
 }

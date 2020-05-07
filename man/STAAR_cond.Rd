@@ -19,7 +19,7 @@ where n is the sample size and p is the number of genetic variants.}
 
 \item{genotype_adj}{an n*p_adj genotype matrix (dosage matrix) of the target
 sequence, where n is the sample size and p_adj is the number of genetic variants
-adjusted for conditional analysis (or a vector of a single variant with length n
+to be adjusted for in conditional analysis (or a vector of a single variant with length n
 if p_adj is 1).}
 
 \item{obj_nullmodel}{an object from fitting the null model, which is the
@@ -90,7 +90,7 @@ p-values weighted by each annotation, and a conditional STAAR-A(1,1)
 p-value by aggregating these p-values using Cauchy method.
 }
 \description{
-The \code{STAAR_cond} function takes in genotype, the genotype of variant(s) to be
+The \code{STAAR_cond} function takes in genotype, the genotype of variants to be
 adjusted for in conditional analysis, the object from fitting the null
 model, and functional annotation data to analyze the conditional association between a
 quantitative/dichotomous phenotype and a variant-set by using STAAR procedure,
