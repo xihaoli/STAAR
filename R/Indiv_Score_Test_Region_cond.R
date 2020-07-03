@@ -94,7 +94,7 @@ Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
         residuals.phenotype <- lm(residuals.phenotype~genotype_adj)$residuals
         X_adj <- cbind(rep(1,length(residuals.phenotype)),genotype_adj)
 
-        results[RV_label,] <- do.call(cbind,Indiv_Score_Test_SMMAT_sparse_cond(G,Sigma_i,Sigma_iX,cov,residuals.phenotype))
+        results[RV_label,] <- do.call(cbind,Indiv_Score_Test_SMMAT_sparse_cond(G,Sigma_i,Sigma_iX,cov,X_adj,residuals.phenotype))
       }
     }else{
       X <- model.matrix(obj_nullmodel)
