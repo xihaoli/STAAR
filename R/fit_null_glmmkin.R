@@ -50,10 +50,10 @@
 #' with additional elements indicating the samples are related (\code{obj_nullmodel$relatedness = TRUE}),
 #' and whether the \code{kins} matrix is sparse when fitting the null model. See \code{\link{glmmkin}} for more details.
 #' @references Chen, H., et al. (2016). Control for population structure and relatedness for binary traits
-#' in genetic association studies via logistic mixed models. \emph{American Journal of Humann Genetics 98}(4), 653-666.
+#' in genetic association studies via logistic mixed models. \emph{The American Journal of Humann Genetics 98}(4), 653-666.
 #' (\href{https://www.sciencedirect.com/science/article/pii/S000292971600063X}{pub})
 #' @references Chen, H., et al. (2019). Efficient variant set mixed model association tests for continuous and
-#' binary traits in large-scale whole-genome sequencing studies. \emph{American Journal of Humann Genetics 104}(2), 260-274.
+#' binary traits in large-scale whole-genome sequencing studies. \emph{The American Journal of Humann Genetics 104}(2), 260-274.
 #' (\href{https://www.sciencedirect.com/science/article/pii/S0002929718304658}{pub})
 #' @references Chen, H. (2019). GMMAT: Generalized Linear Mixed Model Association Tests.
 #' (\href{https://github.com/hanchenphd/GMMAT/blob/master/inst/doc/GMMAT.pdf}{web})
