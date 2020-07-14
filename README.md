@@ -23,7 +23,7 @@ devtools::install_github("xihaoli/STAAR")
 ## Usage
 Please see the <a href="docs/STAAR_manual.pdf">**STAAR** user manual</a> for detailed usage of STAAR package.
 ## Version
-The current version is 0.9.5 (May 8, 2020).
+The current version is 0.9.5 (July 13, 2020).
 ## Citation
 If you use **STAAR** for your work, please cite:
 
