@@ -55,7 +55,7 @@
 #' @references Chen, H., et al. (2019). Efficient variant set mixed model association tests for continuous and
 #' binary traits in large-scale whole-genome sequencing studies. \emph{The American Journal of Humann Genetics 104}(2), 260-274.
 #' (\href{https://www.sciencedirect.com/science/article/pii/S0002929718304658}{pub})
-#' @references Chen, H. (2019). GMMAT: Generalized Linear Mixed Model Association Tests.
+#' @references Chen, H. (2020). GMMAT: Generalized Linear Mixed Model Association Tests.
 #' (\href{https://github.com/hanchenphd/GMMAT/blob/master/inst/doc/GMMAT.pdf}{web})
 #' @export
 

@@ -25,7 +25,7 @@ Please see the <a href="docs/STAAR_manual.pdf">**STAAR** user manual</a> for det
 ## Data Availability
 The whole-genome individual functional annotation data assembled from a variety of sources and the computed annotation principal components are available at the [Functional Annotation of Variant - Online Resource (FAVOR)](http://favor.genohub.org) site.
 ## Version
-The current version is 0.9.5 (August 24, 2020).
+The current version is 0.9.5 (August 25, 2020).
 ## Citation
 If you use **STAAR** for your work, please cite:
 

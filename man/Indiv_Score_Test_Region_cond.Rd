@@ -27,10 +27,10 @@ output from either \code{\link{fit_null_glm}} function for unrelated samples or
 is a wrapper of \code{\link{glmmkin}} function from the \code{\link{GMMAT}} package.}
 
 \item{rare_maf_cutoff}{the cutoff of maximum minor allele frequency in
-defining rare variants. (Default is 0.01).}
+defining rare variants (default is 0.01).}
 
 \item{rv_num_cutoff}{the cutoff of minimum number of variants of analyzing
-a given variant-set. (Default is 2).}
+a given variant-set (default is 2).}
 }
 \value{
 a data frame with p rows corresponding to the p genetic variants in the given variant-set

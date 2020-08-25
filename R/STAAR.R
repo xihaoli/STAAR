@@ -22,9 +22,9 @@
 #' SKAT(1,25), SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25), ACAT-V(1,1)
 #' and ACAT-O tests (default = NULL).
 #' @param rare_maf_cutoff the cutoff of maximum minor allele frequency in
-#' defining rare variants. (Default is 0.01).
+#' defining rare variants (default is 0.01).
 #' @param rv_num_cutoff the cutoff of minimum number of variants of analyzing
-#' a given variant-set. (Default is 2).
+#' a given variant-set (default is 2).
 #' @return a list with the following members:
 #' @return \code{num_variant}: the number of variants with minor allele frequency > 0 and less than
 #' \code{rare_maf_cutoff} in the given variant-set that are used for performing the
