@@ -21,7 +21,7 @@ library(devtools)
 devtools::install_github("xihaoli/STAAR")
 ```
 ## Usage
-Please see the <a href="docs/STAAR_manual.pdf">**STAAR** user manual</a> for detailed usage of STAAR package. Please see the <a href="https://htmlpreview.github.io/?https://github.com/xihaoli/STAAR/blob/master/docs/STAAR_tutorial.html">**STAAR** tutorial</a> for an example of analyzing sequencing data using STAAR procedure.
+Please see the <a href="docs/STAAR_manual.pdf">**STAAR** user manual</a> for detailed usage of STAAR package. Please see the <a href="https://htmlpreview.github.io/?https://github.com/xihaoli/STAAR/blob/master/docs/STAAR_vignette.html">**STAAR** tutorial</a> for an example of analyzing sequencing data using STAAR procedure.
 ## Data Availability
 The whole-genome individual functional annotation data assembled from a variety of sources and the computed annotation principal components are available at the [Functional Annotation of Variant - Online Resource (FAVOR)](http://favor.genohub.org) site.
 ## Version
