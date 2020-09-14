@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Xihao Li and Zilin Li" />
+
+<meta name="date" content="2020-09-14" />
+
+<title>Dynamic incorporation of multiple in silico functional annotations empowers rare variant association analysis of large whole-genome sequencing studies at scale</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Dynamic incorporation of multiple in silico functional annotations empowers rare variant association analysis of large whole-genome sequencing studies at scale</h1>
+<h4 class="author"><em>Xihao Li and Zilin Li</em></h4>
+<h4 class="date"><em>2020-09-14</em></h4>
+
+
+
+<p>The <code>STAAR</code> package accompanies the paper “Dynamic incorporation of multiple in silico functional annotations empowers rare variant association analysis of large whole-genome sequencing studies at scale” and is designed for detecting rare-variant associations in whole-genome sequencing studies.</p>
+<p>Note: The following results are depend on R 3.5.1.</p>
+<div id="data-set-up-generating-signal-regions-covariates-family-structure" class="section level2">
+<h2>Data set-up: Generating signal regions, covariates, family-structure</h2>
+<p>The genotype data was generated by simulating 10,000 samples for a 1 megabase (Mb) region using the calibration coalescent model (COSI). The data were generated to mimic the linkage disequilibrium structure of an African-American population by using COSI. We analyzed 30,095 low frequency and rare variants (minor allele frequeny, MAF &lt; 0.05) in the sequence.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(Matrix)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(STAAR)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(kinship2) <span class="co"># for related samples</span></a></code></pre></div>
+<pre><code>## Loading required package: quadprog</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">library</span>(MASS)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">library</span>(matrixStats) </a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">library</span>(rje)      <span class="co"># for expit() function</span></a></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;rje&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     arrayInd</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">genotype &lt;-<span class="st"> </span>example<span class="op">$</span>genotype</a>
+<a class="sourceLine" id="cb6-2" title="2">maf &lt;-<span class="st"> </span>example<span class="op">$</span>maf</a>
+<a class="sourceLine" id="cb6-3" title="3">snploc &lt;-<span class="st"> </span>example<span class="op">$</span>snploc</a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="kw">sum</span>((maf<span class="op">&gt;</span><span class="dv">0</span>)<span class="op">*</span>(maf<span class="op">&lt;</span><span class="fl">0.05</span>))</a></code></pre></div>
+<pre><code>## [1] 30095</code></pre>
+<p>We simulated 2,500 families and each family has 4 individuals. The kinship matrix is generated as follows:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co">## kinship</span></a>
+<a class="sourceLine" id="cb8-2" title="2">grid &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb8-3" title="3">Npercell &lt;-<span class="st"> </span><span class="dv">10000</span></a>
+<a class="sourceLine" id="cb8-4" title="4">ndiv &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb8-5" title="5">vfam &lt;-<span class="st"> </span><span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb8-6" title="6">N &lt;-<span class="st"> </span><span class="kw">round</span>(grid<span class="op">*</span>grid<span class="op">*</span>Npercell<span class="op">/</span>ndiv)</a>
+<a class="sourceLine" id="cb8-7" title="7"></a>
+<a class="sourceLine" id="cb8-8" title="8">unitmat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="fl">0.5</span>, <span class="dv">4</span>, <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="kw">diag</span>(unitmat) &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb8-10" title="10">unitmat[<span class="dv">1</span>,<span class="dv">2</span>] &lt;-<span class="st"> </span>unitmat[<span class="dv">2</span>,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb8-11" title="11">ped &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">famid =</span> <span class="kw">rep</span>(<span class="kw">as.integer</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2500</span>), <span class="dt">each=</span><span class="dv">4</span>), <span class="dt">id =</span> <span class="kw">as.integer</span>(<span class="dv">1</span><span class="op">:</span>10000L), <span class="dt">fa =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">10000</span>), <span class="dt">mo =</span> <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">10000</span>))</a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2500</span>) {</a>
+<a class="sourceLine" id="cb8-13" title="13">  ped<span class="op">$</span>fa[<span class="dv">4</span><span class="op">*</span>i<span class="op">-</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">1</span>)] &lt;-<span class="st"> </span>ped<span class="op">$</span>id[<span class="dv">4</span><span class="op">*</span>i<span class="dv">-3</span>]</a>
+<a class="sourceLine" id="cb8-14" title="14">    ped<span class="op">$</span>mo[<span class="dv">4</span><span class="op">*</span>i<span class="op">-</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">1</span>)] &lt;-<span class="st"> </span>ped<span class="op">$</span>id[<span class="dv">4</span><span class="op">*</span>i<span class="dv">-2</span>]</a>
+<a class="sourceLine" id="cb8-15" title="15">}</a>
+<a class="sourceLine" id="cb8-16" title="16">kins &lt;-<span class="st"> </span><span class="kw">makekinship</span>(ped<span class="op">$</span>famid, ped<span class="op">$</span>id, ped<span class="op">$</span>fa, ped<span class="op">$</span>mo)</a></code></pre></div>
+<p>We generated two covariates, one is continous, the other one is binary.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">set.seed</span>(<span class="dv">600</span>)</a>
+<a class="sourceLine" id="cb9-2" title="2">X1 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(N)</a>
+<a class="sourceLine" id="cb9-3" title="3">X2 &lt;-<span class="st"> </span><span class="kw">rbinom</span>(N,<span class="dv">1</span>,<span class="fl">0.5</span>)</a>
+<a class="sourceLine" id="cb9-4" title="4">eps &lt;-<span class="st"> </span><span class="kw">rnorm</span>(N)</a></code></pre></div>
+<p>We generated 10 functional annotations.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">numVar &lt;-<span class="st"> </span><span class="kw">dim</span>(snploc)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb10-2" title="2">Z1 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(numVar)</a>
+<a class="sourceLine" id="cb10-3" title="3">Z2 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(numVar)</a>
+<a class="sourceLine" id="cb10-4" title="4">Z3 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(numVar)</a>
+<a class="sourceLine" id="cb10-5" title="5">Z4 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(numVar)</a>
+<a class="sourceLine" id="cb10-6" title="6">Z5 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(numVar)</a>
+<a class="sourceLine" id="cb10-7" title="7">Z6 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(numVar)</a>
+<a class="sourceLine" id="cb10-8" title="8">Z7 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(numVar)</a>
+<a class="sourceLine" id="cb10-9" title="9">Z8 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(numVar)</a>
+<a class="sourceLine" id="cb10-10" title="10">Z9 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(numVar)</a>
+<a class="sourceLine" id="cb10-11" title="11">Z10 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(numVar)</a>
+<a class="sourceLine" id="cb10-12" title="12">Z &lt;-<span class="st"> </span><span class="kw">cbind</span>(Z1,Z2,Z3,Z4,Z5,Z6,Z7,Z8,Z9,Z10)</a></code></pre></div>
+<p>We calculated the Phred score of the 10 annotations. Note that the input of annotations for STAAR function was at Phred scale (<code>annotation_phred</code>). In practice, the Phred score is calculated based on all variants across the genome (<a href="http://favor.genohub.org" class="uri">http://favor.genohub.org</a>).</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">rank &lt;-<span class="st"> </span><span class="kw">colRanks</span>(Z,<span class="dt">preserveShape =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb11-2" title="2">PHRED &lt;-<span class="st"> </span><span class="dv">-10</span><span class="op">*</span><span class="kw">log10</span>(<span class="dv">1</span><span class="op">-</span>rank<span class="op">/</span><span class="kw">dim</span>(rank)[<span class="dv">1</span>])</a></code></pre></div>
+<p>We randomly selected a 5-kilobase (kb) signal region (genotype-phenotype association regions) across the 1-Mb region.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co"># Length of the sequence</span></a>
+<a class="sourceLine" id="cb12-2" title="2">maxLength &lt;-<span class="st"> </span><span class="dv">1000000</span></a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="co"># Length of the signal region</span></a>
+<a class="sourceLine" id="cb12-4" title="4">sigLength &lt;-<span class="st"> </span><span class="dv">5000</span></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co"># Location of the signal region</span></a>
+<a class="sourceLine" id="cb12-6" title="6">startloc &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>(maxLength<span class="op">-</span>sigLength<span class="op">+</span><span class="dv">1</span>),<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb12-7" title="7">endloc &lt;-<span class="st"> </span>startloc <span class="op">+</span><span class="st"> </span>sigLength <span class="op">-</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="co"># Extract the signal region from snploc</span></a>
+<a class="sourceLine" id="cb12-9" title="9">snplist &lt;-<span class="st"> </span><span class="kw">which</span>(snploc<span class="op">$</span>CHROM_POS <span class="op">&gt;=</span><span class="st"> </span>startloc <span class="op">&amp;</span><span class="st"> </span>snploc<span class="op">$</span>CHROM_POS <span class="op">&lt;=</span><span class="st"> </span>endloc)</a>
+<a class="sourceLine" id="cb12-10" title="10">snpRegion &lt;-<span class="st"> </span>snploc[snplist,]</a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="co"># number of variants in the signal region</span></a>
+<a class="sourceLine" id="cb12-12" title="12">numSNPs &lt;-<span class="st"> </span><span class="kw">dim</span>(snpRegion)[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="co"># genotype of the signal region</span></a>
+<a class="sourceLine" id="cb12-14" title="14">Geno &lt;-<span class="st"> </span>genotype[,snplist]</a></code></pre></div>
+<p>We first randomly select 5 annotations to determine the probability of variants being causal in the region through a logistic model. We then randomly selected casual variants based on these probabilities. More details could be found in Online Methods.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># Simulate causal variants from this region</span></a>
+<a class="sourceLine" id="cb13-2" title="2">b0 &lt;-<span class="st"> </span>rje<span class="op">::</span><span class="kw">logit</span>(<span class="fl">0.015</span>)</a>
+<a class="sourceLine" id="cb13-3" title="3">b &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">log</span>(<span class="dv">5</span>),<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb13-4" title="4"></a>
+<a class="sourceLine" id="cb13-5" title="5">causalprob &lt;-<span class="st"> </span><span class="kw">apply</span>(Z[snplist,],<span class="dv">1</span>,<span class="cf">function</span>(z){</a>
+<a class="sourceLine" id="cb13-6" title="6">  ind &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb13-7" title="7">  rje<span class="op">::</span><span class="kw">expit</span>(b0 <span class="op">+</span><span class="st"> </span>b[ind] <span class="op">%*%</span><span class="st"> </span>z[ind])</a>
+<a class="sourceLine" id="cb13-8" title="8">})</a>
+<a class="sourceLine" id="cb13-9" title="9">isCausal &lt;-<span class="st"> </span><span class="kw">rbinom</span>(numSNPs,<span class="dv">1</span>,causalprob)</a></code></pre></div>
+</div>
+<div id="analyzing-the-simulated-data-using-staar" class="section level2">
+<h2>Analyzing the simulated data using STAAR</h2>
+<div id="unrelated-samples" class="section level3">
+<h3>Unrelated samples</h3>
+<p>We set the effect sizes as a decreasing function of MAFs, beta=-0.13*log10(MAF). The coefficients for the causal variants were all positive. The phenotype of unrelated samples was generated through a linear model.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># effects size of covariates </span></a>
+<a class="sourceLine" id="cb14-2" title="2">alpha0 &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb14-3" title="3">alpha1 &lt;-<span class="st"> </span><span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb14-4" title="4">alpha2 &lt;-<span class="st"> </span><span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="co"># effect size of causal variants</span></a>
+<a class="sourceLine" id="cb14-6" title="6">c0 &lt;-<span class="st"> </span><span class="fl">0.13</span></a>
+<a class="sourceLine" id="cb14-7" title="7">beta &lt;-<span class="st"> </span><span class="op">-</span>c0 <span class="op">*</span><span class="st"> </span><span class="kw">log10</span>(maf[snplist][<span class="kw">which</span>(isCausal<span class="op">==</span><span class="dv">1</span>)])</a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="co"># generate phenotype data</span></a>
+<a class="sourceLine" id="cb14-9" title="9">Y &lt;-<span class="st"> </span>alpha0 <span class="op">+</span><span class="st"> </span>alpha1 <span class="op">*</span><span class="st"> </span>X1 <span class="op">+</span><span class="st"> </span>alpha2 <span class="op">*</span><span class="st"> </span>X2 <span class="op">+</span><span class="st"> </span><span class="kw">as.matrix</span>(genotype)[,snplist][,<span class="kw">which</span>(isCausal<span class="op">==</span><span class="dv">1</span>)] <span class="op">%*%</span><span class="st"> </span>beta <span class="op">+</span><span class="st"> </span>eps</a></code></pre></div>
+<p>We applied STAAR to analyze the simulated data set. We first fit the null model using GLM.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co"># Fitting STAAR null model for unrelated samples using fit_null_glm</span></a>
+<a class="sourceLine" id="cb15-2" title="2">pheno &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Y=</span>Y,<span class="dt">X1=</span>X1,<span class="dt">X2=</span>X2)</a>
+<a class="sourceLine" id="cb15-3" title="3">obj_nullmodel &lt;-<span class="st"> </span><span class="kw">fit_null_glm</span>(Y<span class="op">~</span>X1<span class="op">+</span>X2,<span class="dt">data=</span>pheno,<span class="dt">family=</span><span class="st">&quot;gaussian&quot;</span>)</a></code></pre></div>
+<p>We then applied STAAR to test for the association.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">pvalues &lt;-<span class="st"> </span><span class="kw">STAAR</span>(Geno,obj_nullmodel,PHRED[snplist,],<span class="dt">rare_maf_cutoff =</span> <span class="fl">0.05</span>)</a></code></pre></div>
+<p>Output of STAAR are as follows: The number of variants in the region is</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">pvalues<span class="op">$</span>num_variant</a></code></pre></div>
+<pre><code>## [1] 145</code></pre>
+<p>The STAAR-O P-value is</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">pvalues<span class="op">$</span>results_STAAR_O</a></code></pre></div>
+<pre><code>## [1] 6.438597e-09</code></pre>
+<p>The P-values of conventional tests SKAT, burden and ACAT-V are</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co"># SKAT</span></a>
+<a class="sourceLine" id="cb21-2" title="2">pvalues<span class="op">$</span>results_STAAR_S_<span class="dv">1</span>_<span class="dv">25</span>[<span class="dv">1</span>]</a></code></pre></div>
+<pre><code>##     SKAT(1,25)
+## 1 2.991068e-07</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co"># Burden</span></a>
+<a class="sourceLine" id="cb23-2" title="2">pvalues<span class="op">$</span>results_STAAR_B_<span class="dv">1</span>_<span class="dv">1</span>[<span class="dv">1</span>]</a></code></pre></div>
+<pre><code>##    Burden(1,1)
+## 1 4.975033e-05</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co"># ACAT-V</span></a>
+<a class="sourceLine" id="cb25-2" title="2">pvalues<span class="op">$</span>results_STAAR_A_<span class="dv">1</span>_<span class="dv">25</span>[<span class="dv">1</span>]</a></code></pre></div>
+<pre><code>##   ACAT-V(1,25)
+## 1 2.167165e-06</code></pre>
+<p>Note that this region is detected by STAAR-O at significance level 1E-07, but missed by all conventional tests.</p>
+<p>The Output also includes the P-values of the three conventional tests weighted by each annotation. Note that STAAR-O combines P-values across different types of multiple annotation-weighted variant set tests. More details could be found in Online Methods.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="co"># STAAR-SKAT(1,25)</span></a>
+<a class="sourceLine" id="cb27-2" title="2">pvalues<span class="op">$</span>results_STAAR_S_<span class="dv">1</span>_<span class="dv">25</span></a></code></pre></div>
+<pre><code>##     SKAT(1,25) SKAT(1,25)-V1 SKAT(1,25)-V2 SKAT(1,25)-V3 SKAT(1,25)-V4
+## 1 2.991068e-07  0.0001892969  2.193156e-09  2.328124e-10  2.629193e-06
+##   SKAT(1,25)-V5 SKAT(1,25)-V6 SKAT(1,25)-V7 SKAT(1,25)-V8 SKAT(1,25)-V9
+## 1  2.226964e-10  6.391984e-05  3.712784e-06  2.898964e-07  1.372189e-05
+##   SKAT(1,25)-V10 STAAR-S(1,25)
+## 1    4.07354e-06  1.189258e-09</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="co"># STAAR-SKAT(1,1)</span></a>
+<a class="sourceLine" id="cb29-2" title="2">pvalues<span class="op">$</span>results_STAAR_S_<span class="dv">1</span>_<span class="dv">1</span></a></code></pre></div>
+<pre><code>##     SKAT(1,1) SKAT(1,1)-V1 SKAT(1,1)-V2 SKAT(1,1)-V3 SKAT(1,1)-V4
+## 1 1.42148e-06 9.399211e-05 7.823699e-09 4.453362e-09 3.203079e-07
+##   SKAT(1,1)-V5 SKAT(1,1)-V6 SKAT(1,1)-V7 SKAT(1,1)-V8 SKAT(1,1)-V9
+## 1 1.748852e-09 0.0001614485 1.627526e-07 6.353561e-08 3.397122e-05
+##   SKAT(1,1)-V10 STAAR-S(1,1)
+## 1  1.313635e-06 1.157059e-08</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="co"># STAAR-Burden(1,25)</span></a>
+<a class="sourceLine" id="cb31-2" title="2">pvalues<span class="op">$</span>results_STAAR_B_<span class="dv">1</span>_<span class="dv">25</span></a></code></pre></div>
+<pre><code>##   Burden(1,25) Burden(1,25)-V1 Burden(1,25)-V2 Burden(1,25)-V3
+## 1 5.299575e-05    0.0001466752    8.785902e-05    3.445618e-07
+##   Burden(1,25)-V4 Burden(1,25)-V5 Burden(1,25)-V6 Burden(1,25)-V7
+## 1     0.003666876     5.83901e-06    0.0001777175    0.0002153836
+##   Burden(1,25)-V8 Burden(1,25)-V9 Burden(1,25)-V10 STAAR-B(1,25)
+## 1    9.126549e-06     0.007306568     9.609018e-07  2.575204e-06</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="co"># STAAR-Burden(1,1)</span></a>
+<a class="sourceLine" id="cb33-2" title="2">pvalues<span class="op">$</span>results_STAAR_B_<span class="dv">1</span>_<span class="dv">1</span></a></code></pre></div>
+<pre><code>##    Burden(1,1) Burden(1,1)-V1 Burden(1,1)-V2 Burden(1,1)-V3 Burden(1,1)-V4
+## 1 4.975033e-05   0.0003610787   9.097579e-06   1.013899e-07   0.0008571578
+##   Burden(1,1)-V5 Burden(1,1)-V6 Burden(1,1)-V7 Burden(1,1)-V8
+## 1   2.087151e-07   0.0004629965   2.372029e-05   1.193011e-06
+##   Burden(1,1)-V9 Burden(1,1)-V10 STAAR-B(1,1)
+## 1    0.003032525     2.57718e-07 5.626263e-07</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="co"># STAAR-ACAT-V(1,25)</span></a>
+<a class="sourceLine" id="cb35-2" title="2">pvalues<span class="op">$</span>results_STAAR_A_<span class="dv">1</span>_<span class="dv">25</span></a></code></pre></div>
+<pre><code>##   ACAT-V(1,25) ACAT-V(1,25)-V1 ACAT-V(1,25)-V2 ACAT-V(1,25)-V3
+## 1 2.167165e-06    2.113012e-06    1.143395e-06    1.164018e-06
+##   ACAT-V(1,25)-V4 ACAT-V(1,25)-V5 ACAT-V(1,25)-V6 ACAT-V(1,25)-V7
+## 1    1.358034e-06    1.085446e-06    3.087534e-06    1.280437e-06
+##   ACAT-V(1,25)-V8 ACAT-V(1,25)-V9 ACAT-V(1,25)-V10 STAAR-A(1,25)
+## 1    1.489957e-06    2.425482e-06     1.595244e-06  1.540359e-06</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1"><span class="co"># STAAR-ACAT-V(1,1)</span></a>
+<a class="sourceLine" id="cb37-2" title="2">pvalues<span class="op">$</span>results_STAAR_A_<span class="dv">1</span>_<span class="dv">1</span></a></code></pre></div>
+<pre><code>##    ACAT-V(1,1) ACAT-V(1,1)-V1 ACAT-V(1,1)-V2 ACAT-V(1,1)-V3 ACAT-V(1,1)-V4
+## 1 7.887532e-07    8.24117e-07   4.385437e-07   4.271131e-07   4.902453e-07
+##   ACAT-V(1,1)-V5 ACAT-V(1,1)-V6 ACAT-V(1,1)-V7 ACAT-V(1,1)-V8
+## 1   3.952068e-07   9.866074e-07   4.839242e-07   5.199686e-07
+##   ACAT-V(1,1)-V9 ACAT-V(1,1)-V10 STAAR-A(1,1)
+## 1   9.251477e-07    5.536273e-07 5.622768e-07</code></pre>
+</div>
+<div id="related-samples" class="section level3">
+<h3>Related samples</h3>
+<p>The phenotype of related samples was generated through a linear mixed effects model.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1"><span class="co">## random effect</span></a>
+<a class="sourceLine" id="cb39-2" title="2">randomfam &lt;-<span class="st"> </span><span class="kw">mvrnorm</span>(N<span class="op">/</span><span class="dv">4</span>, <span class="kw">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>), vfam <span class="op">*</span><span class="st"> </span>unitmat)</a>
+<a class="sourceLine" id="cb39-3" title="3">randomfam &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">t</span>(randomfam))</a>
+<a class="sourceLine" id="cb39-4" title="4">id0 &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>N</a>
+<a class="sourceLine" id="cb39-5" title="5"></a>
+<a class="sourceLine" id="cb39-6" title="6"><span class="co"># generate phenotype data</span></a>
+<a class="sourceLine" id="cb39-7" title="7">Y &lt;-<span class="st"> </span>alpha0 <span class="op">+</span><span class="st"> </span>alpha1 <span class="op">*</span><span class="st"> </span>X1 <span class="op">+</span><span class="st"> </span>alpha2 <span class="op">*</span><span class="st"> </span>X2 <span class="op">+</span><span class="st"> </span><span class="kw">as.matrix</span>(genotype)[,snplist][,<span class="kw">which</span>(isCausal<span class="op">==</span><span class="dv">1</span>)] <span class="op">%*%</span><span class="st"> </span>beta <span class="op">+</span><span class="st"> </span>randomfam <span class="op">+</span><span class="st"> </span>eps </a></code></pre></div>
+<div id="analyzing-data-using-sparse-grm" class="section level4">
+<h4>Analyzing data using sparse GRM</h4>
+<p>We applied STAAR to analyze the simulated data set. Note that the genetic relatedness matrix (GRM) was a sparse matrix. We first fit the null model using GLMM.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1"><span class="co"># Fitting STAAR null model for related samples using fit_null_glmmkin</span></a>
+<a class="sourceLine" id="cb40-2" title="2">pheno &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Y=</span>Y,<span class="dt">X1=</span>X1,<span class="dt">X2=</span>X2,<span class="dt">id=</span>id0)</a>
+<a class="sourceLine" id="cb40-3" title="3">obj_nullmodel &lt;-<span class="st"> </span><span class="kw">fit_null_glmmkin</span>(Y<span class="op">~</span>X1<span class="op">+</span>X2,<span class="dt">data=</span>pheno,<span class="dt">family=</span><span class="kw">gaussian</span>(<span class="dt">link=</span><span class="st">&quot;identity&quot;</span>),<span class="dt">id=</span><span class="st">&quot;id&quot;</span>,<span class="dt">kins=</span>kins)</a></code></pre></div>
+<pre><code>## [1] &quot;kins is a sparse matrix.&quot;</code></pre>
+<p>We then applied STAAR to test for the association.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1">pvalues &lt;-<span class="st"> </span><span class="kw">STAAR</span>(Geno,obj_nullmodel,PHRED[snplist,],<span class="dt">rare_maf_cutoff =</span> <span class="fl">0.05</span>)</a></code></pre></div>
+<p>Output of STAAR are as follows: The number of variants in the region is</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">pvalues<span class="op">$</span>num_variant</a></code></pre></div>
+<pre><code>## [1] 145</code></pre>
+<p>The STAAR-O P-value is</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">pvalues<span class="op">$</span>results_STAAR_O</a></code></pre></div>
+<pre><code>## [1] 1.78779e-08</code></pre>
+<p>The P-values of conventional tests SKAT, burden and ACAT-V are</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="co"># SKAT</span></a>
+<a class="sourceLine" id="cb47-2" title="2">pvalues<span class="op">$</span>results_STAAR_S_<span class="dv">1</span>_<span class="dv">25</span>[<span class="dv">1</span>]</a></code></pre></div>
+<pre><code>##     SKAT(1,25)
+## 1 5.156277e-07</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="co"># Burden</span></a>
+<a class="sourceLine" id="cb49-2" title="2">pvalues<span class="op">$</span>results_STAAR_B_<span class="dv">1</span>_<span class="dv">1</span>[<span class="dv">1</span>]</a></code></pre></div>
+<pre><code>##    Burden(1,1)
+## 1 6.757809e-05</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="co"># ACAT-V</span></a>
+<a class="sourceLine" id="cb51-2" title="2">pvalues<span class="op">$</span>results_STAAR_A_<span class="dv">1</span>_<span class="dv">25</span>[<span class="dv">1</span>]</a></code></pre></div>
+<pre><code>##   ACAT-V(1,25)
+## 1 1.283833e-06</code></pre>
+<p>Note that this region is detected by STAAR-O at significance level 1E-07, but missed by all conventional tests.</p>
+<p>The Output also includes the P-values of the three conventional tests weighted by each annotation. Note that STAAR-O combines P-values across different types of multiple annotation-weighted variant set tests. More details could be found in Online Methods.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1"><span class="co"># STAAR-SKAT(1,25)</span></a>
+<a class="sourceLine" id="cb53-2" title="2">pvalues<span class="op">$</span>results_STAAR_S_<span class="dv">1</span>_<span class="dv">25</span></a></code></pre></div>
+<pre><code>##     SKAT(1,25) SKAT(1,25)-V1 SKAT(1,25)-V2 SKAT(1,25)-V3 SKAT(1,25)-V4
+## 1 5.156277e-07  0.0001854494  4.830443e-09   5.01232e-10  2.065495e-06
+##   SKAT(1,25)-V5 SKAT(1,25)-V6 SKAT(1,25)-V7 SKAT(1,25)-V8 SKAT(1,25)-V9
+## 1  1.101702e-09   5.37937e-05  7.943426e-06  2.326202e-07  4.927599e-05
+##   SKAT(1,25)-V10 STAAR-S(1,25)
+## 1   1.869357e-06  3.528787e-09</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1"><span class="co"># STAAR-SKAT(1,1)</span></a>
+<a class="sourceLine" id="cb55-2" title="2">pvalues<span class="op">$</span>results_STAAR_S_<span class="dv">1</span>_<span class="dv">1</span></a></code></pre></div>
+<pre><code>##      SKAT(1,1) SKAT(1,1)-V1 SKAT(1,1)-V2 SKAT(1,1)-V3 SKAT(1,1)-V4
+## 1 2.482523e-06 0.0001406503 1.200676e-08 7.849991e-09 2.949555e-07
+##   SKAT(1,1)-V5 SKAT(1,1)-V6 SKAT(1,1)-V7 SKAT(1,1)-V8 SKAT(1,1)-V9
+## 1 3.517808e-09 0.0002461021 2.650727e-07 7.183619e-08 7.988396e-05
+##   SKAT(1,1)-V10 STAAR-S(1,1)
+## 1  9.283824e-07  2.12548e-08</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1"><span class="co"># STAAR-Burden(1,25)</span></a>
+<a class="sourceLine" id="cb57-2" title="2">pvalues<span class="op">$</span>results_STAAR_B_<span class="dv">1</span>_<span class="dv">25</span></a></code></pre></div>
+<pre><code>##   Burden(1,25) Burden(1,25)-V1 Burden(1,25)-V2 Burden(1,25)-V3
+## 1 7.185099e-05    0.0002112589     5.47051e-05    2.549671e-06
+##   Burden(1,25)-V4 Burden(1,25)-V5 Burden(1,25)-V6 Burden(1,25)-V7
+## 1      0.00103834    3.719897e-06    0.0002021237      0.00134055
+##   Burden(1,25)-V8 Burden(1,25)-V9 Burden(1,25)-V10 STAAR-B(1,25)
+## 1    3.017508e-05     0.007950208     5.419834e-06   1.19255e-05</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1"><span class="co"># STAAR-Burden(1,1)</span></a>
+<a class="sourceLine" id="cb59-2" title="2">pvalues<span class="op">$</span>results_STAAR_B_<span class="dv">1</span>_<span class="dv">1</span></a></code></pre></div>
+<pre><code>##    Burden(1,1) Burden(1,1)-V1 Burden(1,1)-V2 Burden(1,1)-V3 Burden(1,1)-V4
+## 1 6.757809e-05   0.0004392506   8.295583e-06   5.746151e-07   0.0002246386
+##   Burden(1,1)-V5 Burden(1,1)-V6 Burden(1,1)-V7 Burden(1,1)-V8
+## 1   1.422207e-07   0.0005397023   0.0001634797   5.613801e-06
+##   Burden(1,1)-V9 Burden(1,1)-V10 STAAR-B(1,1)
+## 1     0.00298936    1.339801e-06 1.117147e-06</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" title="1"><span class="co"># STAAR-ACAT-V(1,25)</span></a>
+<a class="sourceLine" id="cb61-2" title="2">pvalues<span class="op">$</span>results_STAAR_A_<span class="dv">1</span>_<span class="dv">25</span></a></code></pre></div>
+<pre><code>##   ACAT-V(1,25) ACAT-V(1,25)-V1 ACAT-V(1,25)-V2 ACAT-V(1,25)-V3
+## 1 1.283833e-06    1.232429e-06    6.715504e-07     6.89485e-07
+##   ACAT-V(1,25)-V4 ACAT-V(1,25)-V5 ACAT-V(1,25)-V6 ACAT-V(1,25)-V7
+## 1    7.906227e-07    6.429914e-07    1.773247e-06     7.36587e-07
+##   ACAT-V(1,25)-V8 ACAT-V(1,25)-V9 ACAT-V(1,25)-V10 STAAR-A(1,25)
+## 1    8.725157e-07    1.480839e-06     9.251172e-07  9.035852e-07</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1"><span class="co"># STAAR-ACAT-V(1,1)</span></a>
+<a class="sourceLine" id="cb63-2" title="2">pvalues<span class="op">$</span>results_STAAR_A_<span class="dv">1</span>_<span class="dv">1</span></a></code></pre></div>
+<pre><code>##   ACAT-V(1,1) ACAT-V(1,1)-V1 ACAT-V(1,1)-V2 ACAT-V(1,1)-V3 ACAT-V(1,1)-V4
+## 1 4.54663e-07   4.733036e-07   2.522756e-07   2.461951e-07   2.814324e-07
+##   ACAT-V(1,1)-V5 ACAT-V(1,1)-V6 ACAT-V(1,1)-V7 ACAT-V(1,1)-V8
+## 1   2.278076e-07   5.645827e-07   2.770286e-07   2.989076e-07
+##   ACAT-V(1,1)-V9 ACAT-V(1,1)-V10 STAAR-A(1,1)
+## 1     5.3718e-07    3.175289e-07 3.233557e-07</code></pre>
+</div>
+<div id="analyzing-data-using-dense-grm" class="section level4">
+<h4>Analyzing data using dense GRM</h4>
+<p>We started from a GRM as a dense matrix.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" title="1">kins &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(kins)</a></code></pre></div>
+<p>We then fit the null model using GLMM. The default would automatically convert dense GRM to sparse GRM, and fit the null model using sparse GRM.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1">obj_nullmodel &lt;-<span class="st"> </span><span class="kw">fit_null_glmmkin</span>(Y<span class="op">~</span>X1<span class="op">+</span>X2,<span class="dt">data=</span>pheno,<span class="dt">family=</span><span class="kw">gaussian</span>(<span class="dt">link=</span><span class="st">&quot;identity&quot;</span>),<span class="dt">id=</span><span class="st">&quot;id&quot;</span>,<span class="dt">kins=</span>kins)</a></code></pre></div>
+<pre><code>## [1] &quot;kins is a dense matrix.&quot;</code></pre>
+<p>We then applied STAAR to test for the association.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1">pvalues &lt;-<span class="st"> </span><span class="kw">STAAR</span>(Geno,obj_nullmodel,PHRED[snplist,],<span class="dt">rare_maf_cutoff =</span> <span class="fl">0.05</span>)</a></code></pre></div>
+<p>The STAAR-O P-value is</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1">pvalues<span class="op">$</span>results_STAAR_O</a></code></pre></div>
+<pre><code>## [1] 1.78779e-08</code></pre>
+<p>Note that the results of using dense GRM and sparse GRM were exactly the same, as excepted.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
