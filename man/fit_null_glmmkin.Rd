@@ -99,13 +99,13 @@ variant-set tests in whole genome sequencing data analysis. See \code{\link{glmm
 }
 \references{
 Chen, H., et al. (2016). Control for population structure and relatedness for binary traits
-in genetic association studies via logistic mixed models. \emph{The American Journal of Humann Genetics 98}(4), 653-666.
-(\href{https://www.sciencedirect.com/science/article/pii/S000292971600063X}{pub})
+in genetic association studies via logistic mixed models. \emph{The American Journal of Human Genetics}, \emph{98}(4), 653-666.
+(\href{https://doi.org/10.1016/j.ajhg.2016.02.012}{pub})
 
 Chen, H., et al. (2019). Efficient variant set mixed model association tests for continuous and
-binary traits in large-scale whole-genome sequencing studies. \emph{The American Journal of Humann Genetics 104}(2), 260-274.
-(\href{https://www.sciencedirect.com/science/article/pii/S0002929718304658}{pub})
+binary traits in large-scale whole-genome sequencing studies. \emph{The American Journal of Human Genetics}, \emph{104}(2), 260-274.
+(\href{https://doi.org/10.1016/j.ajhg.2018.12.012}{pub})
 
-Chen, H. (2020). GMMAT: Generalized Linear Mixed Model Association Tests.
-(\href{https://github.com/hanchenphd/GMMAT/blob/master/inst/doc/GMMAT.pdf}{web})
+Chen, H. (2020). GMMAT: Generalized linear Mixed Model Association Tests Version 1.3.
+(\href{https://cloud.r-project.org/web/packages/GMMAT/vignettes/GMMAT.pdf}{web})
 }

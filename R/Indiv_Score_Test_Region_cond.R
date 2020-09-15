@@ -16,9 +16,14 @@
 #' \code{\link{fit_null_glmmkin}} function for related samples. Note that \code{\link{fit_null_glmmkin}}
 #' is a wrapper of \code{\link{glmmkin}} function from the \code{\link{GMMAT}} package.
 #' @param rare_maf_cutoff the cutoff of maximum minor allele frequency in
-#' defining rare variants (default is 0.01).
+#' defining rare variants (default = 0.01).
 #' @param rv_num_cutoff the cutoff of minimum number of variants of analyzing
-#' a given variant-set (default is 2).
+#' a given variant-set (default = 2).
+#' @param method_cond a character value indicating the method for conditional analysis.
+#' \code{optimal} refers to regressing residuals from the null model on \code{genotype_adj}
+#' as well as all covariates used in fitting the null model (fully adjusted) and taking the residuals;
+#' \code{naive} refers to regressing residuals from the null model on \code{genotype_adj}
+#' and taking the residuals (default = \code{optimal}).
 #' @return a data frame with p rows corresponding to the p genetic variants in the given variant-set
 #' and three columns: \code{Score_cond} (the conditional score test statistic adjusting for variants
 #' in \code{genotype_adj}), \code{SE_cond} (the standard error associated with the
@@ -26,11 +31,16 @@
 #' If a variant in the given variant-set has minor allele frequency = 0 or
 #' greater than \code{rare_maf_cutoff}, the corresponding row will be \code{NA}. If a variant in
 #' the given variant-set has standard error equal to 0, the p-value will be set as 1.
+#' @references Sofer, T., et al. (2019). A fully adjusted two-stage procedure for rank-normalization
+#' in genetic association studies. \emph{Genetic Epidemiology}, \emph{43}(3), 263-275.
+#' (\href{https://doi.org/10.1002/gepi.22188}{pub})
 #' @export
 
 Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
-                                         rare_maf_cutoff=0.01,rv_num_cutoff=2){
+                                         rare_maf_cutoff=0.01,rv_num_cutoff=2,
+                                         method_cond=c("optimal","naive")){
 
+  method_cond <- match.arg(method_cond) # evaluate choices
   if(class(genotype) != "matrix" && !(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix")){
     stop("genotype is not a matrix!")
   }
@@ -75,8 +85,13 @@ Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
 
         residuals.phenotype <- obj_nullmodel$scaled.residuals
         residuals.phenotype <- residuals.phenotype*sqrt(P_scalar)
-        residuals.phenotype <- lm(residuals.phenotype~genotype_adj)$residuals
-        X_adj <- cbind(rep(1,length(residuals.phenotype)),genotype_adj)
+        if(method_cond == "optimal"){
+          residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj+obj_nullmodel$X-1)
+        }else{
+          residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj)
+        }
+        residuals.phenotype <- residuals.phenotype.fit$residuals
+        X_adj <- model.matrix(residuals.phenotype.fit)
         PX_adj <- P%*%X_adj
         P_cond <- P - X_adj%*%solve(t(X_adj)%*%X_adj)%*%t(PX_adj) -
           PX_adj%*%solve(t(X_adj)%*%X_adj)%*%t(X_adj) +
@@ -91,8 +106,13 @@ Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
         cov <- obj_nullmodel$cov
 
         residuals.phenotype <- obj_nullmodel$scaled.residuals
-        residuals.phenotype <- lm(residuals.phenotype~genotype_adj)$residuals
-        X_adj <- cbind(rep(1,length(residuals.phenotype)),genotype_adj)
+        if(method_cond == "optimal"){
+          residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj+obj_nullmodel$X-1)
+        }else{
+          residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj)
+        }
+        residuals.phenotype <- residuals.phenotype.fit$residuals
+        X_adj <- model.matrix(residuals.phenotype.fit)
 
         results[RV_label,] <- do.call(cbind,Indiv_Score_Test_SMMAT_sparse_cond(G,Sigma_i,Sigma_iX,cov,X_adj,residuals.phenotype))
       }
@@ -107,8 +127,13 @@ Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
       }
 
       residuals.phenotype <- obj_nullmodel$y - obj_nullmodel$fitted.values
-      residuals.phenotype <- lm(residuals.phenotype~genotype_adj)$residuals
-      X_adj <- cbind(rep(1,length(residuals.phenotype)),genotype_adj)
+      if(method_cond == "optimal"){
+        residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj+model.matrix(obj_nullmodel)-1)
+      }else{
+        residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj)
+      }
+      residuals.phenotype <- residuals.phenotype.fit$residuals
+      X_adj <- model.matrix(residuals.phenotype.fit)
       PX_adj <- P%*%X_adj
       P_cond <- P - X_adj%*%solve(t(X_adj)%*%X_adj)%*%t(PX_adj) -
         PX_adj%*%solve(t(X_adj)%*%X_adj)%*%t(X_adj) +

@@ -5,14 +5,18 @@
 #' @param pvals a numeric vector of p-values, where each of the element is
 #' between 0 to 1, to be combined.
 #' @param weights a numeric vector of non-negative weights. If \code{NULL}, the
-#' equal weights are assumed.
+#' equal weights are assumed (default = NULL).
 #' @return the aggregated p-value combining p-values from the vector \code{pvals}.
-#' @examples pvalues <- c(2e-02,4e-04,0.2,0.1,0.8)
-#' @examples CCT(pvals=pvalues)
+#' @examples pvalues <- c(2e-02, 4e-04, 0.2, 0.1, 0.8)
+#' @examples CCT(pvals = pvalues)
 #' @references Liu, Y., & Xie, J. (2020). Cauchy combination test: a powerful test
 #' with analytic p-value calculation under arbitrary dependency structures.
-#' \emph{Journal of the American Statistical Association 115}(529), 393-402.
-#' (\href{https://www.tandfonline.com/doi/full/10.1080/01621459.2018.1554485}{pub})
+#' \emph{Journal of the American Statistical Association}, \emph{115}(529), 393-402.
+#' (\href{https://doi.org/10.1080/01621459.2018.1554485}{pub})
+#' @references Liu, Y., et al. (2019). Acat: A fast and powerful p value combination
+#' method for rare-variant analysis in sequencing studies.
+#' \emph{The American Journal of Human Genetics}, \emph{104}(3), 410-421.
+#' (\href{https://doi.org/10.1016/j.ajhg.2019.01.002}{pub})
 #' @export
 
 CCT <- function(pvals, weights=NULL){

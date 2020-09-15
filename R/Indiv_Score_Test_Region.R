@@ -10,9 +10,9 @@
 #' \code{\link{fit_null_glmmkin}} function for related samples. Note that \code{\link{fit_null_glmmkin}}
 #' is a wrapper of \code{\link{glmmkin}} function from the \code{\link{GMMAT}} package.
 #' @param rare_maf_cutoff the cutoff of maximum minor allele frequency in
-#' defining rare variants (default is 0.01).
+#' defining rare variants (default = 0.01).
 #' @param rv_num_cutoff the cutoff of minimum number of variants of analyzing
-#' a given variant-set (default is 2).
+#' a given variant-set (default = 2).
 #' @return a data frame with p rows corresponding to the p genetic variants in the given variant-set
 #' and three columns: \code{Score} (the score test statistic), \code{SE} (the standard error associated
 #' with the score test statistic), and \code{pvalue} (the score test p-value).

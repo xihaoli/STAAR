@@ -10,7 +10,8 @@ STAAR_cond(
   obj_nullmodel,
   annotation_phred = NULL,
   rare_maf_cutoff = 0.01,
-  rv_num_cutoff = 2
+  rv_num_cutoff = 2,
+  method_cond = c("optimal", "naive")
 )
 }
 \arguments{
@@ -37,10 +38,16 @@ SKAT(1,25), SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25), ACAT-V(1,1)
 and ACAT-O tests (default = NULL).}
 
 \item{rare_maf_cutoff}{the cutoff of maximum minor allele frequency in
-defining rare variants (default is 0.01).}
+defining rare variants (default = 0.01).}
 
 \item{rv_num_cutoff}{the cutoff of minimum number of variants of analyzing
-a given variant-set (default is 2).}
+a given variant-set (default = 2).}
+
+\item{method_cond}{a character value indicating the method for conditional analysis.
+\code{optimal} refers to regressing residuals from the null model on \code{genotype_adj}
+as well as all covariates used in fitting the null model (fully adjusted) and taking the residuals;
+\code{naive} refers to regressing residuals from the null model on \code{genotype_adj}
+and taking the residuals (default = \code{optimal}).}
 }
 \value{
 a list with the following members:
@@ -48,6 +55,9 @@ a list with the following members:
 \code{num_variant}: the number of variants with minor allele frequency > 0 and less than
 \code{rare_maf_cutoff} in the given variant-set that are used for performing the
 variant-set using STAAR.
+
+\code{cMAC}: the cumulative minor allele count of variants with
+minor allele frequency > 0 and less than \code{rare_maf_cutoff} in the given variant-set.
 
 \code{RV_label}: the boolean vector indicating whether each variant in the given
 variant-set has minor allele frequency > 0 and less than \code{rare_maf_cutoff}.
@@ -101,13 +111,22 @@ together with conditional p-values of each test weighted by each annotation
 using Cauchy method.
 }
 \references{
-Li, X., Li, Z. et al. (2020). Dynamic incorporation of multiple
+Li, X., Li, Z., et al. (2020). Dynamic incorporation of multiple
 in silico functional annotations empowers rare variant association analysis of
-large whole-genome sequencing studies at scale. \emph{Nature Genetics}.
-(\href{https://www.nature.com/articles/s41588-020-0676-4}{pub})
+large whole-genome sequencing studies at scale. \emph{Nature Genetics}, \emph{52}(9), 969-983.
+(\href{https://doi.org/10.1038/s41588-020-0676-4}{pub})
 
 Liu, Y., et al. (2019). Acat: A fast and powerful p value combination
 method for rare-variant analysis in sequencing studies.
-\emph{The American Journal of Humann Genetics 104}(3), 410-421.
-(\href{https://www.sciencedirect.com/science/article/pii/S0002929719300023}{pub})
+\emph{The American Journal of Human Genetics}, \emph{104}(3), 410-421.
+(\href{https://doi.org/10.1016/j.ajhg.2019.01.002}{pub})
+
+Li, Z., Li, X., et al. (2020). Dynamic scan procedure for
+detecting rare-variant association regions in whole-genome sequencing studies.
+\emph{The American Journal of Human Genetics}, \emph{104}(5), 802-814.
+(\href{https://doi.org/10.1016/j.ajhg.2019.03.002}{pub})
+
+Sofer, T., et al. (2019). A fully adjusted two-stage procedure for rank-normalization
+in genetic association studies. \emph{Genetic Epidemiology}, \emph{43}(3), 263-275.
+(\href{https://doi.org/10.1002/gepi.22188}{pub})
 }

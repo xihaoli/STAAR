@@ -9,7 +9,8 @@ Indiv_Score_Test_Region_cond(
   genotype_adj,
   obj_nullmodel,
   rare_maf_cutoff = 0.01,
-  rv_num_cutoff = 2
+  rv_num_cutoff = 2,
+  method_cond = c("optimal", "naive")
 )
 }
 \arguments{
@@ -27,10 +28,16 @@ output from either \code{\link{fit_null_glm}} function for unrelated samples or
 is a wrapper of \code{\link{glmmkin}} function from the \code{\link{GMMAT}} package.}
 
 \item{rare_maf_cutoff}{the cutoff of maximum minor allele frequency in
-defining rare variants (default is 0.01).}
+defining rare variants (default = 0.01).}
 
 \item{rv_num_cutoff}{the cutoff of minimum number of variants of analyzing
-a given variant-set (default is 2).}
+a given variant-set (default = 2).}
+
+\item{method_cond}{a character value indicating the method for conditional analysis.
+\code{optimal} refers to regressing residuals from the null model on \code{genotype_adj}
+as well as all covariates used in fitting the null model (fully adjusted) and taking the residuals;
+\code{naive} refers to regressing residuals from the null model on \code{genotype_adj}
+and taking the residuals (default = \code{optimal}).}
 }
 \value{
 a data frame with p rows corresponding to the p genetic variants in the given variant-set
@@ -47,4 +54,9 @@ the genotype of variants to be adjusted for in conditional analysis, and
 the object from fitting the null model to analyze the conditional associations between
 a quantitative/dichotomous phenotype and all individual variants in
 a given variant-set by using score test, adjusting for a given list of variants.
+}
+\references{
+Sofer, T., et al. (2019). A fully adjusted two-stage procedure for rank-normalization
+in genetic association studies. \emph{Genetic Epidemiology}, \emph{43}(3), 263-275.
+(\href{https://doi.org/10.1002/gepi.22188}{pub})
 }

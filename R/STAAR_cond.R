@@ -28,13 +28,20 @@
 #' SKAT(1,25), SKAT(1,1), Burden(1,25), Burden(1,1), ACAT-V(1,25), ACAT-V(1,1)
 #' and ACAT-O tests (default = NULL).
 #' @param rare_maf_cutoff the cutoff of maximum minor allele frequency in
-#' defining rare variants (default is 0.01).
+#' defining rare variants (default = 0.01).
 #' @param rv_num_cutoff the cutoff of minimum number of variants of analyzing
-#' a given variant-set (default is 2).
+#' a given variant-set (default = 2).
+#' @param method_cond a character value indicating the method for conditional analysis.
+#' \code{optimal} refers to regressing residuals from the null model on \code{genotype_adj}
+#' as well as all covariates used in fitting the null model (fully adjusted) and taking the residuals;
+#' \code{naive} refers to regressing residuals from the null model on \code{genotype_adj}
+#' and taking the residuals (default = \code{optimal}).
 #' @return a list with the following members:
 #' @return \code{num_variant}: the number of variants with minor allele frequency > 0 and less than
 #' \code{rare_maf_cutoff} in the given variant-set that are used for performing the
 #' variant-set using STAAR.
+#' @return \code{cMAC}: the cumulative minor allele count of variants with
+#' minor allele frequency > 0 and less than \code{rare_maf_cutoff} in the given variant-set.
 #' @return \code{RV_label}: the boolean vector indicating whether each variant in the given
 #' variant-set has minor allele frequency > 0 and less than \code{rare_maf_cutoff}.
 #' @return \code{results_STAAR_O_cond}: the conditional STAAR-O p-value that aggregated conditional
@@ -66,19 +73,28 @@
 #' including conditional ACAT-V(1,1) p-value weighted by MAF, the conditional ACAT-V(1,1)
 #' p-values weighted by each annotation, and a conditional STAAR-A(1,1)
 #' p-value by aggregating these p-values using Cauchy method.
-#' @references Li, X., Li, Z. et al. (2020). Dynamic incorporation of multiple
+#' @references Li, X., Li, Z., et al. (2020). Dynamic incorporation of multiple
 #' in silico functional annotations empowers rare variant association analysis of
-#' large whole-genome sequencing studies at scale. \emph{Nature Genetics}.
-#' (\href{https://www.nature.com/articles/s41588-020-0676-4}{pub})
+#' large whole-genome sequencing studies at scale. \emph{Nature Genetics}, \emph{52}(9), 969-983.
+#' (\href{https://doi.org/10.1038/s41588-020-0676-4}{pub})
 #' @references Liu, Y., et al. (2019). Acat: A fast and powerful p value combination
 #' method for rare-variant analysis in sequencing studies.
-#' \emph{The American Journal of Humann Genetics 104}(3), 410-421.
-#' (\href{https://www.sciencedirect.com/science/article/pii/S0002929719300023}{pub})
+#' \emph{The American Journal of Human Genetics}, \emph{104}(3), 410-421.
+#' (\href{https://doi.org/10.1016/j.ajhg.2019.01.002}{pub})
+#' @references Li, Z., Li, X., et al. (2020). Dynamic scan procedure for
+#' detecting rare-variant association regions in whole-genome sequencing studies.
+#' \emph{The American Journal of Human Genetics}, \emph{104}(5), 802-814.
+#' (\href{https://doi.org/10.1016/j.ajhg.2019.03.002}{pub})
+#' @references Sofer, T., et al. (2019). A fully adjusted two-stage procedure for rank-normalization
+#' in genetic association studies. \emph{Genetic Epidemiology}, \emph{43}(3), 263-275.
+#' (\href{https://doi.org/10.1002/gepi.22188}{pub})
 #' @export
 
 STAAR_cond <- function(genotype,genotype_adj,obj_nullmodel,annotation_phred=NULL,
-                       rare_maf_cutoff=0.01,rv_num_cutoff=2){
+                       rare_maf_cutoff=0.01,rv_num_cutoff=2,
+                       method_cond=c("optimal","naive")){
 
+  method_cond <- match.arg(method_cond) # evaluate choices
   if(class(genotype) != "matrix" && !(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix")){
     stop("genotype is not a matrix!")
   }
@@ -162,8 +178,13 @@ STAAR_cond <- function(genotype,genotype_adj,obj_nullmodel,annotation_phred=NULL
 
         residuals.phenotype <- obj_nullmodel$scaled.residuals
         residuals.phenotype <- residuals.phenotype*sqrt(P_scalar)
-        residuals.phenotype <- lm(residuals.phenotype~genotype_adj)$residuals
-        X_adj <- cbind(rep(1,length(residuals.phenotype)),genotype_adj)
+        if(method_cond == "optimal"){
+          residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj+obj_nullmodel$X-1)
+        }else{
+          residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj)
+        }
+        residuals.phenotype <- residuals.phenotype.fit$residuals
+        X_adj <- model.matrix(residuals.phenotype.fit)
         PX_adj <- P%*%X_adj
         P_cond <- P - X_adj%*%solve(t(X_adj)%*%X_adj)%*%t(PX_adj) -
           PX_adj%*%solve(t(X_adj)%*%X_adj)%*%t(X_adj) +
@@ -180,8 +201,13 @@ STAAR_cond <- function(genotype,genotype_adj,obj_nullmodel,annotation_phred=NULL
         cov <- obj_nullmodel$cov
 
         residuals.phenotype <- obj_nullmodel$scaled.residuals
-        residuals.phenotype <- lm(residuals.phenotype~genotype_adj)$residuals
-        X_adj <- cbind(rep(1,length(residuals.phenotype)),genotype_adj)
+        if(method_cond == "optimal"){
+          residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj+obj_nullmodel$X-1)
+        }else{
+          residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj)
+        }
+        residuals.phenotype <- residuals.phenotype.fit$residuals
+        X_adj <- model.matrix(residuals.phenotype.fit)
 
         pvalues <- STAAR_O_SMMAT_sparse_cond(G,Sigma_i,Sigma_iX,cov,X_adj,residuals.phenotype,
                                              weights_B=w_B,weights_S=w_S,weights_A=w_A,
@@ -198,8 +224,13 @@ STAAR_cond <- function(genotype,genotype_adj,obj_nullmodel,annotation_phred=NULL
       }
 
       residuals.phenotype <- obj_nullmodel$y - obj_nullmodel$fitted.values
-      residuals.phenotype <- lm(residuals.phenotype~genotype_adj)$residuals
-      X_adj <- cbind(rep(1,length(residuals.phenotype)),genotype_adj)
+      if(method_cond == "optimal"){
+        residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj+model.matrix(obj_nullmodel)-1)
+      }else{
+        residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj)
+      }
+      residuals.phenotype <- residuals.phenotype.fit$residuals
+      X_adj <- model.matrix(residuals.phenotype.fit)
       PX_adj <- P%*%X_adj
       P_cond <- P - X_adj%*%solve(t(X_adj)%*%X_adj)%*%t(PX_adj) -
         PX_adj%*%solve(t(X_adj)%*%X_adj)%*%t(X_adj) +
@@ -213,6 +244,7 @@ STAAR_cond <- function(genotype,genotype_adj,obj_nullmodel,annotation_phred=NULL
     }
 
     num_variant <- sum(RV_label) #dim(G)[2]
+    cMAC <- sum(G)
     num_annotation <- dim(annotation_phred)[2]+1
     results_STAAR_O <- CCT(pvalues)
     results_ACAT_O <- CCT(pvalues[c(1,num_annotation+1,2*num_annotation+1,3*num_annotation+1,4*num_annotation+1,5*num_annotation+1)])
@@ -270,6 +302,7 @@ STAAR_cond <- function(genotype,genotype_adj,obj_nullmodel,annotation_phred=NULL
     }
 
     return(list(num_variant = num_variant,
+                cMAC = cMAC,
                 RV_label = RV_label,
                 results_STAAR_O_cond = results_STAAR_O,
                 results_ACAT_O_cond = results_ACAT_O,
