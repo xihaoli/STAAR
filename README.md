@@ -1,5 +1,5 @@
-[![R build status](https://github.com/xihaoli/STAAR/workflows/R-CMD-check/badge.svg)](https://github.com/xihaoli/STAAR)
-[![Build Status](https://travis-ci.com/xihaoli/STAAR.svg?branch=master)](https://travis-ci.com/xihaoli/STAAR)
+[![R build status](https://github.com/xihaoli/STAAR/workflows/R-CMD-check/badge.svg)](https://github.com/xihaoli/STAAR/actions)
+[![Build Status](https://travis-ci.com/xihaoli/STAAR.svg?branch=master)](https://app.travis-ci.com/xihaoli/STAAR)
 [![Build status](https://ci.appveyor.com/api/projects/status/hqpwmgfeuerel48l?svg=true)](https://ci.appveyor.com/project/xihaoli/STAAR)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
