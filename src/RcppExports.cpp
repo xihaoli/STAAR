@@ -396,6 +396,40 @@ RcppExport SEXP _STAAR_matrix_flip(SEXP GSEXP) {
     UNPROTECT(1);
     return rcpp_result_gen;
 }
+// matrix_impute
+arma::mat matrix_impute(arma::mat G);
+static SEXP _STAAR_matrix_impute_try(SEXP GSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type G(GSEXP);
+    rcpp_result_gen = Rcpp::wrap(matrix_impute(G));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_matrix_impute(SEXP GSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_matrix_impute_try(GSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
 
 // validate (ensure exported C++ functions exist before calling them)
 static int _STAAR_RcppExport_validate(const char* sig) { 
@@ -408,6 +442,7 @@ static int _STAAR_RcppExport_validate(const char* sig) {
         signatures.insert("double(*K2)(double,arma::vec)");
         signatures.insert("double(*Saddle)(double,arma::vec)");
         signatures.insert("List(*matrix_flip)(arma::mat)");
+        signatures.insert("arma::mat(*matrix_impute)(arma::mat)");
     }
     return signatures.find(sig) != signatures.end();
 }
@@ -421,6 +456,7 @@ RcppExport SEXP _STAAR_RcppExport_registerCCallable() {
     R_RegisterCCallable("STAAR", "_STAAR_K2", (DL_FUNC)_STAAR_K2_try);
     R_RegisterCCallable("STAAR", "_STAAR_Saddle", (DL_FUNC)_STAAR_Saddle_try);
     R_RegisterCCallable("STAAR", "_STAAR_matrix_flip", (DL_FUNC)_STAAR_matrix_flip_try);
+    R_RegisterCCallable("STAAR", "_STAAR_matrix_impute", (DL_FUNC)_STAAR_matrix_impute_try);
     R_RegisterCCallable("STAAR", "_STAAR_RcppExport_validate", (DL_FUNC)_STAAR_RcppExport_validate);
     return R_NilValue;
 }
@@ -441,6 +477,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_STAAR_STAAR_O_SMMAT_sparse_cond", (DL_FUNC) &_STAAR_STAAR_O_SMMAT_sparse_cond, 11},
     {"_STAAR_Saddle", (DL_FUNC) &_STAAR_Saddle, 2},
     {"_STAAR_matrix_flip", (DL_FUNC) &_STAAR_matrix_flip, 1},
+    {"_STAAR_matrix_impute", (DL_FUNC) &_STAAR_matrix_impute, 1},
     {"_STAAR_RcppExport_registerCCallable", (DL_FUNC) &_STAAR_RcppExport_registerCCallable, 0},
     {NULL, NULL, 0}
 };

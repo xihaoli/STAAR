@@ -61,6 +61,10 @@ matrix_flip <- function(G) {
     .Call(`_STAAR_matrix_flip`, G)
 }
 
+matrix_impute <- function(G) {
+    .Call(`_STAAR_matrix_impute`, G)
+}
+
 # Register entry points for exported C++ functions
 methods::setLoadAction(function(ns) {
     .Call('_STAAR_RcppExport_registerCCallable', PACKAGE = 'STAAR')

@@ -1,6 +1,7 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::interfaces(r, cpp)]]
 
+#define STRICT_R_HEADERS
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
 using namespace Rcpp;
@@ -25,16 +26,16 @@ double CCT_pval(arma::vec x, arma::vec weights)
 	{
 		if(x(k) < 1e-16)
 		{
-			cct_stat = cct_stat + weights(k)/x(k)/PI;
+			cct_stat = cct_stat + weights(k)/x(k)/M_PI;
 		}else
 		{
-			cct_stat = cct_stat + weights(k)*tan((0.5-x(k))*PI);
+			cct_stat = cct_stat + weights(k)*tan((0.5-x(k))*M_PI);
 		}
 	}
 
 	if (cct_stat > 1e+15)
 	{
-        pval = (1/cct_stat)/PI;
+        pval = (1/cct_stat)/M_PI;
     }else
 	{
 		pval = R::pcauchy(cct_stat,0.0,1.0,lower,logp);

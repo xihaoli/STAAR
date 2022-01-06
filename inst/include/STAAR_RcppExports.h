@@ -172,6 +172,27 @@ namespace STAAR {
         return Rcpp::as<List >(rcpp_result_gen);
     }
 
+    inline arma::mat matrix_impute(arma::mat G) {
+        typedef SEXP(*Ptr_matrix_impute)(SEXP);
+        static Ptr_matrix_impute p_matrix_impute = NULL;
+        if (p_matrix_impute == NULL) {
+            validateSignature("arma::mat(*matrix_impute)(arma::mat)");
+            p_matrix_impute = (Ptr_matrix_impute)R_GetCCallable("STAAR", "_STAAR_matrix_impute");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_matrix_impute(Shield<SEXP>(Rcpp::wrap(G)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<arma::mat >(rcpp_result_gen);
+    }
+
 }
 
 #endif // RCPP_STAAR_RCPPEXPORTS_H_GEN_
