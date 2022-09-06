@@ -55,7 +55,7 @@
 #' @references Chen, H., et al. (2019). Efficient variant set mixed model association tests for continuous and
 #' binary traits in large-scale whole-genome sequencing studies. \emph{The American Journal of Human Genetics}, \emph{104}(2), 260-274.
 #' (\href{https://doi.org/10.1016/j.ajhg.2018.12.012}{pub})
-#' @references Chen, H. (2020). GMMAT: Generalized linear Mixed Model Association Tests Version 1.3.
+#' @references Chen, H. (2021). GMMAT: Generalized linear Mixed Model Association Tests Version 1.3.2.
 #' (\href{https://cloud.r-project.org/web/packages/GMMAT/vignettes/GMMAT.pdf}{web})
 #' @export
 
@@ -83,7 +83,7 @@ fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NU
     #kins_sp <- Matrix(kins, sparse = TRUE)
     kins_sp <- makeSparseMatrix(kins, thresh = kins_cutoff)
     if(class(kins_sp) == "dsyMatrix" || kins_cutoff <= min(kins)){
-      stop(paste0("kins is still a dense matrix using cutoff ", kins_cutoff,". Please try a larger kins_cutoff or use_sparse = FALSE"))
+      stop(paste0("kins is still a dense matrix using cutoff ", kins_cutoff,". Please try a larger kins_cutoff or use_sparse = FALSE!"))
     }
     rm(kins)
     obj_nullmodel <- glmmkin(fixed = fixed, data = data, kins = kins_sp, id = id,
