@@ -65,7 +65,7 @@ fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NU
                              method.optim = "AI", maxiter = 500, tol = 1e-5,
                              taumin = 1e-5, taumax = 1e5, tauregion = 10,
                              verbose = FALSE, ...){
-  if(class(kins) != "matrix" && !(!is.null(attr(class(kins), "package")) && attr(class(kins), "package") == "Matrix")){
+  if(class(kins)[1] != "matrix" && !(!is.null(attr(class(kins), "package")) && attr(class(kins), "package") == "Matrix")){
     stop("kins is not a matrix!")
   }
   else if(!is.null(attr(class(kins), "package")) && attr(class(kins), "package") == "Matrix"){
