@@ -112,7 +112,7 @@ STAAR_cond <- function(genotype,genotype_adj,obj_nullmodel,annotation_phred=NULL
     genotype <- as.matrix(genotype)
   }
 
-  if(class(genotype_adj) == "numeric"){
+  if(class(genotype_adj)[1] == "numeric"){
     genotype_adj <- matrix(genotype_adj, ncol=1)
   }
 
