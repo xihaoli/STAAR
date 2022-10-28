@@ -18,6 +18,9 @@ environment:
     R_ARCH: x64
     BIOC_USE_DEVEL: FALSE
     PKGTYPE: both
+    
+  global:
+    USE_RTOOLS: TRUE
 
 branches:
   only:
