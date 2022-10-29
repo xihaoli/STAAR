@@ -26,6 +26,7 @@ branches:
 build_script:
   - travis-tool.sh install_bioc_deps
   - travis-tool.sh install_deps
+  - travis-tool.sh install_bioc GenomeInfoDbData
 
 test_script:
   - travis-tool.sh run_tests

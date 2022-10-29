@@ -41,7 +41,7 @@ Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
                                          method_cond=c("optimal","naive")){
 
   method_cond <- match.arg(method_cond) # evaluate choices
-  if(class(genotype) != "matrix" && !(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix")){
+  if(class(genotype)[1] != "matrix" && !(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix")){
     stop("genotype is not a matrix!")
   }
 
@@ -57,7 +57,7 @@ Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
     genotype <- as.matrix(genotype)
   }
 
-  if(class(genotype_adj) == "numeric"){
+  if(class(genotype_adj)[1] == "numeric"){
     genotype_adj <- matrix(genotype_adj, ncol=1)
   }
 

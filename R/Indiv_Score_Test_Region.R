@@ -24,7 +24,7 @@
 Indiv_Score_Test_Region <- function(genotype,obj_nullmodel,
                                     rare_maf_cutoff=0.01,rv_num_cutoff=2){
 
-  if(class(genotype) != "matrix" && !(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix")){
+  if(class(genotype)[1] != "matrix" && !(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix")){
     stop("genotype is not a matrix!")
   }
 
