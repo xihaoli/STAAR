@@ -17,10 +17,7 @@ environment:
   - R_VERSION: stable
     R_ARCH: x64
     BIOC_USE_DEVEL: FALSE
-    PKGTYPE: both
-    
-  global:
-    USE_RTOOLS: TRUE
+    PKGTYPE: binary
 
 branches:
   only:
