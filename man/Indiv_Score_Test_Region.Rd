@@ -39,3 +39,8 @@ The \code{Indiv_Score_Test_Region} function takes in genotype and the object fro
 model to analyze the associations between a quantitative/dichotomous phenotype and
 all individual variants in a given variant-set by using score test.
 }
+\references{
+Chen, H., et al. (2016). Control for population structure and relatedness for binary traits
+in genetic association studies via logistic mixed models. \emph{The American Journal of Human Genetics}, \emph{98}(4), 653-666.
+(\href{https://doi.org/10.1016/j.ajhg.2016.02.012}{pub})
+}

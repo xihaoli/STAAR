@@ -56,6 +56,10 @@ a quantitative/dichotomous phenotype and all individual variants in
 a given variant-set by using score test, adjusting for a given list of variants.
 }
 \references{
+Chen, H., et al. (2016). Control for population structure and relatedness for binary traits
+in genetic association studies via logistic mixed models. \emph{The American Journal of Human Genetics}, \emph{98}(4), 653-666.
+(\href{https://doi.org/10.1016/j.ajhg.2016.02.012}{pub})
+
 Sofer, T., et al. (2019). A fully adjusted two-stage procedure for rank-normalization
 in genetic association studies. \emph{Genetic Epidemiology}, \emph{43}(3), 263-275.
 (\href{https://doi.org/10.1002/gepi.22188}{pub})
