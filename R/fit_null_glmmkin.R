@@ -4,7 +4,7 @@
 #' The \code{fit_null_glmmkin} function is a wrapper of the \code{\link{glmmkin}} function from
 #' the \code{\link{GMMAT}} package that fits a regression model under the null hypothesis
 #' for related samples, which provides the preliminary step for subsequent
-#' variant-set tests in whole genome sequencing data analysis. See \code{\link{glmmkin}} for more details.
+#' variant-set tests in whole-genome sequencing data analysis. See \code{\link{glmmkin}} for more details.
 #' @param fixed an object of class \code{\link{formula}} (or one that can be coerced to that class):
 #' a symbolic description of the fixed effects model to be fitted.
 #' @param data a data frame or list (or object coercible by \code{\link{as.data.frame}} to a data frame)
@@ -79,8 +79,6 @@ fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NU
     obj_nullmodel$sparse_kins <- TRUE
   }else if(!is.null(use_sparse) && use_sparse){
     print(paste0("kins is a dense matrix, transforming it into a sparse matrix using cutoff ", kins_cutoff,"."))
-    #kins <- replace(kins, kins <= kins_cutoff, 0)
-    #kins_sp <- Matrix(kins, sparse = TRUE)
     kins_sp <- makeSparseMatrix(kins, thresh = kins_cutoff)
     if(class(kins_sp) == "dsyMatrix" || kins_cutoff <= min(kins)){
       stop(paste0("kins is still a dense matrix using cutoff ", kins_cutoff,". Please try a larger kins_cutoff or use_sparse = FALSE!"))

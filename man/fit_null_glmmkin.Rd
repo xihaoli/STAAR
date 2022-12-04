@@ -95,7 +95,7 @@ and whether the \code{kins} matrix is sparse when fitting the null model. See \c
 The \code{fit_null_glmmkin} function is a wrapper of the \code{\link{glmmkin}} function from
 the \code{\link{GMMAT}} package that fits a regression model under the null hypothesis
 for related samples, which provides the preliminary step for subsequent
-variant-set tests in whole genome sequencing data analysis. See \code{\link{glmmkin}} for more details.
+variant-set tests in whole-genome sequencing data analysis. See \code{\link{glmmkin}} for more details.
 }
 \references{
 Chen, H., et al. (2016). Control for population structure and relatedness for binary traits
