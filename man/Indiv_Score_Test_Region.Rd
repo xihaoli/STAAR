@@ -18,7 +18,7 @@ where n is the sample size and p is the number of genetic variants.}
 \item{obj_nullmodel}{an object from fitting the null model, which is the
 output from either \code{\link{fit_null_glm}} function for unrelated samples or
 \code{\link{fit_null_glmmkin}} function for related samples. Note that \code{\link{fit_null_glmmkin}}
-is a wrapper of \code{\link{glmmkin}} function from the \code{\link{GMMAT}} package.}
+is a wrapper of the \code{\link{glmmkin}} function from the \code{\link{GMMAT}} package.}
 
 \item{rare_maf_cutoff}{the cutoff of maximum minor allele frequency in
 defining rare variants (default = 0.01).}
