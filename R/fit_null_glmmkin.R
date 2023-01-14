@@ -81,7 +81,7 @@ fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NU
     print(paste0("kins is a dense matrix, transforming it into a sparse matrix using cutoff ", kins_cutoff, "."))
     kins_sp <- makeSparseMatrix(kins, thresh = kins_cutoff)
     if(class(kins_sp) == "dsyMatrix" || kins_cutoff <= min(kins)){
-      stop(paste0("kins is still a dense matrix using cutoff ", kins_cutoff,". Please try a larger kins_cutoff or use_sparse = FALSE!"))
+      stop(paste0("kins is still a dense matrix using cutoff ", kins_cutoff, ". Please try a larger kins_cutoff or use_sparse = FALSE!"))
     }
     rm(kins)
     obj_nullmodel <- glmmkin(fixed = fixed, data = data, kins = kins_sp, id = id,
