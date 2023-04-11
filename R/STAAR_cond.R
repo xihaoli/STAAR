@@ -36,7 +36,7 @@
 #' as well as all covariates used in fitting the null model (fully adjusted) and taking the residuals;
 #' \code{naive} refers to regressing residuals from the null model on \code{genotype_adj}
 #' and taking the residuals (default = \code{optimal}).
-#' @return a list with the following members:
+#' @return A list with the following members:
 #' @return \code{num_variant}: the number of variants with minor allele frequency > 0 and less than
 #' \code{rare_maf_cutoff} in the given variant-set that are used for performing the
 #' variant-set using STAAR.
@@ -99,7 +99,7 @@ STAAR_cond <- function(genotype,genotype_adj,obj_nullmodel,annotation_phred=NULL
                        method_cond=c("optimal","naive")){
 
   method_cond <- match.arg(method_cond) # evaluate choices
-  if(class(genotype)[1] != "matrix" && !(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix")){
+  if(!inherits(genotype, "matrix") && !inherits(genotype, "Matrix")){
     stop("genotype is not a matrix!")
   }
 
@@ -112,11 +112,11 @@ STAAR_cond <- function(genotype,genotype_adj,obj_nullmodel,annotation_phred=NULL
     stop(paste0("Dimensions don't match for genotype and annotation!"))
   }
 
-  if(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix"){
+  if(inherits(genotype, "sparseMatrix")){
     genotype <- as.matrix(genotype)
   }
 
-  if(class(genotype_adj)[1] == "numeric"){
+  if(inherits(genotype_adj, "numeric")){
     genotype_adj <- matrix(genotype_adj, ncol=1)
   }
 

@@ -13,7 +13,7 @@
 #' defining rare variants (default = 0.01).
 #' @param rv_num_cutoff the cutoff of minimum number of variants of analyzing
 #' a given variant-set (default = 2).
-#' @return a data frame with p rows corresponding to the p genetic variants in the given variant-set
+#' @return A data frame with p rows corresponding to the p genetic variants in the given variant-set
 #' and three columns: \code{Score} (the score test statistic), \code{SE} (the standard error associated
 #' with the score test statistic), and \code{pvalue} (the score test p-value).
 #' If a variant in the given variant-set has minor allele frequency = 0 or
@@ -39,7 +39,7 @@ Indiv_Score_Test_Region <- function(genotype,obj_nullmodel,
                         SE = rep(NA, dim(genotype)[2]),
                         pvalue = rep(NA, dim(genotype)[2]))
 
-  if(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix"){
+  if(!inherits(genotype, "matrix") && !inherits(genotype, "Matrix")){
     genotype <- as.matrix(genotype)
   }
   genotype <- matrix_flip(genotype)

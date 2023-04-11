@@ -50,7 +50,7 @@ as well as all covariates used in fitting the null model (fully adjusted) and ta
 and taking the residuals (default = \code{optimal}).}
 }
 \value{
-a list with the following members:
+A list with the following members:
 
 \code{num_variant}: the number of variants with minor allele frequency > 0 and less than
 \code{rare_maf_cutoff} in the given variant-set that are used for performing the

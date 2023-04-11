@@ -46,6 +46,27 @@ namespace STAAR {
         return Rcpp::as<double >(rcpp_result_gen);
     }
 
+    inline double Bisection_Binary_SPA(arma::vec muhat, arma::vec G, double q, double xmin, double xmax, double tol) {
+        typedef SEXP(*Ptr_Bisection_Binary_SPA)(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
+        static Ptr_Bisection_Binary_SPA p_Bisection_Binary_SPA = NULL;
+        if (p_Bisection_Binary_SPA == NULL) {
+            validateSignature("double(*Bisection_Binary_SPA)(arma::vec,arma::vec,double,double,double,double)");
+            p_Bisection_Binary_SPA = (Ptr_Bisection_Binary_SPA)R_GetCCallable("STAAR", "_STAAR_Bisection_Binary_SPA");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_Bisection_Binary_SPA(Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)), Shield<SEXP>(Rcpp::wrap(q)), Shield<SEXP>(Rcpp::wrap(xmin)), Shield<SEXP>(Rcpp::wrap(xmax)), Shield<SEXP>(Rcpp::wrap(tol)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
     inline double CCT_pval(arma::vec x, arma::vec weights) {
         typedef SEXP(*Ptr_CCT_pval)(SEXP,SEXP);
         static Ptr_CCT_pval p_CCT_pval = NULL;
@@ -109,6 +130,48 @@ namespace STAAR {
         return Rcpp::as<double >(rcpp_result_gen);
     }
 
+    inline double K1_Binary_SPA(double x, arma::vec muhat, arma::vec G, double q) {
+        typedef SEXP(*Ptr_K1_Binary_SPA)(SEXP,SEXP,SEXP,SEXP);
+        static Ptr_K1_Binary_SPA p_K1_Binary_SPA = NULL;
+        if (p_K1_Binary_SPA == NULL) {
+            validateSignature("double(*K1_Binary_SPA)(double,arma::vec,arma::vec,double)");
+            p_K1_Binary_SPA = (Ptr_K1_Binary_SPA)R_GetCCallable("STAAR", "_STAAR_K1_Binary_SPA");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_K1_Binary_SPA(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)), Shield<SEXP>(Rcpp::wrap(q)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
+    inline double K1_Binary_SPA_alt(double x, arma::vec muhat, arma::vec G, double q) {
+        typedef SEXP(*Ptr_K1_Binary_SPA_alt)(SEXP,SEXP,SEXP,SEXP);
+        static Ptr_K1_Binary_SPA_alt p_K1_Binary_SPA_alt = NULL;
+        if (p_K1_Binary_SPA_alt == NULL) {
+            validateSignature("double(*K1_Binary_SPA_alt)(double,arma::vec,arma::vec,double)");
+            p_K1_Binary_SPA_alt = (Ptr_K1_Binary_SPA_alt)R_GetCCallable("STAAR", "_STAAR_K1_Binary_SPA_alt");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_K1_Binary_SPA_alt(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)), Shield<SEXP>(Rcpp::wrap(q)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
     inline double K2(double x, arma::vec egvalues) {
         typedef SEXP(*Ptr_K2)(SEXP,SEXP);
         static Ptr_K2 p_K2 = NULL;
@@ -120,6 +183,111 @@ namespace STAAR {
         {
             RNGScope RCPP_rngScope_gen;
             rcpp_result_gen = p_K2(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(egvalues)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
+    inline double K2_Binary_SPA(double x, arma::vec muhat, arma::vec G) {
+        typedef SEXP(*Ptr_K2_Binary_SPA)(SEXP,SEXP,SEXP);
+        static Ptr_K2_Binary_SPA p_K2_Binary_SPA = NULL;
+        if (p_K2_Binary_SPA == NULL) {
+            validateSignature("double(*K2_Binary_SPA)(double,arma::vec,arma::vec)");
+            p_K2_Binary_SPA = (Ptr_K2_Binary_SPA)R_GetCCallable("STAAR", "_STAAR_K2_Binary_SPA");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_K2_Binary_SPA(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
+    inline double K2_Binary_SPA_alt(double x, arma::vec muhat, arma::vec G) {
+        typedef SEXP(*Ptr_K2_Binary_SPA_alt)(SEXP,SEXP,SEXP);
+        static Ptr_K2_Binary_SPA_alt p_K2_Binary_SPA_alt = NULL;
+        if (p_K2_Binary_SPA_alt == NULL) {
+            validateSignature("double(*K2_Binary_SPA_alt)(double,arma::vec,arma::vec)");
+            p_K2_Binary_SPA_alt = (Ptr_K2_Binary_SPA_alt)R_GetCCallable("STAAR", "_STAAR_K2_Binary_SPA_alt");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_K2_Binary_SPA_alt(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
+    inline double K_Binary_SPA(double x, arma::vec muhat, arma::vec G) {
+        typedef SEXP(*Ptr_K_Binary_SPA)(SEXP,SEXP,SEXP);
+        static Ptr_K_Binary_SPA p_K_Binary_SPA = NULL;
+        if (p_K_Binary_SPA == NULL) {
+            validateSignature("double(*K_Binary_SPA)(double,arma::vec,arma::vec)");
+            p_K_Binary_SPA = (Ptr_K_Binary_SPA)R_GetCCallable("STAAR", "_STAAR_K_Binary_SPA");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_K_Binary_SPA(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
+    inline double K_Binary_SPA_alt(double x, arma::vec muhat, arma::vec G) {
+        typedef SEXP(*Ptr_K_Binary_SPA_alt)(SEXP,SEXP,SEXP);
+        static Ptr_K_Binary_SPA_alt p_K_Binary_SPA_alt = NULL;
+        if (p_K_Binary_SPA_alt == NULL) {
+            validateSignature("double(*K_Binary_SPA_alt)(double,arma::vec,arma::vec)");
+            p_K_Binary_SPA_alt = (Ptr_K_Binary_SPA_alt)R_GetCCallable("STAAR", "_STAAR_K_Binary_SPA_alt");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_K_Binary_SPA_alt(Shield<SEXP>(Rcpp::wrap(x)), Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
+    inline double NR_Binary_SPA(arma::vec muhat, arma::vec G, double q, double init, double tol, int max_iter) {
+        typedef SEXP(*Ptr_NR_Binary_SPA)(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
+        static Ptr_NR_Binary_SPA p_NR_Binary_SPA = NULL;
+        if (p_NR_Binary_SPA == NULL) {
+            validateSignature("double(*NR_Binary_SPA)(arma::vec,arma::vec,double,double,double,int)");
+            p_NR_Binary_SPA = (Ptr_NR_Binary_SPA)R_GetCCallable("STAAR", "_STAAR_NR_Binary_SPA");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_NR_Binary_SPA(Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)), Shield<SEXP>(Rcpp::wrap(q)), Shield<SEXP>(Rcpp::wrap(init)), Shield<SEXP>(Rcpp::wrap(tol)), Shield<SEXP>(Rcpp::wrap(max_iter)));
         }
         if (rcpp_result_gen.inherits("interrupted-error"))
             throw Rcpp::internal::InterruptedException();
@@ -149,6 +317,111 @@ namespace STAAR {
         if (rcpp_result_gen.inherits("try-error"))
             throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
         return Rcpp::as<double >(rcpp_result_gen);
+    }
+
+    inline double Saddle_Binary_SPA(double q, arma::vec muhat, arma::vec G, double tol, int max_iter, bool lower) {
+        typedef SEXP(*Ptr_Saddle_Binary_SPA)(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
+        static Ptr_Saddle_Binary_SPA p_Saddle_Binary_SPA = NULL;
+        if (p_Saddle_Binary_SPA == NULL) {
+            validateSignature("double(*Saddle_Binary_SPA)(double,arma::vec,arma::vec,double,int,bool)");
+            p_Saddle_Binary_SPA = (Ptr_Saddle_Binary_SPA)R_GetCCallable("STAAR", "_STAAR_Saddle_Binary_SPA");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_Saddle_Binary_SPA(Shield<SEXP>(Rcpp::wrap(q)), Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)), Shield<SEXP>(Rcpp::wrap(tol)), Shield<SEXP>(Rcpp::wrap(max_iter)), Shield<SEXP>(Rcpp::wrap(lower)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
+    inline double Saddle_Binary_SPA_Bisection(double q, arma::vec muhat, arma::vec G, double tol, int max_iter, double xmin, double xmax, bool lower) {
+        typedef SEXP(*Ptr_Saddle_Binary_SPA_Bisection)(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
+        static Ptr_Saddle_Binary_SPA_Bisection p_Saddle_Binary_SPA_Bisection = NULL;
+        if (p_Saddle_Binary_SPA_Bisection == NULL) {
+            validateSignature("double(*Saddle_Binary_SPA_Bisection)(double,arma::vec,arma::vec,double,int,double,double,bool)");
+            p_Saddle_Binary_SPA_Bisection = (Ptr_Saddle_Binary_SPA_Bisection)R_GetCCallable("STAAR", "_STAAR_Saddle_Binary_SPA_Bisection");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_Saddle_Binary_SPA_Bisection(Shield<SEXP>(Rcpp::wrap(q)), Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)), Shield<SEXP>(Rcpp::wrap(tol)), Shield<SEXP>(Rcpp::wrap(max_iter)), Shield<SEXP>(Rcpp::wrap(xmin)), Shield<SEXP>(Rcpp::wrap(xmax)), Shield<SEXP>(Rcpp::wrap(lower)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<double >(rcpp_result_gen);
+    }
+
+    inline bool check_is_na(double x) {
+        typedef SEXP(*Ptr_check_is_na)(SEXP);
+        static Ptr_check_is_na p_check_is_na = NULL;
+        if (p_check_is_na == NULL) {
+            validateSignature("bool(*check_is_na)(double)");
+            p_check_is_na = (Ptr_check_is_na)R_GetCCallable("STAAR", "_STAAR_check_is_na");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_check_is_na(Shield<SEXP>(Rcpp::wrap(x)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<bool >(rcpp_result_gen);
+    }
+
+    inline arma::vec goldenSectionSearchForSignChange(double a, double b, arma::vec muhat, arma::vec G, double q, double tol, int max_iter) {
+        typedef SEXP(*Ptr_goldenSectionSearchForSignChange)(SEXP,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP);
+        static Ptr_goldenSectionSearchForSignChange p_goldenSectionSearchForSignChange = NULL;
+        if (p_goldenSectionSearchForSignChange == NULL) {
+            validateSignature("arma::vec(*goldenSectionSearchForSignChange)(double,double,arma::vec,arma::vec,double,double,int)");
+            p_goldenSectionSearchForSignChange = (Ptr_goldenSectionSearchForSignChange)R_GetCCallable("STAAR", "_STAAR_goldenSectionSearchForSignChange");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_goldenSectionSearchForSignChange(Shield<SEXP>(Rcpp::wrap(a)), Shield<SEXP>(Rcpp::wrap(b)), Shield<SEXP>(Rcpp::wrap(muhat)), Shield<SEXP>(Rcpp::wrap(G)), Shield<SEXP>(Rcpp::wrap(q)), Shield<SEXP>(Rcpp::wrap(tol)), Shield<SEXP>(Rcpp::wrap(max_iter)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<arma::vec >(rcpp_result_gen);
+    }
+
+    inline bool haveSameSign(double a, double b) {
+        typedef SEXP(*Ptr_haveSameSign)(SEXP,SEXP);
+        static Ptr_haveSameSign p_haveSameSign = NULL;
+        if (p_haveSameSign == NULL) {
+            validateSignature("bool(*haveSameSign)(double,double)");
+            p_haveSameSign = (Ptr_haveSameSign)R_GetCCallable("STAAR", "_STAAR_haveSameSign");
+        }
+        RObject rcpp_result_gen;
+        {
+            RNGScope RCPP_rngScope_gen;
+            rcpp_result_gen = p_haveSameSign(Shield<SEXP>(Rcpp::wrap(a)), Shield<SEXP>(Rcpp::wrap(b)));
+        }
+        if (rcpp_result_gen.inherits("interrupted-error"))
+            throw Rcpp::internal::InterruptedException();
+        if (Rcpp::internal::isLongjumpSentinel(rcpp_result_gen))
+            throw Rcpp::LongjumpException(rcpp_result_gen);
+        if (rcpp_result_gen.inherits("try-error"))
+            throw Rcpp::exception(Rcpp::as<std::string>(rcpp_result_gen).c_str());
+        return Rcpp::as<bool >(rcpp_result_gen);
     }
 
     inline List matrix_flip(arma::mat G) {

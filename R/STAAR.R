@@ -25,7 +25,7 @@
 #' defining rare variants (default = 0.01).
 #' @param rv_num_cutoff the cutoff of minimum number of variants of analyzing
 #' a given variant-set (default = 2).
-#' @return a list with the following members:
+#' @return A list with the following members:
 #' @return \code{num_variant}: the number of variants with minor allele frequency > 0 and less than
 #' \code{rare_maf_cutoff} in the given variant-set that are used for performing the
 #' variant-set using STAAR.
@@ -83,7 +83,7 @@
 STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
                   rare_maf_cutoff=0.01,rv_num_cutoff=2){
 
-  if(class(genotype)[1] != "matrix" && !(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix")){
+  if(!inherits(genotype, "matrix") && !inherits(genotype, "Matrix")){
     stop("genotype is not a matrix!")
   }
 
@@ -96,7 +96,7 @@ STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
     stop(paste0("Dimensions don't match for genotype and annotation!"))
   }
 
-  if(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix"){
+  if(inherits(genotype, "sparseMatrix")){
     genotype <- as.matrix(genotype)
   }
   genotype <- matrix_flip(genotype)

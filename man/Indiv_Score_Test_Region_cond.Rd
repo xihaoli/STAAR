@@ -40,7 +40,7 @@ as well as all covariates used in fitting the null model (fully adjusted) and ta
 and taking the residuals (default = \code{optimal}).}
 }
 \value{
-a data frame with p rows corresponding to the p genetic variants in the given variant-set
+A data frame with p rows corresponding to the p genetic variants in the given variant-set
 and three columns: \code{Score_cond} (the conditional score test statistic adjusting for variants
 in \code{genotype_adj}), \code{SE_cond} (the standard error associated with the
 conditional score test statistic), and \code{pvalue_cond} (the conditional score test p-value).

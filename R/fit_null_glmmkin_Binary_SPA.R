@@ -1,10 +1,10 @@
 #' Fit generalized linear mixed model with known relationship matrices
-#' under the null hypothesis for related samples.
+#' under the null hypothesis for imbalanced case-control related samples.
 #'
-#' The \code{fit_null_glmmkin} function is a wrapper of the \code{\link{glmmkin}} function from
+#' The \code{fit_null_glmmkin_Binary_SPA} function is a wrapper of the \code{\link{glmmkin}} function from
 #' the \code{\link{GMMAT}} package that fits a regression model under the null hypothesis
-#' for related samples, which provides the preliminary step for subsequent
-#' variant-set tests in whole-genome sequencing data analysis. See \code{\link{glmmkin}} for more details.
+#' for imbalanced case-control related samples, which provides the preliminary step for subsequent
+#' variant-set tests in whole genome sequencing data analysis. See \code{\link{glmmkin}} for more details.
 #' @param fixed an object of class \code{\link{formula}} (or one that can be coerced to that class):
 #' a symbolic description of the fixed effects model to be fitted.
 #' @param data a data frame or list (or object coercible by \code{\link{as.data.frame}} to a data frame)
@@ -48,6 +48,7 @@
 #' @param ... additional arguments that could be passed to \code{\link{glm}}.
 #' @return The function returns an object of the model fit from \code{\link{glmmkin}} (\code{obj_nullmodel}),
 #' with additional elements indicating the samples are related (\code{obj_nullmodel$relatedness = TRUE}),
+#' indicating the smaples are in imbalanced case-control design (obj_nullmodel$use_SPA = TRUE)
 #' and whether the \code{kins} matrix is sparse when fitting the null model. See \code{\link{glmmkin}} for more details.
 #' @references Chen, H., et al. (2016). Control for population structure and relatedness for binary traits
 #' in genetic association studies via logistic mixed models. \emph{The American Journal of Human Genetics}, \emph{98}(4), 653-666.
@@ -59,12 +60,12 @@
 #' (\href{https://cloud.r-project.org/web/packages/GMMAT/vignettes/GMMAT.pdf}{web})
 #' @export
 
-fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NULL,
-                             kins_cutoff = 0.022, id, random.slope = NULL, groups = NULL,
-                             family = binomial(link = "logit"), method = "REML",
-                             method.optim = "AI", maxiter = 500, tol = 1e-5,
-                             taumin = 1e-5, taumax = 1e5, tauregion = 10,
-                             verbose = FALSE, ...){
+fit_null_glmmkin_Binary_SPA <- function(fixed, data = parent.frame(), kins, use_sparse = NULL,
+                                        kins_cutoff = 0.022, id, random.slope = NULL, groups = NULL,
+                                        family = binomial(link = "logit"), method = "REML",
+                                        method.optim = "AI", maxiter = 500, tol = 1e-5,
+                                        taumin = 1e-5, taumax = 1e5, tauregion = 10,
+                                        verbose = FALSE, ...){
   if(!inherits(kins, "matrix") && !inherits(kins, "Matrix")){
     stop("kins is not a matrix!")
   }
@@ -77,11 +78,27 @@ fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NU
                              tol = tol, taumin = taumin, taumax = taumax,
                              tauregion = tauregion, verbose = verbose, ...)
     obj_nullmodel$sparse_kins <- TRUE
+
+    ## generate W
+	muhat <- obj_nullmodel$fitted.values
+	working <- muhat*(1-muhat)
+
+	X <- obj_nullmodel$X
+
+	obj_nullmodel$XW <- t(X)%*%diag(working)
+	obj_nullmodel$XXWX_inv <- X%*%solve(t(X)%*%diag(working)%*%X)
+
+	## generate Sigma_i
+	obj_nullmodel$XSigma_i <- crossprod(X,obj_nullmodel$Sigma_i)
+	obj_nullmodel$XXSigma_iX_inv <- X%*%obj_nullmodel$cov
+
   }else if(!is.null(use_sparse) && use_sparse){
-    print(paste0("kins is a dense matrix, transforming it into a sparse matrix using cutoff ", kins_cutoff, "."))
+    print(paste0("kins is a dense matrix, transforming it into a sparse matrix using cutoff ", kins_cutoff,"."))
+    #kins <- replace(kins, kins <= kins_cutoff, 0)
+    #kins_sp <- Matrix(kins, sparse = TRUE)
     kins_sp <- makeSparseMatrix(kins, thresh = kins_cutoff)
     if(inherits(kins_sp, "dsyMatrix") || kins_cutoff <= min(kins)){
-      stop(paste0("kins is still a dense matrix using cutoff ", kins_cutoff, ". Please try a larger kins_cutoff or use_sparse = FALSE!"))
+      stop(paste0("kins is still a dense matrix using cutoff ", kins_cutoff,". Please try a larger kins_cutoff or use_sparse = FALSE!"))
     }
     rm(kins)
     obj_nullmodel <- glmmkin(fixed = fixed, data = data, kins = kins_sp, id = id,
@@ -91,6 +108,19 @@ fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NU
                              tol = tol, taumin = taumin, taumax = taumax,
                              tauregion = tauregion, verbose = verbose, ...)
     obj_nullmodel$sparse_kins <- TRUE
+
+    ## generate W
+	muhat <- obj_nullmodel$fitted.values
+	working <- muhat*(1-muhat)
+
+	X <- obj_nullmodel$X
+ 	obj_nullmodel$XW <- t(X)%*%diag(working)
+	obj_nullmodel$XXWX_inv <- X%*%solve(t(X)%*%diag(working)%*%X)
+
+	## generate Sigma_i
+	obj_nullmodel$XSigma_i <- crossprod(X,obj_nullmodel$Sigma_i)
+	obj_nullmodel$XXSigma_iX_inv <- X%*%obj_nullmodel$cov
+
   }else{
     print("kins is a dense matrix.")
     obj_nullmodel <- glmmkin(fixed = fixed, data = data, kins = kins, id = id,
@@ -100,8 +130,19 @@ fit_null_glmmkin <- function(fixed, data = parent.frame(), kins, use_sparse = NU
                              tol = tol, taumin = taumin, taumax = taumax,
                              tauregion = tauregion, verbose = verbose, ...)
     obj_nullmodel$sparse_kins <- FALSE
+
+	## generate W
+	muhat <- obj_nullmodel$fitted.values
+	working <- muhat*(1-muhat)
+
+	X <- obj_nullmodel$X
+
+	obj_nullmodel$XW <- t(X)%*%diag(working)
+	obj_nullmodel$XXWX_inv <- X%*%solve(t(X)%*%diag(working)%*%X)
   }
   obj_nullmodel$relatedness <- TRUE
+  obj_nullmodel$use_SPA <- TRUE
+
   return(obj_nullmodel)
 }
 

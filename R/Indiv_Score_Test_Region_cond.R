@@ -24,7 +24,7 @@
 #' as well as all covariates used in fitting the null model (fully adjusted) and taking the residuals;
 #' \code{naive} refers to regressing residuals from the null model on \code{genotype_adj}
 #' and taking the residuals (default = \code{optimal}).
-#' @return a data frame with p rows corresponding to the p genetic variants in the given variant-set
+#' @return A data frame with p rows corresponding to the p genetic variants in the given variant-set
 #' and three columns: \code{Score_cond} (the conditional score test statistic adjusting for variants
 #' in \code{genotype_adj}), \code{SE_cond} (the standard error associated with the
 #' conditional score test statistic), and \code{pvalue_cond} (the conditional score test p-value).
@@ -44,7 +44,7 @@ Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
                                          method_cond=c("optimal","naive")){
 
   method_cond <- match.arg(method_cond) # evaluate choices
-  if(class(genotype)[1] != "matrix" && !(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix")){
+  if(!inherits(genotype, "matrix") && !inherits(genotype, "Matrix")){
     stop("genotype is not a matrix!")
   }
 
@@ -56,11 +56,11 @@ Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
                         SE_cond = rep(NA, dim(genotype)[2]),
                         pvalue_cond = rep(NA, dim(genotype)[2]))
 
-  if(!is.null(attr(class(genotype), "package")) && attr(class(genotype), "package") == "Matrix"){
+  if(inherits(genotype, "sparseMatrix")){
     genotype <- as.matrix(genotype)
   }
 
-  if(class(genotype_adj)[1] == "numeric"){
+  if(inherits(genotype_adj, "numeric")){
     genotype_adj <- matrix(genotype_adj, ncol=1)
   }
 

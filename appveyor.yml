@@ -14,7 +14,7 @@ install:
 
 environment:
   matrix:
-  - R_VERSION: stable
+  - R_VERSION: 4.2.3
     R_ARCH: x64
     BIOC_USE_DEVEL: FALSE
     PKGTYPE: binary

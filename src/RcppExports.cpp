@@ -9,6 +9,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // Bisection
 double Bisection(arma::vec egvalues, double q, double xmin, double xmax);
 static SEXP _STAAR_Bisection_try(SEXP egvaluesSEXP, SEXP qSEXP, SEXP xminSEXP, SEXP xmaxSEXP) {
@@ -27,6 +32,45 @@ RcppExport SEXP _STAAR_Bisection(SEXP egvaluesSEXP, SEXP qSEXP, SEXP xminSEXP, S
     {
         Rcpp::RNGScope rcpp_rngScope_gen;
         rcpp_result_gen = PROTECT(_STAAR_Bisection_try(egvaluesSEXP, qSEXP, xminSEXP, xmaxSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// Bisection_Binary_SPA
+double Bisection_Binary_SPA(arma::vec muhat, arma::vec G, double q, double xmin, double xmax, double tol);
+static SEXP _STAAR_Bisection_Binary_SPA_try(SEXP muhatSEXP, SEXP GSEXP, SEXP qSEXP, SEXP xminSEXP, SEXP xmaxSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    Rcpp::traits::input_parameter< double >::type q(qSEXP);
+    Rcpp::traits::input_parameter< double >::type xmin(xminSEXP);
+    Rcpp::traits::input_parameter< double >::type xmax(xmaxSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(Bisection_Binary_SPA(muhat, G, q, xmin, xmax, tol));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_Bisection_Binary_SPA(SEXP muhatSEXP, SEXP GSEXP, SEXP qSEXP, SEXP xminSEXP, SEXP xmaxSEXP, SEXP tolSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_Bisection_Binary_SPA_try(muhatSEXP, GSEXP, qSEXP, xminSEXP, xmaxSEXP, tolSEXP));
     }
     Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
     if (rcpp_isInterrupt_gen) {
@@ -212,6 +256,80 @@ RcppExport SEXP _STAAR_K1(SEXP xSEXP, SEXP egvaluesSEXP, SEXP qSEXP) {
     UNPROTECT(1);
     return rcpp_result_gen;
 }
+// K1_Binary_SPA
+double K1_Binary_SPA(double x, arma::vec muhat, arma::vec G, double q);
+static SEXP _STAAR_K1_Binary_SPA_try(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP, SEXP qSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    Rcpp::traits::input_parameter< double >::type q(qSEXP);
+    rcpp_result_gen = Rcpp::wrap(K1_Binary_SPA(x, muhat, G, q));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_K1_Binary_SPA(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP, SEXP qSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_K1_Binary_SPA_try(xSEXP, muhatSEXP, GSEXP, qSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// K1_Binary_SPA_alt
+double K1_Binary_SPA_alt(double x, arma::vec muhat, arma::vec G, double q);
+static SEXP _STAAR_K1_Binary_SPA_alt_try(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP, SEXP qSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    Rcpp::traits::input_parameter< double >::type q(qSEXP);
+    rcpp_result_gen = Rcpp::wrap(K1_Binary_SPA_alt(x, muhat, G, q));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_K1_Binary_SPA_alt(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP, SEXP qSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_K1_Binary_SPA_alt_try(xSEXP, muhatSEXP, GSEXP, qSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
 // K2
 double K2(double x, arma::vec egvalues);
 static SEXP _STAAR_K2_try(SEXP xSEXP, SEXP egvaluesSEXP) {
@@ -246,6 +364,276 @@ RcppExport SEXP _STAAR_K2(SEXP xSEXP, SEXP egvaluesSEXP) {
     }
     UNPROTECT(1);
     return rcpp_result_gen;
+}
+// K2_Binary_SPA
+double K2_Binary_SPA(double x, arma::vec muhat, arma::vec G);
+static SEXP _STAAR_K2_Binary_SPA_try(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    rcpp_result_gen = Rcpp::wrap(K2_Binary_SPA(x, muhat, G));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_K2_Binary_SPA(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_K2_Binary_SPA_try(xSEXP, muhatSEXP, GSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// K2_Binary_SPA_alt
+double K2_Binary_SPA_alt(double x, arma::vec muhat, arma::vec G);
+static SEXP _STAAR_K2_Binary_SPA_alt_try(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    rcpp_result_gen = Rcpp::wrap(K2_Binary_SPA_alt(x, muhat, G));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_K2_Binary_SPA_alt(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_K2_Binary_SPA_alt_try(xSEXP, muhatSEXP, GSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// K_Binary_SPA
+double K_Binary_SPA(double x, arma::vec muhat, arma::vec G);
+static SEXP _STAAR_K_Binary_SPA_try(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    rcpp_result_gen = Rcpp::wrap(K_Binary_SPA(x, muhat, G));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_K_Binary_SPA(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_K_Binary_SPA_try(xSEXP, muhatSEXP, GSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// K_Binary_SPA_alt
+double K_Binary_SPA_alt(double x, arma::vec muhat, arma::vec G);
+static SEXP _STAAR_K_Binary_SPA_alt_try(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    rcpp_result_gen = Rcpp::wrap(K_Binary_SPA_alt(x, muhat, G));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_K_Binary_SPA_alt(SEXP xSEXP, SEXP muhatSEXP, SEXP GSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_K_Binary_SPA_alt_try(xSEXP, muhatSEXP, GSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// NR_Binary_SPA
+double NR_Binary_SPA(arma::vec muhat, arma::vec G, double q, double init, double tol, int max_iter);
+static SEXP _STAAR_NR_Binary_SPA_try(SEXP muhatSEXP, SEXP GSEXP, SEXP qSEXP, SEXP initSEXP, SEXP tolSEXP, SEXP max_iterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    Rcpp::traits::input_parameter< double >::type q(qSEXP);
+    Rcpp::traits::input_parameter< double >::type init(initSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    rcpp_result_gen = Rcpp::wrap(NR_Binary_SPA(muhat, G, q, init, tol, max_iter));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_NR_Binary_SPA(SEXP muhatSEXP, SEXP GSEXP, SEXP qSEXP, SEXP initSEXP, SEXP tolSEXP, SEXP max_iterSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_NR_Binary_SPA_try(muhatSEXP, GSEXP, qSEXP, initSEXP, tolSEXP, max_iterSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// STAAR_B_Binary_SPA
+arma::vec STAAR_B_Binary_SPA(arma::mat G, arma::mat XW, arma::mat XXWX_inv, arma::vec residuals, arma::vec muhat, arma::mat weights_B, double tol, int max_iter);
+RcppExport SEXP _STAAR_STAAR_B_Binary_SPA(SEXP GSEXP, SEXP XWSEXP, SEXP XXWX_invSEXP, SEXP residualsSEXP, SEXP muhatSEXP, SEXP weights_BSEXP, SEXP tolSEXP, SEXP max_iterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type G(GSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type XW(XWSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type XXWX_inv(XXWX_invSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type residuals(residualsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type weights_B(weights_BSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    rcpp_result_gen = Rcpp::wrap(STAAR_B_Binary_SPA(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter));
+    return rcpp_result_gen;
+END_RCPP
+}
+// STAAR_B_SPA
+arma::vec STAAR_B_SPA(arma::mat G, arma::mat XW, arma::mat XXWX_inv, arma::vec residuals, arma::vec muhat, arma::mat weights_B, double tol, int max_iter, double p_filter_cutoff, arma::sp_mat G_sp, arma::mat X, arma::vec working, double sigma, int fam);
+RcppExport SEXP _STAAR_STAAR_B_SPA(SEXP GSEXP, SEXP XWSEXP, SEXP XXWX_invSEXP, SEXP residualsSEXP, SEXP muhatSEXP, SEXP weights_BSEXP, SEXP tolSEXP, SEXP max_iterSEXP, SEXP p_filter_cutoffSEXP, SEXP G_spSEXP, SEXP XSEXP, SEXP workingSEXP, SEXP sigmaSEXP, SEXP famSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type G(GSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type XW(XWSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type XXWX_inv(XXWX_invSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type residuals(residualsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type weights_B(weights_BSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type p_filter_cutoff(p_filter_cutoffSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type G_sp(G_spSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type working(workingSEXP);
+    Rcpp::traits::input_parameter< double >::type sigma(sigmaSEXP);
+    Rcpp::traits::input_parameter< int >::type fam(famSEXP);
+    rcpp_result_gen = Rcpp::wrap(STAAR_B_SPA(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, X, working, sigma, fam));
+    return rcpp_result_gen;
+END_RCPP
+}
+// STAAR_B_SPA_SMMAT
+arma::vec STAAR_B_SPA_SMMAT(arma::mat G, arma::mat XW, arma::mat XXWX_inv, arma::vec residuals, arma::vec muhat, arma::mat weights_B, double tol, int max_iter, double p_filter_cutoff, arma::vec residuals_scalar, arma::sp_mat G_sp, arma::mat P);
+RcppExport SEXP _STAAR_STAAR_B_SPA_SMMAT(SEXP GSEXP, SEXP XWSEXP, SEXP XXWX_invSEXP, SEXP residualsSEXP, SEXP muhatSEXP, SEXP weights_BSEXP, SEXP tolSEXP, SEXP max_iterSEXP, SEXP p_filter_cutoffSEXP, SEXP residuals_scalarSEXP, SEXP G_spSEXP, SEXP PSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type G(GSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type XW(XWSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type XXWX_inv(XXWX_invSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type residuals(residualsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type weights_B(weights_BSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type p_filter_cutoff(p_filter_cutoffSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type residuals_scalar(residuals_scalarSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type G_sp(G_spSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type P(PSEXP);
+    rcpp_result_gen = Rcpp::wrap(STAAR_B_SPA_SMMAT(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, residuals_scalar, G_sp, P));
+    return rcpp_result_gen;
+END_RCPP
+}
+// STAAR_B_SPA_SMMAT_sparse
+arma::vec STAAR_B_SPA_SMMAT_sparse(arma::mat G, arma::mat XW, arma::mat XXWX_inv, arma::vec residuals, arma::vec muhat, arma::mat weights_B, double tol, int max_iter, double p_filter_cutoff, arma::sp_mat G_sp, arma::sp_mat Sigma_i, arma::mat Sigma_iX, arma::mat cov);
+RcppExport SEXP _STAAR_STAAR_B_SPA_SMMAT_sparse(SEXP GSEXP, SEXP XWSEXP, SEXP XXWX_invSEXP, SEXP residualsSEXP, SEXP muhatSEXP, SEXP weights_BSEXP, SEXP tolSEXP, SEXP max_iterSEXP, SEXP p_filter_cutoffSEXP, SEXP G_spSEXP, SEXP Sigma_iSEXP, SEXP Sigma_iXSEXP, SEXP covSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type G(GSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type XW(XWSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type XXWX_inv(XXWX_invSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type residuals(residualsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type weights_B(weights_BSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type p_filter_cutoff(p_filter_cutoffSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type G_sp(G_spSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type Sigma_i(Sigma_iSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Sigma_iX(Sigma_iXSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type cov(covSEXP);
+    rcpp_result_gen = Rcpp::wrap(STAAR_B_SPA_SMMAT_sparse(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, Sigma_i, Sigma_iX, cov));
+    return rcpp_result_gen;
+END_RCPP
 }
 // STAAR_O
 arma::vec STAAR_O(arma::sp_mat G, arma::mat X, arma::vec working, double sigma, int fam, arma::vec residuals, arma::mat weights_B, arma::mat weights_S, arma::mat weights_A, arma::vec mac, int mac_thres);
@@ -362,6 +750,195 @@ RcppExport SEXP _STAAR_Saddle(SEXP qSEXP, SEXP egvaluesSEXP) {
     UNPROTECT(1);
     return rcpp_result_gen;
 }
+// Saddle_Binary_SPA
+double Saddle_Binary_SPA(double q, arma::vec muhat, arma::vec G, double tol, int max_iter, bool lower);
+static SEXP _STAAR_Saddle_Binary_SPA_try(SEXP qSEXP, SEXP muhatSEXP, SEXP GSEXP, SEXP tolSEXP, SEXP max_iterSEXP, SEXP lowerSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type q(qSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< bool >::type lower(lowerSEXP);
+    rcpp_result_gen = Rcpp::wrap(Saddle_Binary_SPA(q, muhat, G, tol, max_iter, lower));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_Saddle_Binary_SPA(SEXP qSEXP, SEXP muhatSEXP, SEXP GSEXP, SEXP tolSEXP, SEXP max_iterSEXP, SEXP lowerSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_Saddle_Binary_SPA_try(qSEXP, muhatSEXP, GSEXP, tolSEXP, max_iterSEXP, lowerSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// Saddle_Binary_SPA_Bisection
+double Saddle_Binary_SPA_Bisection(double q, arma::vec muhat, arma::vec G, double tol, int max_iter, double xmin, double xmax, bool lower);
+static SEXP _STAAR_Saddle_Binary_SPA_Bisection_try(SEXP qSEXP, SEXP muhatSEXP, SEXP GSEXP, SEXP tolSEXP, SEXP max_iterSEXP, SEXP xminSEXP, SEXP xmaxSEXP, SEXP lowerSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type q(qSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type xmin(xminSEXP);
+    Rcpp::traits::input_parameter< double >::type xmax(xmaxSEXP);
+    Rcpp::traits::input_parameter< bool >::type lower(lowerSEXP);
+    rcpp_result_gen = Rcpp::wrap(Saddle_Binary_SPA_Bisection(q, muhat, G, tol, max_iter, xmin, xmax, lower));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_Saddle_Binary_SPA_Bisection(SEXP qSEXP, SEXP muhatSEXP, SEXP GSEXP, SEXP tolSEXP, SEXP max_iterSEXP, SEXP xminSEXP, SEXP xmaxSEXP, SEXP lowerSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_Saddle_Binary_SPA_Bisection_try(qSEXP, muhatSEXP, GSEXP, tolSEXP, max_iterSEXP, xminSEXP, xmaxSEXP, lowerSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// check_is_na
+bool check_is_na(double x);
+static SEXP _STAAR_check_is_na_try(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(check_is_na(x));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_check_is_na(SEXP xSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_check_is_na_try(xSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// goldenSectionSearchForSignChange
+arma::vec goldenSectionSearchForSignChange(double a, double b, arma::vec muhat, arma::vec G, double q, double tol, int max_iter);
+static SEXP _STAAR_goldenSectionSearchForSignChange_try(SEXP aSEXP, SEXP bSEXP, SEXP muhatSEXP, SEXP GSEXP, SEXP qSEXP, SEXP tolSEXP, SEXP max_iterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type muhat(muhatSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type G(GSEXP);
+    Rcpp::traits::input_parameter< double >::type q(qSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    rcpp_result_gen = Rcpp::wrap(goldenSectionSearchForSignChange(a, b, muhat, G, q, tol, max_iter));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_goldenSectionSearchForSignChange(SEXP aSEXP, SEXP bSEXP, SEXP muhatSEXP, SEXP GSEXP, SEXP qSEXP, SEXP tolSEXP, SEXP max_iterSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_goldenSectionSearchForSignChange_try(aSEXP, bSEXP, muhatSEXP, GSEXP, qSEXP, tolSEXP, max_iterSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
+// haveSameSign
+bool haveSameSign(double a, double b);
+static SEXP _STAAR_haveSameSign_try(SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(haveSameSign(a, b));
+    return rcpp_result_gen;
+END_RCPP_RETURN_ERROR
+}
+RcppExport SEXP _STAAR_haveSameSign(SEXP aSEXP, SEXP bSEXP) {
+    SEXP rcpp_result_gen;
+    {
+        Rcpp::RNGScope rcpp_rngScope_gen;
+        rcpp_result_gen = PROTECT(_STAAR_haveSameSign_try(aSEXP, bSEXP));
+    }
+    Rboolean rcpp_isInterrupt_gen = Rf_inherits(rcpp_result_gen, "interrupted-error");
+    if (rcpp_isInterrupt_gen) {
+        UNPROTECT(1);
+        Rf_onintr();
+    }
+    bool rcpp_isLongjump_gen = Rcpp::internal::isLongjumpSentinel(rcpp_result_gen);
+    if (rcpp_isLongjump_gen) {
+        Rcpp::internal::resumeJump(rcpp_result_gen);
+    }
+    Rboolean rcpp_isError_gen = Rf_inherits(rcpp_result_gen, "try-error");
+    if (rcpp_isError_gen) {
+        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);
+        UNPROTECT(1);
+        Rf_error(CHAR(rcpp_msgSEXP_gen));
+    }
+    UNPROTECT(1);
+    return rcpp_result_gen;
+}
 // matrix_flip
 List matrix_flip(arma::mat G);
 static SEXP _STAAR_matrix_flip_try(SEXP GSEXP) {
@@ -436,11 +1013,24 @@ static int _STAAR_RcppExport_validate(const char* sig) {
     static std::set<std::string> signatures;
     if (signatures.empty()) {
         signatures.insert("double(*Bisection)(arma::vec,double,double,double)");
+        signatures.insert("double(*Bisection_Binary_SPA)(arma::vec,arma::vec,double,double,double,double)");
         signatures.insert("double(*CCT_pval)(arma::vec,arma::vec)");
         signatures.insert("double(*K)(double,arma::vec)");
         signatures.insert("double(*K1)(double,arma::vec,double)");
+        signatures.insert("double(*K1_Binary_SPA)(double,arma::vec,arma::vec,double)");
+        signatures.insert("double(*K1_Binary_SPA_alt)(double,arma::vec,arma::vec,double)");
         signatures.insert("double(*K2)(double,arma::vec)");
+        signatures.insert("double(*K2_Binary_SPA)(double,arma::vec,arma::vec)");
+        signatures.insert("double(*K2_Binary_SPA_alt)(double,arma::vec,arma::vec)");
+        signatures.insert("double(*K_Binary_SPA)(double,arma::vec,arma::vec)");
+        signatures.insert("double(*K_Binary_SPA_alt)(double,arma::vec,arma::vec)");
+        signatures.insert("double(*NR_Binary_SPA)(arma::vec,arma::vec,double,double,double,int)");
         signatures.insert("double(*Saddle)(double,arma::vec)");
+        signatures.insert("double(*Saddle_Binary_SPA)(double,arma::vec,arma::vec,double,int,bool)");
+        signatures.insert("double(*Saddle_Binary_SPA_Bisection)(double,arma::vec,arma::vec,double,int,double,double,bool)");
+        signatures.insert("bool(*check_is_na)(double)");
+        signatures.insert("arma::vec(*goldenSectionSearchForSignChange)(double,double,arma::vec,arma::vec,double,double,int)");
+        signatures.insert("bool(*haveSameSign)(double,double)");
         signatures.insert("List(*matrix_flip)(arma::mat)");
         signatures.insert("arma::mat(*matrix_impute)(arma::mat)");
     }
@@ -450,11 +1040,24 @@ static int _STAAR_RcppExport_validate(const char* sig) {
 // registerCCallable (register entry points for exported C++ functions)
 RcppExport SEXP _STAAR_RcppExport_registerCCallable() { 
     R_RegisterCCallable("STAAR", "_STAAR_Bisection", (DL_FUNC)_STAAR_Bisection_try);
+    R_RegisterCCallable("STAAR", "_STAAR_Bisection_Binary_SPA", (DL_FUNC)_STAAR_Bisection_Binary_SPA_try);
     R_RegisterCCallable("STAAR", "_STAAR_CCT_pval", (DL_FUNC)_STAAR_CCT_pval_try);
     R_RegisterCCallable("STAAR", "_STAAR_K", (DL_FUNC)_STAAR_K_try);
     R_RegisterCCallable("STAAR", "_STAAR_K1", (DL_FUNC)_STAAR_K1_try);
+    R_RegisterCCallable("STAAR", "_STAAR_K1_Binary_SPA", (DL_FUNC)_STAAR_K1_Binary_SPA_try);
+    R_RegisterCCallable("STAAR", "_STAAR_K1_Binary_SPA_alt", (DL_FUNC)_STAAR_K1_Binary_SPA_alt_try);
     R_RegisterCCallable("STAAR", "_STAAR_K2", (DL_FUNC)_STAAR_K2_try);
+    R_RegisterCCallable("STAAR", "_STAAR_K2_Binary_SPA", (DL_FUNC)_STAAR_K2_Binary_SPA_try);
+    R_RegisterCCallable("STAAR", "_STAAR_K2_Binary_SPA_alt", (DL_FUNC)_STAAR_K2_Binary_SPA_alt_try);
+    R_RegisterCCallable("STAAR", "_STAAR_K_Binary_SPA", (DL_FUNC)_STAAR_K_Binary_SPA_try);
+    R_RegisterCCallable("STAAR", "_STAAR_K_Binary_SPA_alt", (DL_FUNC)_STAAR_K_Binary_SPA_alt_try);
+    R_RegisterCCallable("STAAR", "_STAAR_NR_Binary_SPA", (DL_FUNC)_STAAR_NR_Binary_SPA_try);
     R_RegisterCCallable("STAAR", "_STAAR_Saddle", (DL_FUNC)_STAAR_Saddle_try);
+    R_RegisterCCallable("STAAR", "_STAAR_Saddle_Binary_SPA", (DL_FUNC)_STAAR_Saddle_Binary_SPA_try);
+    R_RegisterCCallable("STAAR", "_STAAR_Saddle_Binary_SPA_Bisection", (DL_FUNC)_STAAR_Saddle_Binary_SPA_Bisection_try);
+    R_RegisterCCallable("STAAR", "_STAAR_check_is_na", (DL_FUNC)_STAAR_check_is_na_try);
+    R_RegisterCCallable("STAAR", "_STAAR_goldenSectionSearchForSignChange", (DL_FUNC)_STAAR_goldenSectionSearchForSignChange_try);
+    R_RegisterCCallable("STAAR", "_STAAR_haveSameSign", (DL_FUNC)_STAAR_haveSameSign_try);
     R_RegisterCCallable("STAAR", "_STAAR_matrix_flip", (DL_FUNC)_STAAR_matrix_flip_try);
     R_RegisterCCallable("STAAR", "_STAAR_matrix_impute", (DL_FUNC)_STAAR_matrix_impute_try);
     R_RegisterCCallable("STAAR", "_STAAR_RcppExport_validate", (DL_FUNC)_STAAR_RcppExport_validate);
@@ -463,6 +1066,7 @@ RcppExport SEXP _STAAR_RcppExport_registerCCallable() {
 
 static const R_CallMethodDef CallEntries[] = {
     {"_STAAR_Bisection", (DL_FUNC) &_STAAR_Bisection, 4},
+    {"_STAAR_Bisection_Binary_SPA", (DL_FUNC) &_STAAR_Bisection_Binary_SPA, 6},
     {"_STAAR_CCT_pval", (DL_FUNC) &_STAAR_CCT_pval, 2},
     {"_STAAR_Indiv_Score_Test", (DL_FUNC) &_STAAR_Indiv_Score_Test, 6},
     {"_STAAR_Indiv_Score_Test_SMMAT", (DL_FUNC) &_STAAR_Indiv_Score_Test_SMMAT, 3},
@@ -470,12 +1074,28 @@ static const R_CallMethodDef CallEntries[] = {
     {"_STAAR_Indiv_Score_Test_SMMAT_sparse_cond", (DL_FUNC) &_STAAR_Indiv_Score_Test_SMMAT_sparse_cond, 6},
     {"_STAAR_K", (DL_FUNC) &_STAAR_K, 2},
     {"_STAAR_K1", (DL_FUNC) &_STAAR_K1, 3},
+    {"_STAAR_K1_Binary_SPA", (DL_FUNC) &_STAAR_K1_Binary_SPA, 4},
+    {"_STAAR_K1_Binary_SPA_alt", (DL_FUNC) &_STAAR_K1_Binary_SPA_alt, 4},
     {"_STAAR_K2", (DL_FUNC) &_STAAR_K2, 2},
+    {"_STAAR_K2_Binary_SPA", (DL_FUNC) &_STAAR_K2_Binary_SPA, 3},
+    {"_STAAR_K2_Binary_SPA_alt", (DL_FUNC) &_STAAR_K2_Binary_SPA_alt, 3},
+    {"_STAAR_K_Binary_SPA", (DL_FUNC) &_STAAR_K_Binary_SPA, 3},
+    {"_STAAR_K_Binary_SPA_alt", (DL_FUNC) &_STAAR_K_Binary_SPA_alt, 3},
+    {"_STAAR_NR_Binary_SPA", (DL_FUNC) &_STAAR_NR_Binary_SPA, 6},
+    {"_STAAR_STAAR_B_Binary_SPA", (DL_FUNC) &_STAAR_STAAR_B_Binary_SPA, 8},
+    {"_STAAR_STAAR_B_SPA", (DL_FUNC) &_STAAR_STAAR_B_SPA, 14},
+    {"_STAAR_STAAR_B_SPA_SMMAT", (DL_FUNC) &_STAAR_STAAR_B_SPA_SMMAT, 12},
+    {"_STAAR_STAAR_B_SPA_SMMAT_sparse", (DL_FUNC) &_STAAR_STAAR_B_SPA_SMMAT_sparse, 13},
     {"_STAAR_STAAR_O", (DL_FUNC) &_STAAR_STAAR_O, 11},
     {"_STAAR_STAAR_O_SMMAT", (DL_FUNC) &_STAAR_STAAR_O_SMMAT, 8},
     {"_STAAR_STAAR_O_SMMAT_sparse", (DL_FUNC) &_STAAR_STAAR_O_SMMAT_sparse, 10},
     {"_STAAR_STAAR_O_SMMAT_sparse_cond", (DL_FUNC) &_STAAR_STAAR_O_SMMAT_sparse_cond, 11},
     {"_STAAR_Saddle", (DL_FUNC) &_STAAR_Saddle, 2},
+    {"_STAAR_Saddle_Binary_SPA", (DL_FUNC) &_STAAR_Saddle_Binary_SPA, 6},
+    {"_STAAR_Saddle_Binary_SPA_Bisection", (DL_FUNC) &_STAAR_Saddle_Binary_SPA_Bisection, 8},
+    {"_STAAR_check_is_na", (DL_FUNC) &_STAAR_check_is_na, 1},
+    {"_STAAR_goldenSectionSearchForSignChange", (DL_FUNC) &_STAAR_goldenSectionSearchForSignChange, 7},
+    {"_STAAR_haveSameSign", (DL_FUNC) &_STAAR_haveSameSign, 2},
     {"_STAAR_matrix_flip", (DL_FUNC) &_STAAR_matrix_flip, 1},
     {"_STAAR_matrix_impute", (DL_FUNC) &_STAAR_matrix_impute, 1},
     {"_STAAR_RcppExport_registerCCallable", (DL_FUNC) &_STAAR_RcppExport_registerCCallable, 0},

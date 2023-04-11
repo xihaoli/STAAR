@@ -14,7 +14,7 @@ between 0 to 1, to be combined.}
 equal weights are assumed (default = NULL).}
 }
 \value{
-the aggregated p-value combining p-values from the vector \code{pvals}.
+The aggregated p-value combining p-values from the vector \code{pvals}.
 }
 \description{
 The \code{CCT} function takes in a numeric vector of p-values, a numeric

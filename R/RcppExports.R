@@ -5,6 +5,10 @@ Bisection <- function(egvalues, q, xmin, xmax) {
     .Call(`_STAAR_Bisection`, egvalues, q, xmin, xmax)
 }
 
+Bisection_Binary_SPA <- function(muhat, G, q, xmin, xmax, tol) {
+    .Call(`_STAAR_Bisection_Binary_SPA`, muhat, G, q, xmin, xmax, tol)
+}
+
 CCT_pval <- function(x, weights) {
     .Call(`_STAAR_CCT_pval`, x, weights)
 }
@@ -33,8 +37,52 @@ K1 <- function(x, egvalues, q) {
     .Call(`_STAAR_K1`, x, egvalues, q)
 }
 
+K1_Binary_SPA <- function(x, muhat, G, q) {
+    .Call(`_STAAR_K1_Binary_SPA`, x, muhat, G, q)
+}
+
+K1_Binary_SPA_alt <- function(x, muhat, G, q) {
+    .Call(`_STAAR_K1_Binary_SPA_alt`, x, muhat, G, q)
+}
+
 K2 <- function(x, egvalues) {
     .Call(`_STAAR_K2`, x, egvalues)
+}
+
+K2_Binary_SPA <- function(x, muhat, G) {
+    .Call(`_STAAR_K2_Binary_SPA`, x, muhat, G)
+}
+
+K2_Binary_SPA_alt <- function(x, muhat, G) {
+    .Call(`_STAAR_K2_Binary_SPA_alt`, x, muhat, G)
+}
+
+K_Binary_SPA <- function(x, muhat, G) {
+    .Call(`_STAAR_K_Binary_SPA`, x, muhat, G)
+}
+
+K_Binary_SPA_alt <- function(x, muhat, G) {
+    .Call(`_STAAR_K_Binary_SPA_alt`, x, muhat, G)
+}
+
+NR_Binary_SPA <- function(muhat, G, q, init, tol, max_iter) {
+    .Call(`_STAAR_NR_Binary_SPA`, muhat, G, q, init, tol, max_iter)
+}
+
+STAAR_B_Binary_SPA <- function(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter) {
+    .Call(`_STAAR_STAAR_B_Binary_SPA`, G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter)
+}
+
+STAAR_B_SPA <- function(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, X, working, sigma, fam) {
+    .Call(`_STAAR_STAAR_B_SPA`, G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, X, working, sigma, fam)
+}
+
+STAAR_B_SPA_SMMAT <- function(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, residuals_scalar, G_sp, P) {
+    .Call(`_STAAR_STAAR_B_SPA_SMMAT`, G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, residuals_scalar, G_sp, P)
+}
+
+STAAR_B_SPA_SMMAT_sparse <- function(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, Sigma_i, Sigma_iX, cov) {
+    .Call(`_STAAR_STAAR_B_SPA_SMMAT_sparse`, G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, Sigma_i, Sigma_iX, cov)
 }
 
 STAAR_O <- function(G, X, working, sigma, fam, residuals, weights_B, weights_S, weights_A, mac, mac_thres = 10L) {
@@ -55,6 +103,26 @@ STAAR_O_SMMAT_sparse_cond <- function(G, Sigma_i, Sigma_iX, cov, X_adj, residual
 
 Saddle <- function(q, egvalues) {
     .Call(`_STAAR_Saddle`, q, egvalues)
+}
+
+Saddle_Binary_SPA <- function(q, muhat, G, tol, max_iter, lower) {
+    .Call(`_STAAR_Saddle_Binary_SPA`, q, muhat, G, tol, max_iter, lower)
+}
+
+Saddle_Binary_SPA_Bisection <- function(q, muhat, G, tol, max_iter, xmin, xmax, lower) {
+    .Call(`_STAAR_Saddle_Binary_SPA_Bisection`, q, muhat, G, tol, max_iter, xmin, xmax, lower)
+}
+
+check_is_na <- function(x) {
+    .Call(`_STAAR_check_is_na`, x)
+}
+
+goldenSectionSearchForSignChange <- function(a, b, muhat, G, q, tol, max_iter) {
+    .Call(`_STAAR_goldenSectionSearchForSignChange`, a, b, muhat, G, q, tol, max_iter)
+}
+
+haveSameSign <- function(a, b) {
+    .Call(`_STAAR_haveSameSign`, a, b)
 }
 
 matrix_flip <- function(G) {

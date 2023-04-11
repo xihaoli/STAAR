@@ -27,7 +27,7 @@ defining rare variants (default = 0.01).}
 a given variant-set (default = 2).}
 }
 \value{
-a data frame with p rows corresponding to the p genetic variants in the given variant-set
+A data frame with p rows corresponding to the p genetic variants in the given variant-set
 and three columns: \code{Score} (the score test statistic), \code{SE} (the standard error associated
 with the score test statistic), and \code{pvalue} (the score test p-value).
 If a variant in the given variant-set has minor allele frequency = 0 or
