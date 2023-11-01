@@ -23,7 +23,7 @@ Can be either "gaussian" for continuous phenotype or "binomial" for binary pheno
 \value{
 The function returns an object of the model fit from \code{\link{glm}} (\code{obj_nullmodel}),
 with additional elements indicating the samples are unrelated
-(\code{obj_nullmodel$relatedness = FALSE}), and indicating the samples are in imbalanced case-control design (obj_nullmodel$use_SPA = TRUE). 
+(\code{obj_nullmodel$relatedness = FALSE}), and indicating the samples are under imbalanced case-control design (obj_nullmodel$use_SPA = TRUE).
 See \code{\link{glm}} for more details.
 }
 \description{
@@ -31,4 +31,9 @@ The \code{fit_null_glm_Binary_SPA} function is a wrapper of the \code{\link{glm}
 \code{\link{stats}} package that fits a regression model under the null hypothesis for
 imbalanced case-control unrelated samples, which provides the preliminary step for subsequent
 variant-set tests in whole genome sequencing data analysis. See \code{\link{glm}} for more details.
+}
+\references{
+Dey, R., et al. (2017). A fast and accurate algorithm to test for binary phenotypes
+and its application to PheWAS. \emph{The American Journal of Human Genetics}, \emph{101}(1), 37-49.
+(\href{https://doi.org/10.1016/j.ajhg.2017.05.014}{pub})
 }
