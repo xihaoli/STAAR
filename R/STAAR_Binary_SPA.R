@@ -201,7 +201,7 @@ STAAR_Binary_SPA <- function(genotype,obj_nullmodel,annotation_phred=NULL,
 		  muhat <- obj_nullmodel$fitted.values
 
 		  ## Normal
-		  X <- model.matrix(obj_nullmodel)
+		  X <- obj_nullmodel$X
 		  working <- obj_nullmodel$weights
 		  sigma <- sqrt(summary(obj_nullmodel)$dispersion)
 		  if(obj_nullmodel$family[1] == "binomial"){
