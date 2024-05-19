@@ -36,7 +36,7 @@ bool haveSameSign(double a, double b);
 
 // [[Rcpp::export]]
 arma::vec STAAR_B_SPA_SMMAT(arma::mat G, arma::mat XW, arma::mat XXWX_inv, arma::vec residuals, arma::vec muhat, arma::mat weights_B, double tol, int max_iter,
-double p_filter_cutoff, arma::vec residuals_scalar, arma::sp_mat G_sp, arma::mat P)
+double p_filter_cutoff, arma::sp_mat G_sp, arma::mat P)
 {
 	int i,k;
 	double sum0 = 0.0;
@@ -94,14 +94,12 @@ double p_filter_cutoff, arma::vec residuals_scalar, arma::sp_mat G_sp, arma::mat
 	
 	bool logp = false;
 	
-	arma::rowvec x_scalar = trans(residuals_scalar)*G_sp;
-
 	for(i = 0; i < wn; i++)
 	{
 		sum0 = 0.0;
 		for (k = 0; k < n; k++)
 		{
-			sum0 = sum0 + x_scalar(k)*weights_B(k,i);
+			sum0 = sum0 + x(k)*weights_B(k,i);
 		}
 		
 		// p-value calculation using normal approximation
@@ -118,11 +116,6 @@ double p_filter_cutoff, arma::vec residuals_scalar, arma::sp_mat G_sp, arma::mat
 		// p-value calculation using SPA approximation
 		if(res(i) < p_filter_cutoff)
 		{
-			sum0 = 0.0;
-			for (k = 0; k < n; k++)
-			{
-				sum0 = sum0 + x(k)*weights_B(k,i);
-			}
 			
 			// calculate p-value
 			respart1 = 1.0;

@@ -591,8 +591,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // STAAR_B_SPA_SMMAT
-arma::vec STAAR_B_SPA_SMMAT(arma::mat G, arma::mat XW, arma::mat XXWX_inv, arma::vec residuals, arma::vec muhat, arma::mat weights_B, double tol, int max_iter, double p_filter_cutoff, arma::vec residuals_scalar, arma::sp_mat G_sp, arma::mat P);
-RcppExport SEXP _STAAR_STAAR_B_SPA_SMMAT(SEXP GSEXP, SEXP XWSEXP, SEXP XXWX_invSEXP, SEXP residualsSEXP, SEXP muhatSEXP, SEXP weights_BSEXP, SEXP tolSEXP, SEXP max_iterSEXP, SEXP p_filter_cutoffSEXP, SEXP residuals_scalarSEXP, SEXP G_spSEXP, SEXP PSEXP) {
+arma::vec STAAR_B_SPA_SMMAT(arma::mat G, arma::mat XW, arma::mat XXWX_inv, arma::vec residuals, arma::vec muhat, arma::mat weights_B, double tol, int max_iter, double p_filter_cutoff, arma::sp_mat G_sp, arma::mat P);
+RcppExport SEXP _STAAR_STAAR_B_SPA_SMMAT(SEXP GSEXP, SEXP XWSEXP, SEXP XXWX_invSEXP, SEXP residualsSEXP, SEXP muhatSEXP, SEXP weights_BSEXP, SEXP tolSEXP, SEXP max_iterSEXP, SEXP p_filter_cutoffSEXP, SEXP G_spSEXP, SEXP PSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -605,10 +605,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< double >::type p_filter_cutoff(p_filter_cutoffSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type residuals_scalar(residuals_scalarSEXP);
     Rcpp::traits::input_parameter< arma::sp_mat >::type G_sp(G_spSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type P(PSEXP);
-    rcpp_result_gen = Rcpp::wrap(STAAR_B_SPA_SMMAT(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, residuals_scalar, G_sp, P));
+    rcpp_result_gen = Rcpp::wrap(STAAR_B_SPA_SMMAT(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, P));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1084,7 +1083,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_STAAR_NR_Binary_SPA", (DL_FUNC) &_STAAR_NR_Binary_SPA, 6},
     {"_STAAR_STAAR_B_Binary_SPA", (DL_FUNC) &_STAAR_STAAR_B_Binary_SPA, 8},
     {"_STAAR_STAAR_B_SPA", (DL_FUNC) &_STAAR_STAAR_B_SPA, 14},
-    {"_STAAR_STAAR_B_SPA_SMMAT", (DL_FUNC) &_STAAR_STAAR_B_SPA_SMMAT, 12},
+    {"_STAAR_STAAR_B_SPA_SMMAT", (DL_FUNC) &_STAAR_STAAR_B_SPA_SMMAT, 11},
     {"_STAAR_STAAR_B_SPA_SMMAT_sparse", (DL_FUNC) &_STAAR_STAAR_B_SPA_SMMAT_sparse, 13},
     {"_STAAR_STAAR_O", (DL_FUNC) &_STAAR_STAAR_O, 11},
     {"_STAAR_STAAR_O_SMMAT", (DL_FUNC) &_STAAR_STAAR_O_SMMAT, 8},

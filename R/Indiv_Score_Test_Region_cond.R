@@ -83,11 +83,8 @@ Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
     if(obj_nullmodel$relatedness){
       if(!obj_nullmodel$sparse_kins){
         P <- obj_nullmodel$P
-        P_scalar <- sqrt(dim(P)[1])
-        P <- P*P_scalar
 
         residuals.phenotype <- obj_nullmodel$scaled.residuals
-        residuals.phenotype <- residuals.phenotype*sqrt(P_scalar)
         if(method_cond == "optimal"){
           residuals.phenotype.fit <- lm(residuals.phenotype~genotype_adj+obj_nullmodel$X-1)
         }else{

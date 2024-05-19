@@ -97,7 +97,6 @@ STAAR_Binary_SPA <- function(genotype,obj_nullmodel,annotation_phred=NULL,
 
   if(sum(RV_label) >= rv_num_cutoff){
     # G <- as(Geno_rare,"dgCMatrix")
-	# G <- Geno_rare
     MAF <- MAF[RV_label]
     # rm(Geno_rare)
     # gc()
@@ -121,211 +120,172 @@ STAAR_Binary_SPA <- function(genotype,obj_nullmodel,annotation_phred=NULL,
       w_B <- as.matrix(w_B)
     }
 
-
     ## use SPA for all p-value calculation
-	if(!SPA_p_filter)
-	{
-		if(obj_nullmodel$relatedness){
-		  if(!obj_nullmodel$sparse_kins){
+    if(!SPA_p_filter){
+      if(obj_nullmodel$relatedness){
+        if(!obj_nullmodel$sparse_kins){
 
-			residuals.phenotype <- obj_nullmodel$scaled.residuals
-			muhat <- obj_nullmodel$fitted.values
+          residuals.phenotype <- obj_nullmodel$scaled.residuals
+          muhat <- obj_nullmodel$fitted.values
 
-			pvalues <- STAAR_B_Binary_SPA(G=G,XW=obj_nullmodel$XW,XXWX_inv=obj_nullmodel$XXWX_inv,residuals=residuals.phenotype,
-										muhat=muhat,weights_B=w_B,
-										tol=tol,max_iter=max_iter)
-		  }else{
+          pvalues <- STAAR_B_Binary_SPA(G=G,XW=obj_nullmodel$XW,XXWX_inv=obj_nullmodel$XXWX_inv,
+                                        residuals=residuals.phenotype,
+                                        muhat=muhat,weights_B=w_B,
+                                        tol=tol,max_iter=max_iter)
+        }else{
 
-			residuals.phenotype <- obj_nullmodel$scaled.residuals
-			muhat <- obj_nullmodel$fitted.values
+          residuals.phenotype <- obj_nullmodel$scaled.residuals
+          muhat <- obj_nullmodel$fitted.values
 
-			pvalues <- STAAR_B_Binary_SPA(G=G,XW=as.matrix(obj_nullmodel$XSigma_i),XXWX_inv=as.matrix(obj_nullmodel$XXSigma_iX_inv),residuals=residuals.phenotype,
-										muhat=muhat,weights_B=w_B,
-										tol=tol,max_iter=max_iter)
-		  }
-		}else{
+          pvalues <- STAAR_B_Binary_SPA(G=G,XW=as.matrix(obj_nullmodel$XSigma_i),XXWX_inv=as.matrix(obj_nullmodel$XXSigma_iX_inv),
+                                        residuals=residuals.phenotype,
+                                        muhat=muhat,weights_B=w_B,
+                                        tol=tol,max_iter=max_iter)
+        }
+      }else{
 
-		  residuals.phenotype <- obj_nullmodel$y - obj_nullmodel$fitted.values
-		  muhat <- obj_nullmodel$fitted.values
+        residuals.phenotype <- obj_nullmodel$y - obj_nullmodel$fitted.values
+        muhat <- obj_nullmodel$fitted.values
 
-		  pvalues <- STAAR_B_Binary_SPA(G=G,XW=obj_nullmodel$XW,XXWX_inv=obj_nullmodel$XXWX_inv,residuals=residuals.phenotype,
-										muhat=muhat,weights_B=w_B,
-										tol=tol,max_iter=max_iter)
-		}
-	}else
-	{
-		if(obj_nullmodel$relatedness){
-		  if(!obj_nullmodel$sparse_kins){
+        pvalues <- STAAR_B_Binary_SPA(G=G,XW=obj_nullmodel$XW,XXWX_inv=obj_nullmodel$XXWX_inv,
+                                      residuals=residuals.phenotype,
+                                      muhat=muhat,weights_B=w_B,
+                                      tol=tol,max_iter=max_iter)
+      }
+    }else{
+      if(obj_nullmodel$relatedness){
+        if(!obj_nullmodel$sparse_kins){
 
-			## SPA
-			residuals.phenotype <- obj_nullmodel$scaled.residuals
-			muhat <- obj_nullmodel$fitted.values
+          residuals.phenotype <- obj_nullmodel$scaled.residuals
+          muhat <- obj_nullmodel$fitted.values
 
-			## Normal
-			P <- obj_nullmodel$P
-			P_scalar <- sqrt(dim(P)[1])
-			P <- P*P_scalar
+          P <- obj_nullmodel$P
 
-			residuals.phenotype.scalar <- residuals.phenotype*sqrt(P_scalar)
+          G_sp <- as(G,"dgCMatrix")
 
-			G_sp <- as(G,"dgCMatrix")
+          pvalues <- STAAR_B_SPA_SMMAT(G=G,XW=obj_nullmodel$XW,XXWX_inv=obj_nullmodel$XXWX_inv,
+                                       residuals=residuals.phenotype,
+                                       muhat=muhat,weights_B=w_B,
+                                       tol=tol,max_iter=max_iter,
+                                       p_filter_cutoff=p_filter_cutoff,
+                                       G_sp=G_sp,P=P)
+        }else{
 
-			pvalues <- STAAR_B_SPA_SMMAT(G=G,XW=obj_nullmodel$XW,XXWX_inv=obj_nullmodel$XXWX_inv,residuals=residuals.phenotype,
-										muhat=muhat,weights_B=w_B,
-										tol=tol,max_iter=max_iter,
-										p_filter_cutoff=p_filter_cutoff, residuals_scalar=residuals.phenotype.scalar,
-										G_sp=G_sp,P=P)
-		  }else{
+          residuals.phenotype <- obj_nullmodel$scaled.residuals
+          muhat <- obj_nullmodel$fitted.values
 
-			## SPA
-			residuals.phenotype <- obj_nullmodel$scaled.residuals
-			muhat <- obj_nullmodel$fitted.values
+          Sigma_i <- obj_nullmodel$Sigma_i
+          Sigma_iX <- as.matrix(obj_nullmodel$Sigma_iX)
+          cov <- obj_nullmodel$cov
 
-			## Normal
-			Sigma_i <- obj_nullmodel$Sigma_i
-			Sigma_iX <- as.matrix(obj_nullmodel$Sigma_iX)
-			cov <- obj_nullmodel$cov
+          G_sp <- as(G,"dgCMatrix")
 
-			G_sp <- as(G,"dgCMatrix")
+          pvalues <- STAAR_B_SPA_SMMAT_sparse(G=G,XW=as.matrix(obj_nullmodel$XSigma_i),XXWX_inv=as.matrix(obj_nullmodel$XXSigma_iX_inv),
+                                              residuals=residuals.phenotype,
+                                              muhat=muhat,weights_B=w_B,
+                                              tol=tol,max_iter=max_iter,
+                                              p_filter_cutoff=p_filter_cutoff,G_sp=G_sp,
+                                              Sigma_i=Sigma_i,Sigma_iX=Sigma_iX,cov=cov)
+        }
+      }else{
 
-			pvalues <- STAAR_B_SPA_SMMAT_sparse(G=G,XW=as.matrix(obj_nullmodel$XSigma_i),XXWX_inv=as.matrix(obj_nullmodel$XXSigma_iX_inv),residuals=residuals.phenotype,
-										muhat=muhat,weights_B=w_B,
-										tol=tol,max_iter=max_iter,
-										p_filter_cutoff=p_filter_cutoff,G_sp=G_sp,
-										Sigma_i=Sigma_i,Sigma_iX=Sigma_iX,cov=cov)
-		  }
-		}else{
+        residuals.phenotype <- obj_nullmodel$y - obj_nullmodel$fitted.values
+        muhat <- obj_nullmodel$fitted.values
 
-		  ## SPA
-		  residuals.phenotype <- obj_nullmodel$y - obj_nullmodel$fitted.values
-		  muhat <- obj_nullmodel$fitted.values
+        X <- obj_nullmodel$X
+        working <- obj_nullmodel$weights
+        sigma <- sqrt(summary(obj_nullmodel)$dispersion)
+        if(obj_nullmodel$family[1] == "binomial"){
+          fam <- 1
+        }else if(obj_nullmodel$family[1] == "gaussian"){
+          fam <- 0
+        }
 
-		  ## Normal
-		  X <- obj_nullmodel$X
-		  working <- obj_nullmodel$weights
-		  sigma <- sqrt(summary(obj_nullmodel)$dispersion)
-		  if(obj_nullmodel$family[1] == "binomial"){
-			fam <- 1
-		  }else if(obj_nullmodel$family[1] == "gaussian"){
-			fam <- 0
-		  }
+        G_sp <- as(G,"dgCMatrix")
 
-		  G_sp <- as(G,"dgCMatrix")
-
-		  pvalues <- STAAR_B_SPA(G=G,XW=obj_nullmodel$XW,XXWX_inv=obj_nullmodel$XXWX_inv,residuals=residuals.phenotype,
-										muhat=muhat,weights_B=w_B,
-										tol=tol,max_iter=max_iter,
-										p_filter_cutoff=p_filter_cutoff,G_sp=G_sp,
-										X=X,working=working,sigma=sigma,fam=fam)
-		}
-
-
-	}
+        pvalues <- STAAR_B_SPA(G=G,XW=obj_nullmodel$XW,XXWX_inv=obj_nullmodel$XXWX_inv,
+                               residuals=residuals.phenotype,
+                               muhat=muhat,weights_B=w_B,
+                               tol=tol,max_iter=max_iter,
+                               p_filter_cutoff=p_filter_cutoff,G_sp=G_sp,
+                               X=X,working=working,sigma=sigma,fam=fam)
+      }
+    }
 
     num_variant <- sum(RV_label) #dim(G)[2]
     cMAC <- sum(G)
     num_annotation <- dim(annotation_phred)[2]+1
 
-	### STAAR-B
-	if(sum(is.na(pvalues))>0)
-	{
-		## all NAs
-		if(sum(is.na(pvalues))==length(pvalues))
-		{
-			results_STAAR_B <- 1
-		}else
-		{
-			## not all NAs
-			pvalues_sub <- pvalues[!is.na(pvalues)]
-			if(sum(pvalues_sub[pvalues_sub<1])>0)
-			{
-				## not all ones
-				results_STAAR_B <- CCT(pvalues_sub[pvalues_sub<1])
+    ## STAAR-B
+    if(sum(is.na(pvalues))>0){
+      ## all NAs
+      if(sum(is.na(pvalues))==length(pvalues)){
+        results_STAAR_B <- 1
+      }else{
+        ## not all NAs
+        pvalues_sub <- pvalues[!is.na(pvalues)]
+        if(sum(pvalues_sub[pvalues_sub<1])>0){
+          ## not all ones
+          results_STAAR_B <- CCT(pvalues_sub[pvalues_sub<1])
+        }else{
+          results_STAAR_B <- 1
+        }
+      }
+    }else{
+      if(sum(pvalues[pvalues<1])>0){
+        results_STAAR_B <- CCT(pvalues[pvalues<1])
+      }else{
+        results_STAAR_B <- 1
+      }
+    }
 
-			}else
-			{
-				results_STAAR_B <- 1
-
-			}
-		}
-	}else
-	{
-		if(sum(pvalues[pvalues<1])>0)
-		{
-			results_STAAR_B <- CCT(pvalues[pvalues<1])
-		}else
-		{
-			results_STAAR_B <- 1
-		}
-	}
-
-	## STAAR-B-1-25
-	pvalues_sub <- pvalues[1:num_annotation]
-	if(sum(is.na(pvalues_sub))>0)
-	{
-		if(sum(is.na(pvalues_sub))==length(pvalues_sub))
-		{
-			pvalues_STAAR_B_1_25 <- 1
-		}else
-		{
-			## not all NAs
-			pvalues_sub <- pvalues_sub[!is.na(pvalues_sub)]
-			if(sum(pvalues_sub[pvalues_sub<1])>0)
-			{
-				## not all ones
-				pvalues_STAAR_B_1_25 <- CCT(pvalues_sub[pvalues_sub<1])
-
-			}else
-			{
-				pvalues_STAAR_B_1_25 <- 1
-
-			}
-		}
-	}else
-	{
-		if(sum(pvalues_sub[pvalues_sub<1])>0)
-		{
-			pvalues_STAAR_B_1_25 <- CCT(pvalues_sub[pvalues_sub<1])
-		}else
-		{
-			pvalues_STAAR_B_1_25 <- 1
-		}
-	}
+    ## STAAR-B-1-25
+    pvalues_sub <- pvalues[1:num_annotation]
+    if(sum(is.na(pvalues_sub))>0){
+      if(sum(is.na(pvalues_sub))==length(pvalues_sub)){
+        pvalues_STAAR_B_1_25 <- 1
+      }else{
+        ## not all NAs
+        pvalues_sub <- pvalues_sub[!is.na(pvalues_sub)]
+        if(sum(pvalues_sub[pvalues_sub<1])>0){
+          ## not all ones
+          pvalues_STAAR_B_1_25 <- CCT(pvalues_sub[pvalues_sub<1])
+        }else{
+          pvalues_STAAR_B_1_25 <- 1
+        }
+      }
+    }else{
+      if(sum(pvalues_sub[pvalues_sub<1])>0){
+        pvalues_STAAR_B_1_25 <- CCT(pvalues_sub[pvalues_sub<1])
+      }else{
+        pvalues_STAAR_B_1_25 <- 1
+      }
+    }
     results_STAAR_B_1_25 <- c(pvalues[1:num_annotation],pvalues_STAAR_B_1_25)
     results_STAAR_B_1_25 <- data.frame(t(results_STAAR_B_1_25))
 
-	## STAAR-B-1-1
-	pvalues_sub <- pvalues[(num_annotation+1):(2*num_annotation)]
-	if(sum(is.na(pvalues_sub))>0)
-	{
-		if(sum(is.na(pvalues_sub))==length(pvalues_sub))
-		{
-			pvalues_STAAR_B_1_1 <- 1
-		}else
-		{
-			## not all NAs
-			pvalues_sub <- pvalues_sub[!is.na(pvalues_sub)]
-			if(sum(pvalues_sub[pvalues_sub<1])>0)
-			{
-				## not all ones
-				pvalues_STAAR_B_1_1 <- CCT(pvalues_sub[pvalues_sub<1])
-
-			}else
-			{
-				pvalues_STAAR_B_1_1 <- 1
-
-			}
-		}
-	}else
-	{
-		if(sum(pvalues_sub[pvalues_sub<1])>0)
-		{
-			pvalues_STAAR_B_1_1 <- CCT(pvalues_sub[pvalues_sub<1])
-		}else
-		{
-			pvalues_STAAR_B_1_1 <- 1
-		}
-	}
+    ## STAAR-B-1-1
+    pvalues_sub <- pvalues[(num_annotation+1):(2*num_annotation)]
+    if(sum(is.na(pvalues_sub))>0){
+      if(sum(is.na(pvalues_sub))==length(pvalues_sub)){
+        pvalues_STAAR_B_1_1 <- 1
+      }else{
+        ## not all NAs
+        pvalues_sub <- pvalues_sub[!is.na(pvalues_sub)]
+        if(sum(pvalues_sub[pvalues_sub<1])>0){
+          ## not all ones
+          pvalues_STAAR_B_1_1 <- CCT(pvalues_sub[pvalues_sub<1])
+        }else{
+          pvalues_STAAR_B_1_1 <- 1
+        }
+      }
+    }else{
+      if(sum(pvalues_sub[pvalues_sub<1])>0){
+        pvalues_STAAR_B_1_1 <- CCT(pvalues_sub[pvalues_sub<1])
+      }else{
+        pvalues_STAAR_B_1_1 <- 1
+      }
+    }
     results_STAAR_B_1_1 <- c(pvalues[(num_annotation+1):(2*num_annotation)],pvalues_STAAR_B_1_1)
     results_STAAR_B_1_1 <- data.frame(t(results_STAAR_B_1_1))
 

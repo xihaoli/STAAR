@@ -58,11 +58,8 @@ Indiv_Score_Test_Region <- function(genotype,obj_nullmodel,
     if(obj_nullmodel$relatedness){
       if(!obj_nullmodel$sparse_kins){
         P <- obj_nullmodel$P
-        P_scalar <- sqrt(dim(P)[1])
-        P <- P*P_scalar
 
         residuals.phenotype <- obj_nullmodel$scaled.residuals
-        residuals.phenotype <- residuals.phenotype*sqrt(P_scalar)
 
         results[RV_label,] <- do.call(cbind,Indiv_Score_Test_SMMAT(G,P,residuals.phenotype))
       }else{

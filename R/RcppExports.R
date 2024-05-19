@@ -77,8 +77,8 @@ STAAR_B_SPA <- function(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_i
     .Call(`_STAAR_STAAR_B_SPA`, G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, X, working, sigma, fam)
 }
 
-STAAR_B_SPA_SMMAT <- function(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, residuals_scalar, G_sp, P) {
-    .Call(`_STAAR_STAAR_B_SPA_SMMAT`, G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, residuals_scalar, G_sp, P)
+STAAR_B_SPA_SMMAT <- function(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, P) {
+    .Call(`_STAAR_STAAR_B_SPA_SMMAT`, G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, P)
 }
 
 STAAR_B_SPA_SMMAT_sparse <- function(G, XW, XXWX_inv, residuals, muhat, weights_B, tol, max_iter, p_filter_cutoff, G_sp, Sigma_i, Sigma_iX, cov) {

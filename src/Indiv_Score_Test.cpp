@@ -35,7 +35,7 @@ List Indiv_Score_Test(arma::sp_mat G, arma::mat X, arma::vec working, double sig
 	{
 		tX_G = trans(X)*G;
 		Cov = trans(G)*G - trans(tX_G)*inv(trans(X)*X)*tX_G;
-
+		Cov = Cov*pow(sigma,2);
 	}else
 	{
 		tX_G = trans(X)*(arma::diagmat(working))*G;

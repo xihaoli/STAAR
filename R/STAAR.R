@@ -153,11 +153,8 @@ STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
     if(obj_nullmodel$relatedness){
       if(!obj_nullmodel$sparse_kins){
         P <- obj_nullmodel$P
-        P_scalar <- sqrt(dim(P)[1])
-        P <- P*P_scalar
 
         residuals.phenotype <- obj_nullmodel$scaled.residuals
-        residuals.phenotype <- residuals.phenotype*sqrt(P_scalar)
 
         pvalues <- STAAR_O_SMMAT(G,P,residuals.phenotype,
                                  weights_B=w_B,weights_S=w_S,weights_A=w_A,
