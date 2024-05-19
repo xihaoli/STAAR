@@ -4,7 +4,7 @@ name: R-CMD-check
 
 jobs:
   R-CMD-check:
-    runs-on: macos-14-large
+    runs-on: macOS-13
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
