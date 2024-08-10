@@ -135,5 +135,5 @@ matrix_impute <- function(G) {
 
 # Register entry points for exported C++ functions
 methods::setLoadAction(function(ns) {
-    .Call('_STAAR_RcppExport_registerCCallable', PACKAGE = 'STAAR')
+    .Call(`_STAAR_RcppExport_registerCCallable`)
 })

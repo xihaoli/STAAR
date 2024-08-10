@@ -1,8 +1,8 @@
 Package: STAAR
 Type: Package
 Title: STAAR Procedure for Dynamic Incorporation of Multiple Functional Annotations in Whole-Genome Sequencing Studies
-Version: 0.9.7
-Date: 2024-05-19
+Version: 0.9.7.1
+Date: 2024-08-09
 Author: Xihao Li [aut, cre], Zilin Li [aut, cre], Han Chen [aut]
 Maintainer: Xihao Li <xihaoli@unc.edu>, Zilin Li <lizl@nenu.edu.cn>
 Description: An R package for performing STAAR procedure in whole-genome sequencing studies.
