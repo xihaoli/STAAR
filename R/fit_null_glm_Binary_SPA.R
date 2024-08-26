@@ -29,8 +29,8 @@ fit_null_glm_Binary_SPA <- function(fixed, data, family = binomial(link = "logit
   X <- model.matrix(obj_nullmodel)
   working <- obj_nullmodel$weights
 
-  obj_nullmodel$XW <- t(X)%*%diag(working)
-  obj_nullmodel$XXWX_inv <- X%*%solve(t(X)%*%diag(working)%*%X)
+  obj_nullmodel$XW <- t(X*working)
+  obj_nullmodel$XXWX_inv <- X%*%solve(t(X*working)%*%X)
 
   obj_nullmodel$use_SPA <- TRUE
 
