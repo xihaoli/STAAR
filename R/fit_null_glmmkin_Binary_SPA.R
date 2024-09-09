@@ -80,22 +80,18 @@ fit_null_glmmkin_Binary_SPA <- function(fixed, data = parent.frame(), kins, use_
     obj_nullmodel$sparse_kins <- TRUE
 
     ## generate W
-	muhat <- obj_nullmodel$fitted.values
-	working <- muhat*(1-muhat)
+    X <- obj_nullmodel$X
+    muhat <- obj_nullmodel$fitted.values
+    working <- muhat*(1-muhat)
 
-	X <- obj_nullmodel$X
+    obj_nullmodel$XW <- t(X*working)
+    obj_nullmodel$XXWX_inv <- X%*%solve(t(X*working)%*%X)
 
-	obj_nullmodel$XW <- t(X)%*%diag(working)
-	obj_nullmodel$XXWX_inv <- X%*%solve(t(X)%*%diag(working)%*%X)
-
-	## generate Sigma_i
-	obj_nullmodel$XSigma_i <- crossprod(X,obj_nullmodel$Sigma_i)
-	obj_nullmodel$XXSigma_iX_inv <- X%*%obj_nullmodel$cov
-
+    ## generate Sigma_i
+    obj_nullmodel$XSigma_i <- crossprod(X,obj_nullmodel$Sigma_i)
+    obj_nullmodel$XXSigma_iX_inv <- X%*%obj_nullmodel$cov
   }else if(!is.null(use_sparse) && use_sparse){
     print(paste0("kins is a dense matrix, transforming it into a sparse matrix using cutoff ", kins_cutoff,"."))
-    #kins <- replace(kins, kins <= kins_cutoff, 0)
-    #kins_sp <- Matrix(kins, sparse = TRUE)
     kins_sp <- makeSparseMatrix(kins, thresh = kins_cutoff)
     if(inherits(kins_sp, "dsyMatrix") || kins_cutoff <= min(kins)){
       stop(paste0("kins is still a dense matrix using cutoff ", kins_cutoff,". Please try a larger kins_cutoff or use_sparse = FALSE!"))
@@ -110,17 +106,16 @@ fit_null_glmmkin_Binary_SPA <- function(fixed, data = parent.frame(), kins, use_
     obj_nullmodel$sparse_kins <- TRUE
 
     ## generate W
-	muhat <- obj_nullmodel$fitted.values
-	working <- muhat*(1-muhat)
+    X <- obj_nullmodel$X
+    muhat <- obj_nullmodel$fitted.values
+    working <- muhat*(1-muhat)
 
-	X <- obj_nullmodel$X
- 	obj_nullmodel$XW <- t(X)%*%diag(working)
-	obj_nullmodel$XXWX_inv <- X%*%solve(t(X)%*%diag(working)%*%X)
+    obj_nullmodel$XW <- t(X*working)
+    obj_nullmodel$XXWX_inv <- X%*%solve(t(X*working)%*%X)
 
-	## generate Sigma_i
-	obj_nullmodel$XSigma_i <- crossprod(X,obj_nullmodel$Sigma_i)
-	obj_nullmodel$XXSigma_iX_inv <- X%*%obj_nullmodel$cov
-
+    ## generate Sigma_i
+    obj_nullmodel$XSigma_i <- crossprod(X,obj_nullmodel$Sigma_i)
+    obj_nullmodel$XXSigma_iX_inv <- X%*%obj_nullmodel$cov
   }else{
     print("kins is a dense matrix.")
     obj_nullmodel <- glmmkin(fixed = fixed, data = data, kins = kins, id = id,
@@ -131,14 +126,13 @@ fit_null_glmmkin_Binary_SPA <- function(fixed, data = parent.frame(), kins, use_
                              tauregion = tauregion, verbose = verbose, ...)
     obj_nullmodel$sparse_kins <- FALSE
 
-	## generate W
-	muhat <- obj_nullmodel$fitted.values
-	working <- muhat*(1-muhat)
+    ## generate W
+    X <- obj_nullmodel$X
+    muhat <- obj_nullmodel$fitted.values
+    working <- muhat*(1-muhat)
 
-	X <- obj_nullmodel$X
-
-	obj_nullmodel$XW <- t(X)%*%diag(working)
-	obj_nullmodel$XXWX_inv <- X%*%solve(t(X)%*%diag(working)%*%X)
+    obj_nullmodel$XW <- t(X*working)
+    obj_nullmodel$XXWX_inv <- X%*%solve(t(X*working)%*%X)
   }
   obj_nullmodel$relatedness <- TRUE
   obj_nullmodel$use_SPA <- TRUE
