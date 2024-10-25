@@ -79,15 +79,15 @@ fit_null_glmmkin_Binary_SPA <- function(fixed, data = parent.frame(), kins, use_
                              tauregion = tauregion, verbose = verbose, ...)
     obj_nullmodel$sparse_kins <- TRUE
 
-    ## generate W
     X <- obj_nullmodel$X
     muhat <- obj_nullmodel$fitted.values
     working <- muhat*(1-muhat)
 
+    ## generate XW
     obj_nullmodel$XW <- t(X*working)
     obj_nullmodel$XXWX_inv <- X%*%solve(t(X*working)%*%X)
 
-    ## generate Sigma_i
+    ## generate XSigma_i
     obj_nullmodel$XSigma_i <- crossprod(X,obj_nullmodel$Sigma_i)
     obj_nullmodel$XXSigma_iX_inv <- X%*%obj_nullmodel$cov
   }else if(!is.null(use_sparse) && use_sparse){
@@ -105,15 +105,15 @@ fit_null_glmmkin_Binary_SPA <- function(fixed, data = parent.frame(), kins, use_
                              tauregion = tauregion, verbose = verbose, ...)
     obj_nullmodel$sparse_kins <- TRUE
 
-    ## generate W
     X <- obj_nullmodel$X
     muhat <- obj_nullmodel$fitted.values
     working <- muhat*(1-muhat)
 
+    ## generate XW
     obj_nullmodel$XW <- t(X*working)
     obj_nullmodel$XXWX_inv <- X%*%solve(t(X*working)%*%X)
 
-    ## generate Sigma_i
+    ## generate XSigma_i
     obj_nullmodel$XSigma_i <- crossprod(X,obj_nullmodel$Sigma_i)
     obj_nullmodel$XXSigma_iX_inv <- X%*%obj_nullmodel$cov
   }else{
@@ -126,11 +126,11 @@ fit_null_glmmkin_Binary_SPA <- function(fixed, data = parent.frame(), kins, use_
                              tauregion = tauregion, verbose = verbose, ...)
     obj_nullmodel$sparse_kins <- FALSE
 
-    ## generate W
     X <- obj_nullmodel$X
     muhat <- obj_nullmodel$fitted.values
     working <- muhat*(1-muhat)
 
+    ## generate XW
     obj_nullmodel$XW <- t(X*working)
     obj_nullmodel$XXWX_inv <- X%*%solve(t(X*working)%*%X)
   }
