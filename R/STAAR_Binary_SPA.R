@@ -23,6 +23,8 @@
 #' defining rare variants (default = 0.01).
 #' @param rv_num_cutoff the cutoff of minimum number of variants of analyzing
 #' a given variant-set (default = 2).
+#' @param rv_num_cutoff_max the cutoff of maximum number of variants of analyzing
+#' a given variant-set (default = 1e+09).
 #' @param tol a positive number specifying tolerance, the difference threshold for parameter
 #' estimates in saddlepoint apporximation algorithm below which iterations should be stopped (default = ".Machine$double.eps^0.25").
 #' @param max_iter a positive integers pecifying the maximum number of iterations for applying the saddlepoint approximation algorithm (default = "1000").
@@ -66,6 +68,7 @@
 
 STAAR_Binary_SPA <- function(genotype,obj_nullmodel,annotation_phred=NULL,
                              rare_maf_cutoff=0.01,rv_num_cutoff=2,
+                             rv_num_cutoff_max=1e9,
                              tol=.Machine$double.eps^0.25,max_iter=1000,
                              SPA_p_filter=FALSE,p_filter_cutoff=0.05){
 
@@ -94,6 +97,10 @@ STAAR_Binary_SPA <- function(genotype,obj_nullmodel,annotation_phred=NULL,
   # rm(genotype)
   # gc()
   annotation_phred <- annotation_phred[RV_label,,drop=FALSE]
+
+  if(sum(RV_label) >= rv_num_cutoff_max){
+    stop(paste0("Number of rare variant in the set is more than ",rv_num_cutoff_max,"!"))
+  }
 
   if(sum(RV_label) >= rv_num_cutoff){
     # G <- as(Geno_rare,"dgCMatrix")

@@ -25,6 +25,8 @@
 #' defining rare variants (default = 0.01).
 #' @param rv_num_cutoff the cutoff of minimum number of variants of analyzing
 #' a given variant-set (default = 2).
+#' @param rv_num_cutoff_max the cutoff of maximum number of variants of analyzing
+#' a given variant-set (default = 1e+09).
 #' @return A list with the following members:
 #' @return \code{num_variant}: the number of variants with minor allele frequency > 0 and less than
 #' \code{rare_maf_cutoff} in the given variant-set that are used for performing the
@@ -81,7 +83,8 @@
 #' @export
 
 STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
-                  rare_maf_cutoff=0.01,rv_num_cutoff=2){
+                  rare_maf_cutoff=0.01,rv_num_cutoff=2,
+                  rv_num_cutoff_max=1e9){
 
   if(!inherits(genotype, "matrix") && !inherits(genotype, "Matrix")){
     stop("genotype is not a matrix!")
@@ -107,6 +110,10 @@ STAAR <- function(genotype,obj_nullmodel,annotation_phred=NULL,
   rm(genotype)
   gc()
   annotation_phred <- annotation_phred[RV_label,,drop=FALSE]
+
+  if(sum(RV_label) >= rv_num_cutoff_max){
+    stop(paste0("Number of rare variant in the set is more than ",rv_num_cutoff_max,"!"))
+  }
 
   if(sum(RV_label) >= rv_num_cutoff){
     G <- as(Geno_rare,"dgCMatrix")

@@ -10,6 +10,7 @@ STAAR_Binary_SPA(
   annotation_phred = NULL,
   rare_maf_cutoff = 0.01,
   rv_num_cutoff = 2,
+  rv_num_cutoff_max = 1e+09,
   tol = .Machine$double.eps^0.25,
   max_iter = 1000,
   SPA_p_filter = FALSE,
@@ -38,6 +39,9 @@ defining rare variants (default = 0.01).}
 
 \item{rv_num_cutoff}{the cutoff of minimum number of variants of analyzing
 a given variant-set (default = 2).}
+
+\item{rv_num_cutoff_max}{the cutoff of maximum number of variants of analyzing
+a given variant-set (default = 1e+09).}
 
 \item{tol}{a positive number specifying tolerance, the difference threshold for parameter
 estimates in saddlepoint apporximation algorithm below which iterations should be stopped (default = ".Machine$double.eps^0.25").}
