@@ -10,6 +10,7 @@ Indiv_Score_Test_Region_cond(
   obj_nullmodel,
   rare_maf_cutoff = 0.01,
   rv_num_cutoff = 2,
+  rv_num_cutoff_max = 1e+09,
   method_cond = c("optimal", "naive")
 )
 }
@@ -32,6 +33,9 @@ defining rare variants (default = 0.01).}
 
 \item{rv_num_cutoff}{the cutoff of minimum number of variants of analyzing
 a given variant-set (default = 2).}
+
+\item{rv_num_cutoff_max}{the cutoff of maximum number of variants of analyzing
+a given variant-set (default = 1e+09).}
 
 \item{method_cond}{a character value indicating the method for conditional analysis.
 \code{optimal} refers to regressing residuals from the null model on \code{genotype_adj}

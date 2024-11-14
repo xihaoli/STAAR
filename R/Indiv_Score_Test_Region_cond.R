@@ -19,6 +19,8 @@
 #' defining rare variants (default = 0.01).
 #' @param rv_num_cutoff the cutoff of minimum number of variants of analyzing
 #' a given variant-set (default = 2).
+#' @param rv_num_cutoff_max the cutoff of maximum number of variants of analyzing
+#' a given variant-set (default = 1e+09).
 #' @param method_cond a character value indicating the method for conditional analysis.
 #' \code{optimal} refers to regressing residuals from the null model on \code{genotype_adj}
 #' as well as all covariates used in fitting the null model (fully adjusted) and taking the residuals;
@@ -41,6 +43,7 @@
 
 Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
                                          rare_maf_cutoff=0.01,rv_num_cutoff=2,
+                                         rv_num_cutoff_max=1e9,
                                          method_cond=c("optimal","naive")){
 
   method_cond <- match.arg(method_cond) # evaluate choices
@@ -74,6 +77,10 @@ Indiv_Score_Test_Region_cond <- function(genotype,genotype_adj,obj_nullmodel,
 
   rm(genotype,MAF)
   gc()
+
+  if(sum(RV_label) >= rv_num_cutoff_max){
+    stop(paste0("Number of rare variant in the set is more than ",rv_num_cutoff_max,"!"))
+  }
 
   if(sum(RV_label) >= rv_num_cutoff){
     G <- as(Geno_rare,"dgCMatrix")
