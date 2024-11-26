@@ -14,11 +14,22 @@ STAAR is an R package for performing variant-Set Test for Association using Anno
 For optimal computational performance, it is recommended to use an R version configured with the Intel Math Kernel Library (or other fast BLAS/LAPACK libraries). See the <a href="https://software.intel.com/en-us/articles/using-intel-mkl-with-r">instructions</a> on building R with Intel MKL.
 ## Dependencies
 STAAR links to R packages <a href="https://cran.r-project.org/web/packages/Rcpp/index.html">Rcpp</a> and <a href="https://cran.r-project.org/web/packages/RcppArmadillo/index.html">RcppArmadillo</a>, and also imports R packages <a href="https://cran.r-project.org/web/packages/Rcpp/index.html">Rcpp</a>, <a href="https://cran.r-project.org/web/packages/GMMAT/index.html">GMMAT</a>, <a href="https://bioconductor.org/packages/release/bioc/html/GENESIS.html">GENESIS</a>, <a href="https://cran.r-project.org/web/packages/Matrix/index.html">Matrix</a>. These dependencies should be installed before installing STAAR.
+
+Note that some dependencies for STAAR may require installation from Bioconductor using a command like the following to install the GENESIS package:
+
+```r
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("GENESIS")
+```
 ## Installation
 ```
 library(devtools)
 devtools::install_github("xihaoli/STAAR")
 ```
+
+If you are using a Mac computer, installation of the `STAAR` R package will be simplified by installing the Xcode command line tools (as detailed more at, for example, <https://mac.install.guide/commandlinetools/about-xcode-clt>).  It is also recommended to install the `macrtools` package (<https://github.com/coatless-mac/macrtools>) to install components (including `gfortran`) that are required to compile some R and Bioconductor packages.
 ## Docker Image
 A [docker image for STAAR](https://hub.docker.com/repository/docker/zilinli/staarpipeline), including R (version 3.6.1) built with Intel MKL and all STAAR-related packages (STAAR, MultiSTAAR, SCANG, STAARpipeline, STAARpipelineSummary) pre-installed, is located in the Docker Hub. The docker image can be pulled using
 ```
